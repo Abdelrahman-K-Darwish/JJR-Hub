@@ -1,11 +1,19 @@
-"""WCAG contrast checker used to tune src/styles/tokens.css's dark-surface text tokens.
+"""WCAG contrast checker used to tune src/styles/tokens.css's dark-surface text tokens
+and any custom hero gradient stops (ContentPage pages each pass their own gradient).
 
-Checks a foreground color against every navy stop in the palette (the worst case for a
-light-on-navy token is the *lightest* navy, since that's where contrast is lowest) and
-reports whether it clears the WCAG AA thresholds: 4.5:1 for normal text, 3:1 for large
-text and UI component borders.
+Two modes:
+  - One or more hex args: each is checked as a foreground against the three navy stops
+    in the palette (the worst case for a light-on-navy token is the lightest navy).
+  - `--bg` followed by hex args: each arg is checked as a foreground against those
+    explicit background colors instead of the navy stops — use this for a one-off
+    gradient stop that isn't one of the standard navy tokens.
 
-Usage: python scripts/contrast-check.py '#B9C3D1' '#8B9BB4'
+Reports whether each pair clears the WCAG AA thresholds: 4.5:1 for normal text,
+3:1 for large text and UI component borders/non-text elements.
+
+Usage:
+  python scripts/contrast-check.py '#B9C3D1' '#8B9BB4'
+  python scripts/contrast-check.py --bg '#1F5800' '#8B1A6A' -- '#B9C3D1' '#8B9BB4'
 """
 
 import sys
@@ -39,10 +47,10 @@ NAVY_STOPS = {
 }
 
 
-def check(fg_hex):
+def check(fg_hex, backgrounds):
     fg = hexrgb(fg_hex)
     print(f"\n{fg_hex}")
-    for name, bg in NAVY_STOPS.items():
+    for name, bg in backgrounds.items():
         c = contrast(fg, bg)
         aa_normal = 'PASS' if c >= 4.5 else 'fail'
         aa_large = 'PASS' if c >= 3.0 else 'fail'
@@ -50,5 +58,13 @@ def check(fg_hex):
 
 
 if __name__ == '__main__':
-    for arg in sys.argv[1:] or ['#B9C3D1', '#8B9BB4']:
-        check(arg)
+    args = sys.argv[1:]
+    backgrounds = NAVY_STOPS
+    if args and args[0] == '--bg':
+        args = args[1:]
+        bg_args, _, fg_args = args[:args.index('--')], None, args[args.index('--') + 1 :]
+        backgrounds = {h: hexrgb(h) for h in bg_args}
+        args = fg_args
+
+    for arg in args or ['#B9C3D1', '#8B9BB4']:
+        check(arg, backgrounds)

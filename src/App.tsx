@@ -1,12 +1,18 @@
 import { useState } from 'react'
 import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
+import { AiForGoodPage } from './features/ai-for-good/AiForGoodPage'
+import { EnvironmentalJusticePage } from './features/environmental-justice/EnvironmentalJusticePage'
 import { SiteOwnersPage } from './features/site-owners/SiteOwnersPage'
 import { UnderDevelopmentPage } from './features/under-development/UnderDevelopmentPage'
+import { VisionValuesPage } from './features/vision-values/VisionValuesPage'
 
 const PAGES = {
   'under-development': { label: 'Under Development', Component: UnderDevelopmentPage },
   accessibility: { label: 'Accessibility', Component: AccessibilityPage },
   'site-owners': { label: 'Site Owners', Component: SiteOwnersPage },
+  'vision-values': { label: 'Vision & Values', Component: VisionValuesPage },
+  'ai-for-good': { label: 'AI for Good', Component: AiForGoodPage },
+  'environmental-justice': { label: 'Environmental Justice', Component: EnvironmentalJusticePage },
 } as const
 
 type PageKey = keyof typeof PAGES
@@ -21,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <div className="fixed bottom-4 right-4 z-[400] flex gap-1.5 bg-navy-deep p-1.5 shadow-lg">
+      <div className="fixed bottom-4 right-4 z-[400] flex flex-wrap justify-end gap-1.5 bg-navy-deep p-1.5 shadow-lg max-w-[280px]">
         {(Object.keys(PAGES) as PageKey[]).map((key) => (
           <button
             key={key}

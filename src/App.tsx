@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
+import { ActiveProjectsPage } from './features/active-projects/ActiveProjectsPage'
 import { AiForGoodPage } from './features/ai-for-good/AiForGoodPage'
 import { EnvironmentalJusticePage } from './features/environmental-justice/EnvironmentalJusticePage'
 import { SiteOwnersPage } from './features/site-owners/SiteOwnersPage'
@@ -7,6 +8,7 @@ import { UnderDevelopmentPage } from './features/under-development/UnderDevelopm
 import { VisionValuesPage } from './features/vision-values/VisionValuesPage'
 
 const PAGES = {
+  'active-projects': { label: 'Active Projects', Component: ActiveProjectsPage },
   'under-development': { label: 'Under Development', Component: UnderDevelopmentPage },
   accessibility: { label: 'Accessibility', Component: AccessibilityPage },
   'site-owners': { label: 'Site Owners', Component: SiteOwnersPage },
@@ -22,7 +24,7 @@ type PageKey = keyof typeof PAGES
  * Swap this for real routes once one is introduced.
  */
 function App() {
-  const [page, setPage] = useState<PageKey>('under-development')
+  const [page, setPage] = useState<PageKey>('active-projects')
   const { Component } = PAGES[page]
 
   return (

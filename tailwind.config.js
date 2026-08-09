@@ -64,11 +64,16 @@ export default {
           from: { opacity: 0, transform: 'translateY(40px)' },
           to: { opacity: 1, transform: 'translateY(0)' },
         },
+        'thread-pulse': {
+          '0%, 100%': { opacity: 1, transform: 'translateY(-50%) scale(1)' },
+          '50%': { opacity: 0.55, transform: 'translateY(-50%) scale(1.3)' },
+        },
       },
       animation: {
         shimmer: 'shimmer 6s ease-in-out infinite',
         breathe: 'breathe 4s ease-in-out infinite',
         rise: 'rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both',
+        'thread-pulse': 'thread-pulse 2.4s ease-in-out infinite',
       },
     },
   },

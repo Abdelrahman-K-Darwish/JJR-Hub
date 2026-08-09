@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Active Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  body{font-family:'IBM Plex Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .nav-3d{background:linear-gradient(180deg,#17304f 0%,#0F2340 40%,#0b1c35 100%);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(0,0,0,0.3);box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 2px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.04)}
+  .context-recessed{background:linear-gradient(180deg,#152a48 0%,#1B365D 50%,#1e3a63 100%);border-bottom:1px solid rgba(0,0,0,0.12);box-shadow:inset 0 2px 6px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.02)}
+  .shimmer{background:linear-gradient(135deg,#3da312 0%,#4CBB17 20%,#7de852 35%,#b8f5a0 42%,#4CBB17 50%,#3da312 65%,#5cd42a 80%,#a4f08a 88%,#4CBB17 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 6s ease-in-out infinite}
+  .shimmer-delay{animation-delay:0.4s}
+  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+  .nav-active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:rgba(255,255,255,0.3)}
+  .equity-3d{background:linear-gradient(180deg,#17304f 0%,#0F2340 30%,#0b1c35 100%);border-top:1px solid rgba(255,255,255,0.06);box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 -2px 12px rgba(0,0,0,0.1)}
+  .marker-shimmer{background:linear-gradient(180deg,#4CBB17,#7de852,#4CBB17);background-size:100% 200%;animation:shimmer 6s ease-in-out infinite}
+  .section-rule{flex:1;height:1px;background:#D0CCC4}
+  @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .anim-1{animation:rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both}
+  .anim-2{animation:rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.15s both}
+
+  /* Filter button states */
+  .filter-btn{transition:all 0.2s}
+  .filter-btn.active{background:#1B365D;color:white;border-color:#1B365D}
+
+  /* Project row hover */
+  .proj-row{transition:all 0.2s}
+  .proj-row:hover{background:#F8F7F4;border-color:#2A4A78}
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed">
+
+<!-- ═══ NAV ═══ -->
+<div class="nav-3d fixed top-0 left-0 right-0 z-[200] h-14 flex items-center">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tailwind.html" class="shimmer font-display text-xl font-extrabold tracking-tight">JJR</a><a href="jjr-hub-tailwind.html" class="shimmer shimmer-delay font-display text-xl font-extrabold tracking-tight">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tailwind.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="#" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Projects</a>
+      <a href="#" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="#" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="#" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08] focus-within:border-white/[0.14]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search projects..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="w-[30px] h-[30px] bg-white/[0.08] border border-white/10 flex items-center justify-center font-body text-[10px] font-semibold text-white/[0.55] cursor-pointer ml-2 rounded-sm transition-colors duration-200 hover:border-white/25">SF</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="context-recessed mt-14">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tailwind.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">Active Projects</span>
+    </div>
+    <div class="font-mono text-[9px] text-white/20 tracking-wide"><span id="visibleCount">6</span> projects</div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-11 pb-28 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="anim-1 mb-10">
+    <div class="nav-3d relative overflow-hidden" style="box-shadow:0 4px 16px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.04);">
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="p-12 max-md:p-8 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-6">
+        <div>
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-4">Active Projects</div>
+          <h1 class="font-display text-[2.2rem] max-md:text-[1.6rem] font-bold text-white leading-[1.15] tracking-tight mb-3">Project Portfolio</h1>
+          <p class="text-[14px] leading-[1.7] text-white/[0.38] max-w-[480px]">Every active engagement at JJR — track progress, access files, and stay connected to your team. Filter by client, status, or service line.</p>
+        </div>
+        <div class="flex gap-5 shrink-0">
+          <div class="text-center">
+            <div class="font-display text-[2rem] font-bold text-white">6</div>
+            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">Active</div>
+          </div>
+          <div class="w-px h-12 bg-white/[0.08] self-center"></div>
+          <div class="text-center">
+            <div class="font-display text-[2rem] font-bold text-amber">2</div>
+            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">In Review</div>
+          </div>
+          <div class="w-px h-12 bg-white/[0.08] self-center"></div>
+          <div class="text-center">
+            <div class="font-display text-[2rem] font-bold text-navy-mid">1</div>
+            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">Wrapping</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="anim-2 flex items-center gap-3 mb-8 flex-wrap">
+    <div class="font-mono text-[9px] tracking-[2px] uppercase text-txt-muted mr-2">Filter</div>
+    <button class="filter-btn active font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white cursor-pointer" onclick="filterProjects('all')">All</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('active')">Active</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('review')">In Review</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('wrap')">Wrapping Up</button>
+    <div class="w-px h-5 bg-rule mx-1"></div>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('mine')">My Projects</button>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+
+    <!-- LEFT: Project list -->
+    <div>
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">All Projects <span class="section-rule"></span></div>
+
+      <!-- Project 1 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="true">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Acme Corp · Strategic Planning</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Digital Transformation Roadmap</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Strategy &amp; Systems Design — reimagining operations through digital-first frameworks and stakeholder alignment.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">SF</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">MK</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">LR</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 2</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Dashboard</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">68%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:68%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: Apr 15, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="review" data-mine="true">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-amber"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">NovaTech · Operations</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Supply Chain Optimization</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Agile Project Management — streamlining procurement processes and vendor relationships.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-amber">JP</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-pink">FN</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 1</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">SOW</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-amber/[0.12] text-[#A06B1A]">In Review</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">41%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-amber" style="width:41%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: May 30, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="wrap" data-mine="false">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-navy-mid"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">GovServices · HR</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Workforce Planning Initiative</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Talent Acquisition &amp; Succession — building a sustainable pipeline for federal workforce needs.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">DL</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">SA</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">RT</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 3</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Dashboard</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">KT Checklist</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-navy-mid/10 text-navy-mid">Wrapping Up</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">85%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-navy-mid" style="width:85%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: Mar 31, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="true">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Metro Transit Authority · Planning</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Equity-Centered Transit Study</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Environmental Justice — assessing route equity across underserved communities using EJ40 methodology.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-pink">RT</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">SF</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 4</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">EJ Data</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">22%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:22%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: Jul 31, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="false">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Beacon Health · IT</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">EHR System Procurement</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Procurement Advisory — vendor evaluation and RFP development for electronic health records.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">MK</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-amber">JP</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 2</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">RFP Draft</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Scorecard</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">55%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:55%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: May 15, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 6 -->
+      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="review" data-mine="false">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-amber"></div>
+        <div class="flex items-start gap-5 max-md:flex-col">
+          <div class="flex-1">
+            <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Dept of Energy · Compliance</div>
+            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Clean Energy Compliance Audit</div>
+            <div class="text-[12.5px] text-txt-sec mb-4">Regulatory Advisory — IRA compliance review and reporting framework for clean energy grants.</div>
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <div class="flex -space-x-1.5">
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">DL</div>
+                  <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">SA</div>
+                </div>
+                <span class="text-[10px] text-txt-muted">+ 1</span>
+              </div>
+              <div class="flex gap-1">
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Audit Log</a>
+                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Report</a>
+              </div>
+            </div>
+          </div>
+          <div class="w-[180px] shrink-0 max-md:w-full">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-amber/[0.12] text-[#A06B1A]">In Review</span>
+              <span class="font-mono text-[11px] text-txt-sec font-medium">78%</span>
+            </div>
+            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-amber" style="width:78%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2">Due: Apr 8, 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Access note -->
+      <div class="mt-2 py-3 px-5 border-l-2 border-green bg-white text-xs text-txt-sec">Not seeing a project you're on? <a href="#" class="text-green font-bold hover:underline">Request access here</a> — all requests are reviewed within one business day.</div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Upcoming Milestones -->
+      <div class="bg-white border border-rule">
+        <div class="px-6 py-5 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">Upcoming Milestones</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Next 30 Days</div>
+        </div>
+        <div class="p-5 flex flex-col gap-0">
+          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
+            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+              <div class="font-mono text-[10px] font-bold text-white leading-none">28</div>
+              <div class="font-mono text-[8px] text-white/40 uppercase">Mar</div>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-txt leading-snug">Acme — Phase 2 Deliverable</div>
+              <div class="text-[10px] text-txt-muted mt-0.5">Strategy deck due to client</div>
+              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">SF</div><span class="text-[9px] text-txt-muted">Lead: S. Foster</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
+            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+              <div class="font-mono text-[10px] font-bold text-white leading-none">31</div>
+              <div class="font-mono text-[8px] text-white/40 uppercase">Mar</div>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-txt leading-snug">GovServices — Knowledge Transfer</div>
+              <div class="text-[10px] text-txt-muted mt-0.5">Final handoff &amp; closeout docs</div>
+              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-navy-mid text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted">Lead: D. Laurent</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
+            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+              <div class="font-mono text-[10px] font-bold text-white leading-none">08</div>
+              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-txt leading-snug">DoE — Draft Audit Report</div>
+              <div class="text-[10px] text-txt-muted mt-0.5">Internal review before client submission</div>
+              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted">Lead: D. Laurent</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
+            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+              <div class="font-mono text-[10px] font-bold text-white leading-none">15</div>
+              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-txt leading-snug">Acme — Final Presentation</div>
+              <div class="text-[10px] text-txt-muted mt-0.5">Board-level strategy presentation</div>
+              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-navy text-[7px] font-bold text-white flex items-center justify-center">MK</div><span class="text-[9px] text-txt-muted">Lead: M. Kim</span></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 py-3">
+            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+              <div class="font-mono text-[10px] font-bold text-white leading-none">22</div>
+              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+            </div>
+            <div>
+              <div class="text-[12px] font-semibold text-txt leading-snug">NovaTech — Vendor Shortlist</div>
+              <div class="text-[10px] text-txt-muted mt-0.5">Final vendor recommendations to client</div>
+              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-amber text-[7px] font-bold text-white flex items-center justify-center">JP</div><span class="text-[9px] text-txt-muted">Lead: J. Park</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portfolio health -->
+      <div class="nav-3d" style="box-shadow:0 2px 8px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.04);">
+        <div class="px-6 py-5 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white">Portfolio Health</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/25 font-medium mt-0.5">This Quarter</div>
+        </div>
+        <div class="p-5 flex flex-col gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] text-white/50">On Track</span>
+              <span class="font-mono text-[10px] text-green font-medium">4 projects</span>
+            </div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-green" style="width:67%"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] text-white/50">Needs Attention</span>
+              <span class="font-mono text-[10px] text-amber font-medium">2 projects</span>
+            </div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-amber" style="width:33%"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[11px] text-white/50">At Risk</span>
+              <span class="font-mono text-[10px] text-pink font-medium">0 projects</span>
+            </div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-pink" style="width:0%"></div></div>
+          </div>
+          <div class="pt-3 border-t border-white/[0.06] text-[11px] text-white/30">Avg. completion: <strong class="text-white/60">58%</strong></div>
+        </div>
+      </div>
+
+      <!-- Request access -->
+      <div class="border-l-2 border-green bg-white px-5 py-4">
+        <div class="text-[12.5px] font-semibold text-txt mb-1">Need access to a project?</div>
+        <div class="text-[11.5px] text-txt-sec leading-relaxed mb-2">If you've been assigned to a project but can't see it here, request access and we'll sort it within one business day.</div>
+        <a href="#" class="text-[12px] font-bold text-green hover:underline">Request project access →</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="equity-3d">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="marker-shimmer w-[3px] h-9 shrink-0"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="#" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterProjects(status) {
+  const rows = document.querySelectorAll('.proj-row');
+  const btns = document.querySelectorAll('.filter-btn');
+  btns.forEach(b => { b.classList.remove('active'); b.classList.add('text-txt-sec'); });
+  event.target.classList.add('active');
+  event.target.classList.remove('text-txt-sec');
+
+  let count = 0;
+  rows.forEach(row => {
+    const s = row.dataset.status;
+    const mine = row.dataset.mine === 'true';
+    let show = false;
+    if (status === 'all') show = true;
+    else if (status === 'mine') show = mine;
+    else show = s === status;
+
+    row.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+  document.getElementById('visibleCount').textContent = count;
+}
+</script>
+
+</body>
+</html>

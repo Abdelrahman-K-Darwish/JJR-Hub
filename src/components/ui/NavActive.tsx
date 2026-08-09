@@ -10,7 +10,7 @@ export function NavActive({ active = false, children, className = '', ...anchorP
   return (
     <a
       className={`relative font-body text-[13px] px-4 h-full flex items-center transition-colors duration-200 ${
-        active ? 'font-semibold text-white' : 'font-medium text-white/50 hover:text-white/90'
+        active ? 'font-semibold text-white' : 'font-medium text-text-inverse-secondary hover:text-white'
       } ${className}`}
       {...anchorProps}
     >

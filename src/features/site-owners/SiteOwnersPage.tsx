@@ -85,7 +85,7 @@ export function SiteOwnersPage({ generalRequestHref = '/under-development?from=g
             Can&rsquo;t Find The Right Person?
           </div>
           <div className="font-display text-[1.4rem] font-bold text-white mb-2 tracking-[-0.015em]">General Hub questions</div>
-          <p className="text-[13.5px] text-white/55 leading-[1.7] max-w-[580px]">
+          <p className="text-[13.5px] text-text-inverse-secondary leading-[1.7] max-w-[580px]">
             Not sure who to ask? Submit a general request and it&rsquo;ll be routed to the right owner within one
             business day. For urgent issues, use the &ldquo;Report an Issue&rdquo; form at the footer of any page.
           </p>

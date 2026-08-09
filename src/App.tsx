@@ -28,7 +28,7 @@ function App() {
             type="button"
             onClick={() => setPage(key)}
             className={`font-mono text-[10px] px-2.5 py-1.5 transition-colors ${
-              page === key ? 'bg-green text-white' : 'text-white/50 hover:text-white'
+              page === key ? 'bg-green text-white' : 'text-text-inverse-secondary hover:text-white'
             }`}
           >
             {PAGES[key].label}

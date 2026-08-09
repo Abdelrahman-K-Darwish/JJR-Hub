@@ -37,6 +37,10 @@ export default {
         'text-primary': 'var(--text-primary)',
         'text-secondary': 'var(--text-secondary)',
         'text-muted': 'var(--text-muted)',
+
+        'text-inverse': 'var(--text-inverse)',
+        'text-inverse-secondary': 'var(--text-inverse-secondary)',
+        'text-inverse-muted': 'var(--text-inverse-muted)',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'Georgia', 'serif'],

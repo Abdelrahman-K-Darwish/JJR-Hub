@@ -29,7 +29,7 @@ export function PageHero({ kicker, title, description, className = '' }: PageHer
         <h1 className="font-display text-[clamp(2.15rem,4vw,3rem)] font-bold text-white leading-[1.05] tracking-[-0.025em] mb-[22px]">
           {title}
         </h1>
-        {description && <p className="text-[14.5px] leading-[1.75] text-white/50 max-w-[560px]">{description}</p>}
+        {description && <p className="text-[14.5px] leading-[1.75] text-text-inverse-secondary max-w-[560px]">{description}</p>}
       </div>
     </div>
   )

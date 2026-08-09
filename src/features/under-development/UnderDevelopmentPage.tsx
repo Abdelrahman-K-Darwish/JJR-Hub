@@ -51,7 +51,7 @@ export function UnderDevelopmentPage({
               is being built
             </h1>
 
-            <p className="text-[15px] leading-[1.75] text-white/55 max-w-[520px] mx-auto mb-9">
+            <p className="text-[15px] leading-[1.75] text-text-inverse-secondary max-w-[520px] mx-auto mb-9">
               Thanks for your patience. This part of the Hub is actively under development — we&rsquo;ll notify you
               when it&rsquo;s ready. If this is blocking you, let us know so we can prioritise.
             </p>
@@ -67,19 +67,19 @@ export function UnderDevelopmentPage({
               </button>
               <a
                 href={notifyHref}
-                className="font-body text-xs font-bold tracking-[0.04em] bg-transparent border border-white/20 text-white/65 px-[26px] py-3 inline-flex items-center gap-2 transition-all duration-300 ease-smooth hover:border-green hover:text-green"
+                className="font-body text-xs font-bold tracking-[0.04em] bg-transparent border border-text-inverse-muted text-text-inverse-secondary px-[26px] py-3 inline-flex items-center gap-2 transition-all duration-300 ease-smooth hover:border-green hover:text-green"
               >
                 Notify me when it&rsquo;s ready →
               </a>
               <a
                 href={homeHref}
-                className="font-body text-xs font-bold tracking-[0.04em] bg-transparent border border-white/20 text-white/65 px-[26px] py-3 inline-flex items-center gap-2 transition-all duration-300 ease-smooth hover:border-green hover:text-green"
+                className="font-body text-xs font-bold tracking-[0.04em] bg-transparent border border-text-inverse-muted text-text-inverse-secondary px-[26px] py-3 inline-flex items-center gap-2 transition-all duration-300 ease-smooth hover:border-green hover:text-green"
               >
                 Return Home
               </a>
             </div>
 
-            <div className="mt-12 font-mono text-[10px] text-text-muted tracking-[1.5px] uppercase flex items-center gap-2.5 justify-center">
+            <div className="mt-12 font-mono text-[10px] text-text-inverse-secondary tracking-[1.5px] uppercase flex items-center gap-2.5 justify-center">
               <div className="w-1.5 h-1.5 rounded-full bg-green shadow-[0_0_6px_rgba(76,187,23,0.25)] animate-pulse" aria-hidden="true" />
               <span>Active development · Updates via Power Automate</span>
             </div>

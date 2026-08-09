@@ -30,13 +30,13 @@ export function BareLayout({ section, user, backHref = '/', children }: BareLayo
               <span className="font-display text-[20px] font-black tracking-tight text-green leading-none">Admin</span>
             </a>
             <div className="w-px h-5 bg-white/10" aria-hidden="true" />
-            <div className="flex items-center gap-2 font-mono text-[10px] tracking-[1.5px] uppercase text-white/55">
+            <div className="flex items-center gap-2 font-mono text-[10px] tracking-[1.5px] uppercase text-text-inverse-secondary">
               <ShieldIcon size={11} strokeWidth={1.8} />
               {section}
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <a href={backHref} className="font-body text-[12px] text-white/55 hover:text-green transition-colors flex items-center gap-1.5">
+            <a href={backHref} className="font-body text-[12px] text-text-inverse-secondary hover:text-green transition-colors flex items-center gap-1.5">
               <ChevronLeftIcon size={11} strokeWidth={2} />
               Back to Hub
             </a>
@@ -45,7 +45,7 @@ export function BareLayout({ section, user, backHref = '/', children }: BareLayo
               <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-[10.5px] text-white bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852)]">
                 {user.initials}
               </div>
-              <span className="font-body text-[12px] text-white/70">{user.name}</span>
+              <span className="font-body text-[12px] text-text-inverse-secondary">{user.name}</span>
             </div>
           </div>
         </div>

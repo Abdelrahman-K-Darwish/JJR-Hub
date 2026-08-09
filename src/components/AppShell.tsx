@@ -74,7 +74,7 @@ export function AppShell({
                 Hub
               </ShimmerText>
             </div>
-            <div className="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">
+            <div className="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-text-inverse-secondary -mt-px">
               Your front door
             </div>
           </a>
@@ -85,14 +85,14 @@ export function AppShell({
                 {link.label}
               </NavActive>
             ))}
-            <span className="text-[11px] text-white/[0.12] mx-2 select-none" aria-hidden="true">
+            <span className="text-[11px] text-text-inverse-muted mx-2 select-none" aria-hidden="true">
               /
             </span>
             {SECONDARY_LINKS.map((link) => (
               <a
                 key={link.key}
                 href={link.href}
-                className="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green"
+                className="font-body text-[13px] font-medium text-text-inverse-secondary px-4 h-full flex items-center transition-colors duration-200 hover:text-green"
               >
                 {link.label}
               </a>
@@ -104,7 +104,7 @@ export function AppShell({
 
             <button
               type="button"
-              className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"
+              className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-text-inverse-muted cursor-pointer transition-colors duration-200 hover:text-white relative"
               aria-label="Notifications"
             >
               <BellIcon size={15} strokeWidth={1.6} />
@@ -113,7 +113,7 @@ export function AppShell({
 
             <button
               type="button"
-              className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"
+              className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-text-inverse-muted cursor-pointer transition-colors duration-200 hover:text-white"
               aria-label="Messages"
             >
               <MailIcon size={15} strokeWidth={1.6} />
@@ -172,13 +172,20 @@ export function AppShell({
             <nav aria-label="Breadcrumb" className="flex items-center gap-3">
               {breadcrumbs.map((crumb, i) => (
                 <span key={crumb.label} className="flex items-center gap-3">
-                  {i > 0 && <span className="text-white/10 text-[10px]">/</span>}
+                  {i > 0 && (
+                    <span className="text-text-inverse-muted text-[10px]" aria-hidden="true">
+                      /
+                    </span>
+                  )}
                   {crumb.href ? (
-                    <a href={crumb.href} className="font-mono text-[10px] text-white/50 tracking-wide hover:text-white/80 transition-colors">
+                    <a
+                      href={crumb.href}
+                      className="font-mono text-[10px] text-text-inverse-secondary tracking-wide hover:text-white transition-colors"
+                    >
                       {crumb.label}
                     </a>
                   ) : (
-                    <span className="font-mono text-[10px] text-white/50 tracking-wide" aria-current="page">
+                    <span className="font-mono text-[10px] text-text-inverse-secondary tracking-wide" aria-current="page">
                       {crumb.label}
                     </span>
                   )}
@@ -202,7 +209,7 @@ export function AppShell({
           />
           <div>
             <div className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
-            <p className="text-[13px] text-white/[0.35] leading-relaxed">
+            <p className="text-[13px] text-text-inverse-secondary leading-relaxed">
               Every access decision in this hub is intentional, documented, and reviewed quarterly. If
               something&rsquo;s blocked that shouldn&rsquo;t be, that&rsquo;s worth raising.
             </p>
@@ -215,15 +222,15 @@ export function AppShell({
           </a>
         </div>
         <div className="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
-          <span className="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+          <span className="text-[11px] text-text-inverse-secondary">JJR Hub — permission-aware, always current</span>
           <div className="flex gap-5">
-            <a href="/accessibility" className="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">
+            <a href="/accessibility" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Accessibility
             </a>
-            <a href="/report-an-issue" className="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">
+            <a href="/report-an-issue" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Report an Issue
             </a>
-            <a href="/site-owners" className="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">
+            <a href="/site-owners" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Site Owners
             </a>
           </div>

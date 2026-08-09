@@ -164,7 +164,7 @@ export function AccessibilityPage({
 
           <RevealOnScroll className="bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-white/[0.06] px-[26px] py-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_24px_rgba(0,0,0,0.20)]">
             <div className="font-display text-base font-bold text-white mb-1.5 tracking-[-0.01em]">Standards We Follow</div>
-            <p className="text-xs text-white/55 leading-[1.7] mb-3.5">{STANDARDS_SUMMARY}</p>
+            <p className="text-xs text-text-inverse-secondary leading-[1.7] mb-3.5">{STANDARDS_SUMMARY}</p>
             <a href={auditTrailHref} className="text-xs font-bold text-green hover:text-green-bright transition-colors">
               Read the audit trail →
             </a>

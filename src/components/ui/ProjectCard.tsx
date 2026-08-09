@@ -1,9 +1,9 @@
 import { AvatarStack, type AvatarStackMember } from './AvatarStack'
 import { CardTitle } from './CardTitle'
 import { MiniButton } from './MiniButton'
-import { ProgressTrack } from './ProgressTrack'
+import { ProgressTrack, type ProgressTone } from './ProgressTrack'
 import { SectionKicker } from './SectionKicker'
-import { StatusPill, type StatusTone } from './StatusPill'
+import { StatusPill } from './StatusPill'
 
 export type ProjectStatus = 'active' | 'review' | 'wrap'
 
@@ -29,7 +29,7 @@ export interface ProjectCardProps {
   className?: string
 }
 
-const STATUS_META: Record<ProjectStatus, { tone: StatusTone; label: string; stripClass: string }> = {
+const STATUS_META: Record<ProjectStatus, { tone: ProgressTone; label: string; stripClass: string }> = {
   active: { tone: 'green', label: 'Active', stripClass: 'bg-green shadow-[0_0_10px_rgba(76,187,23,0.45)]' },
   review: { tone: 'amber', label: 'In Review', stripClass: 'bg-amber shadow-[0_0_10px_rgba(232,168,56,0.40)]' },
   wrap: { tone: 'navy', label: 'Wrapping Up', stripClass: 'bg-navy-mid shadow-[0_0_10px_rgba(42,74,120,0.35)]' },

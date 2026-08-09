@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
 import { ActiveProjectsPage } from './features/active-projects/ActiveProjectsPage'
+import { AdminActionsPage } from './features/admin-actions/AdminActionsPage'
 import { AiForGoodPage } from './features/ai-for-good/AiForGoodPage'
 import { ConsultantDirectoryPage } from './features/consultant-directory/ConsultantDirectoryPage'
 import { EnvironmentalJusticePage } from './features/environmental-justice/EnvironmentalJusticePage'
+import { HowWeWorkPage } from './features/how-we-work/HowWeWorkPage'
+import { PmoPage } from './features/pmo/PmoPage'
 import { SiteOwnersPage } from './features/site-owners/SiteOwnersPage'
 import { TemplatesPage } from './features/templates/TemplatesPage'
 import { ToolGuidesPage } from './features/tool-guides/ToolGuidesPage'
@@ -15,6 +18,9 @@ const PAGES = {
   'consultant-directory': { label: 'Consultant Directory', Component: ConsultantDirectoryPage },
   templates: { label: 'Templates', Component: TemplatesPage },
   'tool-guides': { label: 'Tool Guides', Component: ToolGuidesPage },
+  'how-we-work': { label: 'How We Work', Component: HowWeWorkPage },
+  pmo: { label: 'PMO', Component: PmoPage },
+  'admin-actions': { label: 'Admin Actions', Component: AdminActionsPage },
   'under-development': { label: 'Under Development', Component: UnderDevelopmentPage },
   accessibility: { label: 'Accessibility', Component: AccessibilityPage },
   'site-owners': { label: 'Site Owners', Component: SiteOwnersPage },

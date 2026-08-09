@@ -1,24 +1,42 @@
-import { AppShell } from './components/AppShell'
+import { useState } from 'react'
+import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
+import { SiteOwnersPage } from './features/site-owners/SiteOwnersPage'
+import { UnderDevelopmentPage } from './features/under-development/UnderDevelopmentPage'
 
-const CURRENT_USER = { name: 'Sarah Foster', initials: 'SF', title: 'Consultant' }
+const PAGES = {
+  'under-development': { label: 'Under Development', Component: UnderDevelopmentPage },
+  accessibility: { label: 'Accessibility', Component: AccessibilityPage },
+  'site-owners': { label: 'Site Owners', Component: SiteOwnersPage },
+} as const
 
-const PROFILE_MENU_ITEMS = [
-  { label: 'My Account', href: '/my-profile' },
-  { label: 'Preferences', href: '/preferences' },
-  { label: 'Sign Out', href: '/sign-out', tone: 'danger' as const },
-]
+type PageKey = keyof typeof PAGES
 
+/**
+ * Dev-only page switcher — there is no router yet (out of scope for this conversion pass).
+ * Swap this for real routes once one is introduced.
+ */
 function App() {
+  const [page, setPage] = useState<PageKey>('under-development')
+  const { Component } = PAGES[page]
+
   return (
-    <AppShell
-      user={CURRENT_USER}
-      profileMenuItems={PROFILE_MENU_ITEMS}
-      breadcrumbs={[{ label: 'Home' }]}
-    >
-      <p className="font-body text-sm text-text-secondary">
-        Phase 0 foundation — AppShell and shared primitives are wired up. Page conversions start next.
-      </p>
-    </AppShell>
+    <div>
+      <div className="fixed bottom-4 right-4 z-[400] flex gap-1.5 bg-navy-deep p-1.5 shadow-lg">
+        {(Object.keys(PAGES) as PageKey[]).map((key) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setPage(key)}
+            className={`font-mono text-[10px] px-2.5 py-1.5 transition-colors ${
+              page === key ? 'bg-green text-white' : 'text-white/50 hover:text-white'
+            }`}
+          >
+            {PAGES[key].label}
+          </button>
+        ))}
+      </div>
+      <Component />
+    </div>
   )
 }
 

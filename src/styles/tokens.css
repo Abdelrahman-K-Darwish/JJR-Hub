@@ -1,0 +1,84 @@
+/* JJR Hub — canonical design tokens
+   Derived from all 19 mockup tailwind.config blocks.
+   Every hex below appeared identically across every page that used it —
+   there were no value conflicts, only naming aliases. See conversion-plan.md §2.
+   This file is the single source of truth. Do not add colours in components. */
+
+:root {
+  /* Navy */
+  --navy: #1B365D;
+  --navy-deep: #0F2340;
+  --navy-mid: #2A4A78;
+  --navy-recess: #0B1C35;
+  --navy-context: #152A48;
+  --navy-top: #17304F;
+
+  /* Green */
+  --green: #4CBB17;
+  --green-dark: #3DA312;
+  --green-bright: #7DE852;
+  --green-soft: #B8F5A0;
+  --green-muted: rgba(76, 187, 23, 0.12);
+  --green-glow: rgba(76, 187, 23, 0.25);
+
+  /* Accent */
+  --pink: #E91E8C;
+  --pink-soft: #FF6EB8;
+  --amber: #E8A838;
+
+  /* Gold — JEDI-CAB surfaces */
+  --gold: #C49A2A;
+  --gold-bright: #E8BE5A;
+  --gold-dark: #8B6914;
+  --gold-deep: #3D2B00;
+
+  /* Neutrals */
+  --white: #FFFFFF;
+  --off-white: #F8F7F4;
+  --warm-gray: #F0EEEA;
+  --stone: #E5E2DC;
+  --rule: #D0CCC4;
+  --rule-light: #E8E5DF;
+
+  /* Text */
+  --text-primary: #1B365D;
+  --text-secondary: #5A6B80;
+  --text-muted: #8A95A5;
+
+  /* Type */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-rise: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Shared keyframes — these recur across 15+ pages.
+   Define once here; never redeclare in a component. */
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heartbeat {
+  0%, 20%, 40%, 100% { opacity: 0.4; }
+  10% { opacity: 1; }
+  30% { opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

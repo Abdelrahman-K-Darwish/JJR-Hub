@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — AI for Good for All</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','green-bright':'#7de852','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ═══ SPOTLIGHT — JS-toggled .spotlight-ready on body, JS sets transform inline ═══ */
+  .spotlight { position: fixed; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(42,74,120,0.14) 0%, rgba(27,54,93,0.06) 40%, rgba(27,54,93,0) 70%); pointer-events: none; z-index: 1; transform: translate(-50%, -50%); transition: opacity 600ms cubic-bezier(0.16,1,0.3,1); opacity: 0; filter: blur(30px); mix-blend-mode: multiply; }
+  body.spotlight-ready .spotlight { opacity: 1; }
+
+  /* ═══ HERO NOISE GRAIN (pseudo on hero inner) ═══ */
+  .hero-grain::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); opacity: 0.04; mix-blend-mode: overlay; pointer-events: none; }
+
+  /* ═══ HERO KICKER lead-rule (pseudo) ═══ */
+  .hero-kicker::before { content: ''; width: 24px; height: 1px; background: #4CBB17; box-shadow: 0 0 6px rgba(76,187,23,0.25); }
+
+  /* ═══ PRINCIPLE CARD — green left strip that grows on hover (pseudo) ═══ */
+  .ai-card::after { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.25); transition: height 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .ai-card:hover::after { height: 100%; }
+
+  /* ═══ TIMELINE — last item hides connector (last-child) ═══ */
+  .timeline-item:last-child .timeline-line { display: none; }
+
+  /* ═══ SEARCH FOCUS (focus-within) ═══ */
+  .search-bar:focus-within { border-color: #4CBB17; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ REVEAL — JS-toggled .is-visible ═══ */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 900ms cubic-bezier(0.16,1,0.3,1), transform 900ms cubic-bezier(0.16,1,0.3,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .spotlight, .hero-breath { display: none; }
+    .reveal { opacity: 1; transform: none; }
+  }
+  @media (max-width: 1080px) {
+    .spotlight { display: none; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased min-h-screen overflow-x-hidden relative">
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- NAV -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)] animate-[rise_0.7s_cubic-bezier(0.16,1,0.3,1)_both]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 max-md:px-6 flex items-center justify-between h-full">
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite]">JJR</a>
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite] [animation-delay:0.6s]">Hub</a>
+      </div>
+      <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/25 -mt-px">Your front door</div>
+    </div>
+    <div class="flex items-center h-full gap-0.5 max-lg:hidden">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Communities</a>
+      <span class="text-[11px] text-white/15 mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-bar flex items-center gap-2 bg-white/5 border border-white/[0.08] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 max-lg:hidden">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 text-xs text-white min-w-0 placeholder:text-white/30"/>
+        <span class="font-mono text-[9px] text-white/20">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Notifications"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep shadow-[0_0_6px_rgba(76,187,23,0.25)]"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Messages"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="mt-14 relative z-[2] bg-[linear-gradient(180deg,#152a48,#1B365D,#1e3a63)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)] animate-[rise_0.7s_cubic-bezier(0.16,1,0.3,1)_0.12s_both]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-2.5 flex items-center justify-between">
+    <div class="font-mono text-[10px] text-white/30 tracking-[0.5px]"><a href="jjr-hub-tw.html" class="text-white/20 transition-colors duration-200 hover:text-white/50">Home</a><span class="text-white/10 mx-2">/</span>AI for Good for All</div>
+    <div class="font-mono text-[9px] text-white/20 tracking-[1px]">Responsible AI</div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="max-w-[1400px] mx-auto px-12 max-md:px-6 pt-12 pb-[120px] max-md:pt-7 max-md:pb-[60px] relative z-[2]">
+
+  <!-- HERO -->
+  <div class="reveal mb-[72px] relative">
+    <div class="hero-grain relative overflow-hidden min-h-[360px] flex items-center bg-[linear-gradient(135deg,#4a1a3a_0%,#8B1A6A_40%,#1B365D_100%)]">
+      <div class="hero-breath absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.08)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="absolute top-10 right-12 w-[90px] h-[90px] border border-green/20 pointer-events-none"></div>
+      <div class="absolute top-[50px] right-[58px] w-[90px] h-[90px] border border-green/[0.08] pointer-events-none"></div>
+      <div class="relative z-[1] p-14 max-md:p-6 max-w-[620px]">
+        <div class="hero-kicker font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[18px] inline-flex items-center gap-2">AI for Good for All</div>
+        <h1 class="font-display text-[clamp(2.1rem,4vw,3.2rem)] font-bold text-white leading-[1.08] tracking-[-0.025em] mb-5">Intelligence<br/>With Integrity</h1>
+        <p class="text-[14.5px] leading-[1.75] text-white/50 max-w-[480px] mb-7">JJR's approach to AI is equity-first and human-centred. We evaluate, deploy, and govern AI tools through a lens of accessibility, bias reduction, and meaningful impact — not hype cycles.</p>
+        <div class="flex items-center gap-3.5 flex-wrap">
+          <a href="under-development.html?from=ai-ethics-framework" class="font-body text-xs font-bold tracking-[0.04em] bg-green text-white px-6 py-[11px] inline-flex items-center gap-2 cursor-pointer shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.2)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45)]">AI Ethics Framework →</a>
+          <a href="communities.html" class="font-body text-xs font-bold tracking-[0.04em] bg-transparent border border-white/20 text-white/65 px-6 py-[11px] inline-flex items-center gap-2 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green hover:text-green">Innovation &amp; AI CoP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINCIPLES -->
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-[22px] flex items-center gap-3.5">Our Principles <span class="flex-1 h-px bg-rule"></span></div>
+
+  <div class="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-5 mb-[72px]">
+    <div class="ai-card reveal group bg-white border border-rule p-8 cursor-pointer relative overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.1)] hover:-translate-y-2">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-txt-muted mb-5 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-green group-hover:text-green group-hover:bg-green/[0.12]"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg></div>
+      <div class="font-display text-[1.1rem] font-bold text-navy mb-2 tracking-[-0.01em]">Responsible AI Framework</div>
+      <div class="text-[12.5px] text-txt-sec leading-[1.65] mb-[18px]">JJR's internal guidelines for evaluating, deploying, and governing AI tools. Covers bias assessment, data privacy, and transparency requirements for every AI-assisted deliverable.</div>
+      <span class="text-xs font-bold text-green inline-flex items-center gap-1.5 transition-[gap] duration-300 group-hover:gap-2.5">Read Framework →</span>
+    </div>
+    <div class="ai-card reveal group bg-white border border-rule p-8 cursor-pointer relative overflow-hidden translate-y-[18px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.1)] hover:translate-y-[10px] max-md:translate-y-0 max-md:hover:-translate-y-2">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-txt-muted mb-5 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-green group-hover:text-green group-hover:bg-green/[0.12]"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="font-display text-[1.1rem] font-bold text-navy mb-2 tracking-[-0.01em]">AI Governance</div>
+      <div class="text-[12.5px] text-txt-sec leading-[1.65] mb-[18px]">How JJR evaluates new AI tools before adoption. Includes the Copilot evaluation, Claude Enterprise assessment, and the decision framework for client-facing AI use.</div>
+      <span class="text-xs font-bold text-green inline-flex items-center gap-1.5 transition-[gap] duration-300 group-hover:gap-2.5">Governance Model →</span>
+    </div>
+    <div class="ai-card reveal group bg-white border border-rule p-8 cursor-pointer relative overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.1)] hover:-translate-y-2">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-txt-muted mb-5 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-green group-hover:text-green group-hover:bg-green/[0.12]"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      <div class="font-display text-[1.1rem] font-bold text-navy mb-2 tracking-[-0.01em]">Prompt Library</div>
+      <div class="text-[12.5px] text-txt-sec leading-[1.65] mb-[18px]">Curated, tested prompts for procurement analysis, report drafting, data synthesis, and client communication. Shared across the Innovation &amp; AI community of practice.</div>
+      <span class="text-xs font-bold text-green inline-flex items-center gap-1.5 transition-[gap] duration-300 group-hover:gap-2.5">Browse Prompts →</span>
+    </div>
+  </div>
+
+  <!-- ROADMAP + SIDEBAR -->
+  <div class="grid grid-cols-[1fr_360px] gap-9 mb-[72px] max-lg:grid-cols-1">
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-[22px] flex items-center gap-3.5">AI Adoption Roadmap <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[32px_36px] mb-5">
+        <div class="flex flex-col">
+          <div class="timeline-item flex gap-5 pb-6 relative">
+            <div class="timeline-line absolute left-[17px] top-[38px] bottom-0 w-[2px] bg-rule-light"></div>
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center font-mono text-[10px] font-bold text-white relative z-[1] bg-green shadow-[0_0_10px_rgba(76,187,23,0.25)]">Q1</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Evaluate</div>
+              <div class="text-xs text-txt-sec leading-[1.6]">Copilot and Claude Enterprise assessments complete. Internal prompt library launched. Ethics framework published.</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-1.5">Complete</div>
+            </div>
+          </div>
+          <div class="timeline-item flex gap-5 pb-6 relative">
+            <div class="timeline-line absolute left-[17px] top-[38px] bottom-0 w-[2px] bg-rule-light"></div>
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center font-mono text-[10px] font-bold text-white relative z-[1] bg-green">Q2</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Pilot</div>
+              <div class="text-xs text-txt-sec leading-[1.6]">Copilot pilot with project leads. AI-assisted procurement analysis tested on two live engagements.</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-1.5">In Progress</div>
+            </div>
+          </div>
+          <div class="timeline-item flex gap-5 pb-6 relative">
+            <div class="timeline-line absolute left-[17px] top-[38px] bottom-0 w-[2px] bg-rule-light"></div>
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center font-mono text-[10px] font-bold text-white relative z-[1] bg-navy-mid">Q3</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Scale</div>
+              <div class="text-xs text-txt-sec leading-[1.6]">Full Copilot rollout. AI search in the Hub. Governance review of all AI-assisted deliverables.</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-1.5">Planned</div>
+            </div>
+          </div>
+          <div class="timeline-item flex gap-5 relative">
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center font-mono text-[10px] font-bold text-white relative z-[1] bg-navy-mid">Q4</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Embed</div>
+              <div class="text-xs text-txt-sec leading-[1.6]">AI tools integrated into standard workflows. Annual responsible AI audit. Community of Practice publishes best practices.</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-1.5">Planned</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="px-[22px] py-3.5 border-l-2 border-green bg-white text-xs text-txt-sec mb-[72px] [&_a]:text-green [&_a]:font-bold [&_a:hover]:underline">AI at JJR is a tool, not a replacement. Every AI-assisted deliverable is reviewed by a human before it reaches a client. <a href="how-we-work.html">See How We Work →</a></div>
+    </div>
+
+    <div>
+      <div class="reveal bg-white border border-rule mb-5">
+        <div class="px-6 py-[22px] border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">AI Resources</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mt-[3px]">Tools &amp; Training</div>
+        </div>
+        <a href="tool-guides.html" class="group flex items-center gap-3 px-6 py-3.5 border-b border-rule-light text-[13px] font-medium text-txt transition-[background,color,padding-left] duration-300 hover:bg-off-white hover:text-green hover:pl-[30px]">
+          <span class="w-[18px] flex justify-center text-txt-muted shrink-0 transition-colors duration-200 group-hover:text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg></span>
+          Copilot Guide<span class="ml-auto text-rule transition-[color,transform] duration-300 group-hover:text-green group-hover:translate-x-1">→</span>
+        </a>
+        <a href="templates.html" class="group flex items-center gap-3 px-6 py-3.5 border-b border-rule-light text-[13px] font-medium text-txt transition-[background,color,padding-left] duration-300 hover:bg-off-white hover:text-green hover:pl-[30px]">
+          <span class="w-[18px] flex justify-center text-txt-muted shrink-0 transition-colors duration-200 group-hover:text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          AI Ethics Checklist<span class="ml-auto text-rule transition-[color,transform] duration-300 group-hover:text-green group-hover:translate-x-1">→</span>
+        </a>
+        <a href="communities.html" class="group flex items-center gap-3 px-6 py-3.5 border-b border-rule-light text-[13px] font-medium text-txt transition-[background,color,padding-left] duration-300 hover:bg-off-white hover:text-green hover:pl-[30px]">
+          <span class="w-[18px] flex justify-center text-txt-muted shrink-0 transition-colors duration-200 group-hover:text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+          Innovation &amp; AI CoP<span class="ml-auto text-rule transition-[color,transform] duration-300 group-hover:text-green group-hover:translate-x-1">→</span>
+        </a>
+        <a href="how-we-work.html" class="group flex items-center gap-3 px-6 py-3.5 text-[13px] font-medium text-txt transition-[background,color,padding-left] duration-300 hover:bg-off-white hover:text-green hover:pl-[30px]">
+          <span class="w-[18px] flex justify-center text-txt-muted shrink-0 transition-colors duration-200 group-hover:text-green"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          Data Handling Policy<span class="ml-auto text-rule transition-[color,transform] duration-300 group-hover:text-green group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EQUITY FOOTER -->
+<div class="bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border-t border-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] relative z-[2]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[30px] flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap">
+    <div class="w-[2px] h-[46px] bg-[linear-gradient(180deg,#3da312,#7de852,#3da312)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite] shrink-0 shadow-[0_0_10px_rgba(76,187,23,0.25)]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[5px]">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/40 leading-[1.65] max-w-[640px]">Every access decision in this hub is intentional, documented, and reviewed quarterly.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-[250ms] hover:text-green-bright">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[18px] flex items-center justify-between max-md:flex-col max-md:gap-2.5 max-md:text-center">
+    <span class="text-[11px] text-white/20 font-mono">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-6">
+      <a href="accessibility.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(!r&&window.matchMedia('(min-width:1081px)').matches){var s=document.querySelector('.spotlight');if(s){document.body.classList.add('spotlight-ready');var tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty;document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY},{passive:true});(function t(){cx+=(tx-cx)*0.08;cy+=(ty-cy)*0.08;s.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(t)})()}}if('IntersectionObserver'in window&&!r){var io=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-visible');io.unobserve(en.target)}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-visible')})}})();
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

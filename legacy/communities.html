@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Communities of Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78',
+        'green':'#4CBB17','green-dark':'#3da312',
+        'pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838',
+        'off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC',
+        'rule':'#D0CCC4','rule-light':'#E8E5DF',
+        'txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5',
+      },
+      fontFamily: {
+        'display':['"Playfair Display"','Georgia','serif'],
+        'body':['"IBM Plex Sans"','-apple-system','sans-serif'],
+        'mono':['"IBM Plex Mono"','"SF Mono"','monospace'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo-element) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
+
+  /* ═══ COP CARD — base + green top accent that scales on hover (pseudo) ═══ */
+  .cop-card { background: #fff; border: 1px solid #D0CCC4; position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s; }
+  .cop-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #4CBB17; box-shadow: 0 0 10px rgba(76,187,23,0.45); transform: scaleX(0); transform-origin: left; transition: transform 0.55s cubic-bezier(0.16,1,0.3,1); }
+  .cop-card:hover { transform: translateY(-2px); border-color: #2A4A78; box-shadow: 0 8px 24px rgba(27,54,93,0.10); }
+  .cop-card:hover::before { transform: scaleX(1); }
+
+  /* ═══ DISCUSSION THREAD (9× — !important padding on hover) ═══ */
+  .disc-thread { transition: background 0.25s, padding-left 0.25s; cursor: pointer; }
+  .disc-thread:hover { background: #F8F7F4; padding-left: 10px !important; }
+
+  /* ═══ RESOURCE LINK (9× — descendant svg selector) ═══ */
+  .res-link { transition: color 0.25s, padding-left 0.25s; }
+  .res-link:hover { color: #3da312; padding-left: 4px; }
+  .res-link:hover svg { color: #3da312; }
+
+  /* ═══ DATE TILE (used 4× — base style; hover via group-hover utility) ═══ */
+  .date-tile-mini { background: linear-gradient(180deg, #17304f 0%, #0F2340 50%, #0b1c35 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(15,35,64,0.15); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within combinator) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
+
+<!-- ═══ NAV ═══ -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center">
+      <div class="flex flex-col">
+        <div class="flex items-baseline gap-1">
+          <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a>
+          <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a>
+        </div>
+        <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div>
+      </div>
+    </div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search communities..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]" />
+        <span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div>
+      </button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">Communities of Practice</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>
+        <span class="font-mono text-[9px] text-white/30 tracking-wide">3 active communities</span>
+      </div>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="mb-12 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7">
+        <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Communities of Practice</div>
+        <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">Where Knowledge<br/>Becomes Shared.</h1>
+        <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[560px] mb-7">Communities of Practice are where JJR consultants connect across projects. Share expertise, surface reusable knowledge, and build the collective intelligence of the firm. Every community has a named steward and a clear purpose.</p>
+        <div class="flex items-center gap-4 flex-wrap">
+          <a href="#communities" class="font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.12)] transition-[box-shadow,background,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45),0_2px_12px_rgba(0,0,0,0.2)]">Explore Communities →</a>
+          <a href="under-development.html?from=request-a-new-community" class="font-body text-xs font-semibold border border-white/[0.15] text-white/50 px-5 py-2.5 inline-flex items-center transition-all duration-200 hover:border-green hover:text-green">Request a New Community</a>
+          <div class="flex items-center gap-2 ml-2">
+            <div class="flex -space-x-2">
+              <div class="w-7 h-7 bg-green text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep shadow-[0_0_10px_rgba(76,187,23,0.4)]">SF</div>
+              <div class="w-7 h-7 bg-navy text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep">MK</div>
+              <div class="w-7 h-7 bg-navy-mid text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep">LR</div>
+              <div class="w-7 h-7 bg-pink text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep">JP</div>
+            </div>
+            <span class="text-[11px] text-white/25">74 members across all communities</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div id="communities" class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+
+    <!-- LEFT: Community Cards -->
+    <div>
+
+      <!-- ══ INNOVATION & AI ══ -->
+      <div class="cop-card mb-6 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+        <!-- Header -->
+        <div class="px-7 pt-7 pb-0">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 flex items-center justify-center shrink-0 bg-green/[0.08] border border-green/[0.28] shadow-[0_0_12px_rgba(76,187,23,0.12)] text-green-dark">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-1.5">
+                <a href="community-detail.html?community=Innovation+%26+AI" class="font-display text-[1.3rem] font-bold text-navy tracking-tight hover:text-green transition-colors">Innovation &amp; AI</a>
+                <div class="flex items-center gap-1.5 font-mono text-[9px] text-txt-muted tracking-[1px] uppercase"><div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>Active</div>
+              </div>
+              <div class="text-[13px] text-txt-sec leading-[1.65] max-w-[600px]">Emerging tech, responsible AI, and how JJR applies innovation in client work. This is where we explore what's next and test new approaches before they hit projects.</div>
+            </div>
+            <a href="under-development.html?from=join-community" class="font-body text-[11px] font-bold px-3.5 py-1.5 shrink-0 bg-green/[0.08] border border-green/[0.35] text-green-dark transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green hover:border-green hover:text-white hover:shadow-[0_0_18px_rgba(76,187,23,0.35)]">Join</a>
+          </div>
+
+          <!-- Stats row -->
+          <div class="flex items-center gap-6 py-3 border-t border-rule-light max-md:flex-wrap max-md:gap-3">
+            <div class="flex items-center gap-1.5">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span class="font-mono text-[10px] text-txt-muted tracking-wide">24 members</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span class="font-mono text-[10px] text-txt-muted tracking-wide">8 posts this week</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span class="font-mono text-[10px] text-txt-muted tracking-wide">12 resources</span>
+            </div>
+            <div class="ml-auto text-[11px] text-txt-muted">Steward: <strong class="text-txt font-semibold">D. Laurent</strong></div>
+          </div>
+        </div>
+
+        <!-- Content grid -->
+        <div class="grid grid-cols-3 max-md:grid-cols-1 border-t border-rule-light">
+          <!-- Top Resources -->
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green-dark font-medium mb-3">Top Resources</div>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>AI Ethics Framework</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Copilot for Consultants (Video)</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Responsible AI Toolkit</a>
+          </div>
+
+          <!-- Recent Discussions -->
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-navy font-medium mb-3">Recent Discussions</div>
+            <div class="disc-thread py-2 -mx-2 px-2">
+              <div class="text-[12px] font-semibold text-txt leading-snug">Has anyone tested Copilot agents for client discovery?</div>
+              <div class="text-[10px] text-txt-muted mt-1 font-mono">S. Ahmed · 3 replies · 2h ago</div>
+            </div>
+            <div class="disc-thread py-2 -mx-2 px-2">
+              <div class="text-[12px] font-semibold text-txt leading-snug">Prompt library for procurement analysis</div>
+              <div class="text-[10px] text-txt-muted mt-1 font-mono">M. Kim · 7 replies · 1d ago</div>
+            </div>
+            <div class="disc-thread py-2 -mx-2 px-2">
+              <div class="text-[12px] font-semibold text-txt leading-snug">AI governance checklist for proposals</div>
+              <div class="text-[10px] text-txt-muted mt-1 font-mono">D. Laurent · 5 replies · 3d ago</div>
+            </div>
+          </div>
+
+          <!-- Key Experts -->
+          <div class="p-5">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-pink font-medium mb-3">Key Experts</div>
+            <a href="my-profile.html?viewer=colleague&amp;user=d-laurent" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors">
+              <div class="w-7 h-7 bg-navy-mid text-[8px] font-bold text-white flex items-center justify-center shrink-0">DL</div>
+              <div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">D. Laurent</div><div class="text-[10px] text-txt-muted font-mono">AI Strategy · Steward</div></div>
+            </a>
+            <a href="my-profile.html?viewer=colleague&amp;user=s-ahmed" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors">
+              <div class="w-7 h-7 bg-green text-[8px] font-bold text-white flex items-center justify-center shrink-0">SA</div>
+              <div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">S. Ahmed</div><div class="text-[10px] text-txt-muted font-mono">Data Science · Lead</div></div>
+            </a>
+            <a href="my-profile.html?viewer=colleague&amp;user=m-kim" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors">
+              <div class="w-7 h-7 bg-navy text-[8px] font-bold text-white flex items-center justify-center shrink-0">MK</div>
+              <div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">M. Kim</div><div class="text-[10px] text-txt-muted font-mono">Machine Learning</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ EQUITY & IMPACT ══ -->
+      <div class="cop-card mb-6 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+        <div class="px-7 pt-7 pb-0">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 flex items-center justify-center shrink-0 bg-green/[0.08] border border-green/[0.28] shadow-[0_0_12px_rgba(76,187,23,0.12)] text-green-dark">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-1.5">
+                <a href="community-detail.html?community=Equity+%26+Impact" class="font-display text-[1.3rem] font-bold text-navy tracking-tight hover:text-green transition-colors">Equity &amp; Impact</a>
+                <div class="flex items-center gap-1.5 font-mono text-[9px] text-txt-muted tracking-[1px] uppercase"><div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>Active</div>
+              </div>
+              <div class="text-[13px] text-txt-sec leading-[1.65] max-w-[600px]">Environmental justice, accessibility, and equity-centered consulting. We develop toolkits, share frameworks, and hold each other accountable to JJR's values in every engagement.</div>
+            </div>
+            <a href="under-development.html?from=join-community" class="font-body text-[11px] font-bold px-3.5 py-1.5 shrink-0 bg-green/[0.08] border border-green/[0.35] text-green-dark transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green hover:border-green hover:text-white hover:shadow-[0_0_18px_rgba(76,187,23,0.35)]">Join</a>
+          </div>
+          <div class="flex items-center gap-6 py-3 border-t border-rule-light max-md:flex-wrap max-md:gap-3">
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">31 members</span></div>
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">5 posts this week</span></div>
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">18 resources</span></div>
+            <div class="ml-auto text-[11px] text-txt-muted">Steward: <strong class="text-txt font-semibold">R. Thompson</strong></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 max-md:grid-cols-1 border-t border-rule-light">
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green-dark font-medium mb-3">Top Resources</div>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>EJ Community Assessment Guide</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Equity Impact Scorecard</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Inclusive Procurement (Video)</a>
+          </div>
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-navy font-medium mb-3">Recent Discussions</div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">Updated EJ40 screening tool — thoughts?</div><div class="text-[10px] text-txt-muted mt-1 font-mono">R. Thompson · 6 replies · 5h ago</div></div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">Accessible deliverable formats for clients</div><div class="text-[10px] text-txt-muted mt-1 font-mono">J. Williams · 4 replies · 2d ago</div></div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">Equity lens for vendor selection criteria</div><div class="text-[10px] text-txt-muted mt-1 font-mono">L. Rivera · 3 replies · 4d ago</div></div>
+          </div>
+          <div class="p-5">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-pink font-medium mb-3">Key Experts</div>
+            <a href="my-profile.html?viewer=colleague&amp;user=r-thompson" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-pink text-[8px] font-bold text-white flex items-center justify-center shrink-0">RT</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">R. Thompson</div><div class="text-[10px] text-txt-muted font-mono">EJ Policy · Steward</div></div></a>
+            <a href="my-profile.html?viewer=colleague&amp;user=j-williams" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-navy text-[8px] font-bold text-white flex items-center justify-center shrink-0">JW</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">J. Williams</div><div class="text-[10px] text-txt-muted font-mono">Accessibility</div></div></a>
+            <a href="my-profile.html?viewer=colleague&amp;user=l-rivera" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-amber text-[8px] font-bold text-white flex items-center justify-center shrink-0">LR</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">L. Rivera</div><div class="text-[10px] text-txt-muted font-mono">Community Engagement</div></div></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROJECT CRAFT ══ -->
+      <div class="cop-card mb-6 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.25s_both]">
+        <div class="px-7 pt-7 pb-0">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-14 h-14 flex items-center justify-center shrink-0 bg-green/[0.08] border border-green/[0.28] shadow-[0_0_12px_rgba(76,187,23,0.12)] text-green-dark">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-1.5">
+                <a href="community-detail.html?community=Project+Craft" class="font-display text-[1.3rem] font-bold text-navy tracking-tight hover:text-green transition-colors">Project Craft</a>
+                <div class="flex items-center gap-1.5 font-mono text-[9px] text-txt-muted tracking-[1px] uppercase"><div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>Active</div>
+              </div>
+              <div class="text-[13px] text-txt-sec leading-[1.65] max-w-[600px]">Best practices in project management, delivery frameworks, and client engagement. Where PMs and leads sharpen their craft together.</div>
+            </div>
+            <a href="under-development.html?from=join-community" class="font-body text-[11px] font-bold px-3.5 py-1.5 shrink-0 bg-green/[0.08] border border-green/[0.35] text-green-dark transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green hover:border-green hover:text-white hover:shadow-[0_0_18px_rgba(76,187,23,0.35)]">Join</a>
+          </div>
+          <div class="flex items-center gap-6 py-3 border-t border-rule-light max-md:flex-wrap max-md:gap-3">
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">19 members</span></div>
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">3 posts this week</span></div>
+            <div class="flex items-center gap-1.5"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="font-mono text-[10px] text-txt-muted tracking-wide">9 resources</span></div>
+            <div class="ml-auto text-[11px] text-txt-muted">Steward: <strong class="text-txt font-semibold">F. Nakamura</strong></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 max-md:grid-cols-1 border-t border-rule-light">
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green-dark font-medium mb-3">Top Resources</div>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Project Closeout Checklist</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Scope Change Request Template</a>
+            <a href="under-development.html?from=community-resource" class="res-link flex items-center gap-2 py-2 text-[12px] font-medium text-txt"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="shrink-0 text-txt-muted transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Agile at JJR — Walkthrough</a>
+          </div>
+          <div class="p-5 border-r border-rule-light max-md:border-r-0 max-md:border-b">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-navy font-medium mb-3">Recent Discussions</div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">Lessons from the NovaTech delivery sprint</div><div class="text-[10px] text-txt-muted mt-1 font-mono">F. Nakamura · 4 replies · 8h ago</div></div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">When to escalate vs. absorb scope creep</div><div class="text-[10px] text-txt-muted mt-1 font-mono">J. Park · 9 replies · 2d ago</div></div>
+            <div class="disc-thread py-2 -mx-2 px-2"><div class="text-[12px] font-semibold text-txt leading-snug">Stakeholder mapping for gov clients</div><div class="text-[10px] text-txt-muted mt-1 font-mono">S. Foster · 2 replies · 5d ago</div></div>
+          </div>
+          <div class="p-5">
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-pink font-medium mb-3">Key Experts</div>
+            <a href="my-profile.html?viewer=colleague&amp;user=f-nakamura" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-pink text-[8px] font-bold text-white flex items-center justify-center shrink-0">FN</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">F. Nakamura</div><div class="text-[10px] text-txt-muted font-mono">Agile PM · Steward</div></div></a>
+            <a href="my-profile.html?viewer=colleague&amp;user=j-park" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-green text-[8px] font-bold text-white flex items-center justify-center shrink-0">JP</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">J. Park</div><div class="text-[10px] text-txt-muted font-mono">Delivery Operations</div></div></a>
+            <a href="my-profile.html" class="group/exp flex items-center gap-2.5 py-2 px-2 -mx-2 hover:bg-off-white transition-colors"><div class="w-7 h-7 bg-navy text-[8px] font-bold text-white flex items-center justify-center shrink-0">SF</div><div><div class="text-[12px] font-semibold text-txt group-hover/exp:text-green transition-colors">S. Foster</div><div class="text-[10px] text-txt-muted font-mono">Gov Engagement</div></div></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Upcoming Events -->
+      <div class="bg-white border border-rule">
+        <div class="px-6 py-5 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy tracking-tight">Upcoming Events</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Webinars &amp; Sessions</div>
+        </div>
+        <div class="p-5 flex flex-col gap-4">
+          <a href="under-development.html?from=community-event" class="group">
+            <div class="flex items-start gap-3">
+              <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]">
+                <div class="font-mono text-[10px] font-bold text-white leading-none">28</div>
+                <div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Mar</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[12.5px] font-semibold text-txt group-hover:text-green transition-colors leading-snug">AI in Procurement — Live Demo</div>
+                <div class="text-[10px] text-txt-muted mt-1 font-mono">Innovation &amp; AI · 11:00 · Zoom</div>
+              </div>
+            </div>
+          </a>
+          <a href="under-development.html?from=community-event" class="group">
+            <div class="flex items-start gap-3">
+              <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]">
+                <div class="font-mono text-[10px] font-bold text-white leading-none">02</div>
+                <div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Apr</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[12.5px] font-semibold text-txt group-hover:text-green transition-colors leading-snug">EJ Screening Tools Workshop</div>
+                <div class="text-[10px] text-txt-muted mt-1 font-mono">Equity &amp; Impact · 14:00 · Room 3A</div>
+              </div>
+            </div>
+          </a>
+          <a href="under-development.html?from=community-event" class="group">
+            <div class="flex items-start gap-3">
+              <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]">
+                <div class="font-mono text-[10px] font-bold text-white leading-none">09</div>
+                <div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Apr</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[12.5px] font-semibold text-txt group-hover:text-green transition-colors leading-snug">PM Retrospective — Q1 Projects</div>
+                <div class="text-[10px] text-txt-muted mt-1 font-mono">Project Craft · 10:00 · Teams</div>
+              </div>
+            </div>
+          </a>
+          <a href="under-development.html?from=community-event" class="group">
+            <div class="flex items-start gap-3">
+              <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]">
+                <div class="font-mono text-[10px] font-bold text-white leading-none">15</div>
+                <div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Apr</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[12.5px] font-semibold text-txt group-hover:text-green transition-colors leading-snug">Inclusive Design for Federal RFPs</div>
+                <div class="text-[10px] text-txt-muted mt-1 font-mono">Equity &amp; Impact · 13:00 · Zoom</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Your Communities -->
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+        <div class="px-6 py-5 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">Your Communities</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">Membership</div>
+        </div>
+        <div class="p-5 flex flex-col gap-3.5">
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 bg-green rounded-full shrink-0 shadow-[0_0_8px_rgba(76,187,23,0.6)]"></div>
+            <a href="community-detail.html?community=Innovation+%26+AI" class="text-[12.5px] font-semibold text-white flex-1 hover:text-green transition-colors">Innovation &amp; AI</a>
+            <span class="font-mono text-[9px] text-white/30 tracking-wide uppercase">Joined</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 bg-green rounded-full shrink-0 shadow-[0_0_8px_rgba(76,187,23,0.6)]"></div>
+            <a href="community-detail.html?community=Project+Craft" class="text-[12.5px] font-semibold text-white flex-1 hover:text-green transition-colors">Project Craft</a>
+            <span class="font-mono text-[9px] text-white/30 tracking-wide uppercase">Joined</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-2 h-2 bg-white/15 rounded-full shrink-0"></div>
+            <a href="community-detail.html?community=Equity+%26+Impact" class="text-[12.5px] text-white/50 flex-1 hover:text-green transition-colors">Equity &amp; Impact</a>
+            <a href="under-development.html?from=join-community" class="font-mono text-[9px] text-green hover:text-[#7de852] tracking-wide uppercase transition-colors">Join</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Knowledge Deposit CTA -->
+      <div class="relative overflow-hidden px-5 py-4 bg-[linear-gradient(180deg,#ffffff_0%,#fbfaf6_100%)] border border-[#E0DCD3] shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(15,35,64,0.04),0_10px_28px_rgba(15,35,64,0.07)]">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Share what you've learned</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5">Wrapping up a project? Deposit reusable templates, lessons learned, or methodology improvements into your CoP.</div>
+        <a href="under-development.html?from=submit-knowledge-artifact" class="text-[12px] font-bold text-green hover:text-green-dark inline-flex items-center gap-1 transition-colors">Submit a knowledge artifact <span class="transition-transform">→</span></a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

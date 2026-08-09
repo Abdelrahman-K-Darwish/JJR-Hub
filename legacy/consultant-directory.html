@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Consultant Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','green-bright':'#7de852','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  /* ═══ SPOTLIGHT — JS-toggled .spotlight-ready on body ═══ */
+  .spotlight { position: fixed; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(42,74,120,0.14), rgba(27,54,93,0.06) 40%, rgba(27,54,93,0) 70%); pointer-events: none; z-index: 1; transform: translate(-50%, -50%); transition: opacity 600ms cubic-bezier(0.16,1,0.3,1); opacity: 0; filter: blur(30px); mix-blend-mode: multiply; }
+  body.spotlight-ready .spotlight { opacity: 1; }
+
+  /* ═══ HERO NOISE GRAIN (pseudo) ═══ */
+  .hero-grain::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); opacity: 0.05; mix-blend-mode: overlay; pointer-events: none; }
+
+  /* ═══ HERO KICKER lead-rule (pseudo) ═══ */
+  .hero-kicker::before { content: ''; width: 24px; height: 1px; background: #4CBB17; box-shadow: 0 0 6px rgba(76,187,23,0.25); }
+
+  /* ═══ FOCUS-WITHIN (search bars) ═══ */
+  .search-bar:focus-within { border-color: #4CBB17; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+  .hero-search-box:focus-within { border-color: rgba(76,187,23,0.5) !important; background: rgba(76,187,23,0.06) !important; box-shadow: 0 0 18px rgba(76,187,23,0.2); }
+
+  /* ═══ FILTER CHIPS — JS-toggled .active (gradient + multi-shadow) ═══ */
+  .filter-chip.active { background: linear-gradient(180deg, #1a3554, #0F2340 55%, #081425); color: #fff !important; border-color: #0F2340; box-shadow: 0 0 16px rgba(76,187,23,0.25), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -2px 0 #4CBB17, inset 0 -3px 10px rgba(76,187,23,0.22); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ REVEAL — JS-toggled .is-visible ═══ */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 900ms cubic-bezier(0.16,1,0.3,1), transform 900ms cubic-bezier(0.16,1,0.3,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .spotlight, .hero-breath { display: none; }
+    .reveal { opacity: 1; transform: none; }
+  }
+  @media (max-width: 1080px) {
+    .spotlight { display: none; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased min-h-screen overflow-x-hidden relative">
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- NAV -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 max-md:px-6 flex items-center justify-between h-full">
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite]">JJR</a>
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite] [animation-delay:0.6s]">Hub</a>
+      </div>
+      <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/25 -mt-px">Your front door</div>
+    </div>
+    <div class="flex items-center h-full gap-0.5 max-lg:hidden">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Communities</a>
+      <span class="text-[11px] text-white/15 mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-bar flex items-center gap-2 bg-white/5 border border-white/[0.08] px-3.5 h-[34px] min-w-[240px] transition-all duration-300 max-lg:hidden">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 text-xs text-white min-w-0 placeholder:text-white/30"/>
+        <span class="font-mono text-[9px] text-white/20">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Notifications"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Messages"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="mt-14 relative z-[2] bg-[linear-gradient(180deg,#152a48,#1B365D,#1e3a63)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-2.5 flex items-center justify-between">
+    <div class="font-mono text-[10px] text-white/50 tracking-[0.5px]"><a href="jjr-hub-tw.html" class="text-white/20 transition-colors duration-200 hover:text-white/50">Home</a><span class="text-white/10 mx-2">/</span>Consultant Directory<span id="filterCrumb"></span></div>
+    <a href="start-here.html" class="font-mono text-[10px] tracking-[0.5px] text-green/60 transition-colors duration-[250ms] hover:text-green">Start Here →</a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="max-w-[1400px] mx-auto px-12 max-md:px-6 pt-12 pb-[120px] max-md:pt-7 max-md:pb-[60px] relative z-[2]">
+
+  <!-- HERO -->
+  <div class="reveal mb-12 relative">
+    <div class="hero-grain relative overflow-hidden min-h-[300px] bg-[linear-gradient(135deg,#0F2340_0%,#1B365D_55%,#2A4A78_100%)] p-[52px_56px] grid grid-cols-[1fr_420px] gap-9 items-center max-lg:grid-cols-1 max-lg:gap-7 max-lg:p-10 max-md:p-6">
+      <div class="hero-breath absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10),rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="relative z-[1]">
+        <div class="hero-kicker font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[18px] inline-flex items-center gap-2.5 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Consultant Directory</div>
+        <h1 class="font-display text-[clamp(2.1rem,4vw,2.8rem)] font-bold text-white leading-[1.05] tracking-[-0.025em] mb-5">Find your<br/>people</h1>
+        <p class="text-[14.5px] leading-[1.75] text-white/50 max-w-[520px]">Every JJR consultant, their expertise, and how to reach them. Search by name, role, skill, or community — then connect on Teams in one click.</p>
+      </div>
+      <div class="relative z-[1]">
+        <div class="hero-search-box bg-white/[0.06] border border-white/[0.12] p-1.5 flex items-center gap-2.5 transition-all duration-300">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" class="ml-2.5 text-white/40 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="dirSearch" type="text" placeholder="e.g. &quot;environmental justice&quot; or &quot;Sarah&quot;" oninput="filterPeople()" class="flex-1 bg-transparent border-none outline-none py-3 font-body text-sm text-white placeholder:text-white/30"/>
+        </div>
+        <div class="mt-2.5 font-mono text-[10px] text-white/35 tracking-[0.5px]">Search: name · role · expertise · sector · community</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="flex flex-wrap gap-2 items-center mb-8">
+    <span class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mr-1.5">Role</span>
+    <button class="filter-chip active font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="role" data-filter-value="all" onclick="setFilter(this)">All</button>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="role" data-filter-value="consultant" onclick="setFilter(this)">Consultant</button>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="role" data-filter-value="pm" onclick="setFilter(this)">PM</button>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="role" data-filter-value="analyst" onclick="setFilter(this)">Analyst</button>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="role" data-filter-value="leadership" onclick="setFilter(this)">Leadership</button>
+    <div class="w-px h-5 bg-rule mx-1.5"></div>
+    <span class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mr-1.5">Tag</span>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="tag" data-filter-value="onboarding-buddy" onclick="setFilter(this)">Onboarding Buddy</button>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="tag" data-filter-value="mentor" onclick="setFilter(this)">Mentor</button>
+    <div class="w-px h-5 bg-rule mx-1.5"></div>
+    <span class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mr-1.5">Status</span>
+    <button class="filter-chip font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3.5 py-2 bg-white border border-rule text-txt-sec cursor-pointer transition-all duration-[250ms] hover:border-navy-mid hover:text-navy" data-filter-type="status" data-filter-value="available" onclick="setFilter(this)">Available</button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-12" id="personGrid">
+
+    <a href="my-profile.html" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="consultant" data-tags="onboarding-buddy" data-status="available" data-text="sarah foster senior consultant strategy digital transformation federal">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">SF</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">Sarah Foster</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">SENIOR CONSULTANT</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">STRATEGY</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">DIGITAL TRANSFORMATION</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-green font-mono tracking-wider">● AVAILABLE</span>
+        <span class="text-[11px] text-txt-muted font-mono">Federal</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=d-laurent" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="consultant" data-tags="mentor" data-status="available" data-text="d daniel laurent ai strategy lead responsible ai data science gov">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">DL</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">D. Laurent</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">AI STRATEGY LEAD</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">RESPONSIBLE AI</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">DATA SCIENCE</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-green font-mono tracking-wider">● AVAILABLE</span>
+        <span class="text-[11px] text-txt-muted font-mono">Gov</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=r-thompson" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="consultant" data-tags="" data-status="available" data-text="r raheem thompson ej policy lead environmental justice community engagement state">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">RT</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">R. Thompson</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">EJ POLICY LEAD</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">ENVIRONMENTAL JUSTICE</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">COMMUNITY ENGAGEMENT</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-green font-mono tracking-wider">● AVAILABLE</span>
+        <span class="text-[11px] text-txt-muted font-mono">State</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=s-ahmed" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="analyst" data-tags="" data-status="busy" data-text="s sami ahmed data science lead analytics machine learning federal">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">SA</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">S. Ahmed</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">DATA SCIENCE LEAD</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">ANALYTICS</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">MACHINE LEARNING</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-amber font-mono tracking-wider">● ON PROJECT</span>
+        <span class="text-[11px] text-txt-muted font-mono">Federal</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=m-kim" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="analyst" data-tags="" data-status="available" data-text="m mark kim machine learning nlp procurement analytics enterprise">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">MK</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">M. Kim</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">MACHINE LEARNING</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">NLP</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">PROCUREMENT ANALYTICS</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-green font-mono tracking-wider">● AVAILABLE</span>
+        <span class="text-[11px] text-txt-muted font-mono">Enterprise</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=f-nakamura" class="person-card block bg-white border border-rule p-7 transition-all duration-300 hover:border-navy-mid hover:shadow-lg hover:-translate-y-0.5" data-role="pm" data-tags="mentor" data-status="busy" data-text="f fiona nakamura pmo lead agile pm delivery ops enterprise">
+      <div class="flex items-center gap-3.5 mb-4">
+        <div class="w-12 h-12 rounded-full bg-green flex items-center justify-center text-white font-bold text-sm shrink-0">FN</div>
+        <div>
+          <div class="font-display text-lg font-bold text-navy leading-tight">F. Nakamura</div>
+          <div class="font-mono text-[10px] text-txt-muted tracking-wider uppercase mt-1">PMO LEAD</div>
+        </div>
+      </div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">AGILE PM</span>
+        <span class="text-[10px] px-2.5 py-1 border border-green text-green font-mono tracking-wider">DELIVERY OPS</span>
+      </div>
+      <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+        <span class="text-[11px] text-amber font-mono tracking-wider">● ON PROJECT</span>
+        <span class="text-[11px] text-txt-muted font-mono">Enterprise</span>
+        <span onclick="event.preventDefault();event.stopPropagation();window.location='under-development.html?from=teams-connect'" class="text-[11px] text-navy border border-rule px-3 py-1 hover:border-green hover:text-green transition-colors cursor-pointer">☐ Teams</span>
+      </div>
+    </a>
+
+    <div id="noResults" class="col-span-1 md:col-span-2 lg:col-span-3 bg-white border border-rule p-14 text-center text-txt-muted hidden">
+      <h3 class="font-display text-xl font-bold text-navy mb-2">No matches found</h3>
+      <p class="text-sm">Try a different search term or adjust your filters.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EQUITY FOOTER -->
+<div class="bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border-t border-white/[0.06] relative z-[2]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[30px] flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap">
+    <div class="w-[2px] h-[46px] bg-[linear-gradient(180deg,#3da312,#7de852,#3da312)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite] shrink-0 shadow-[0_0_10px_rgba(76,187,23,0.25)]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[5px]">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/40 leading-[1.65] max-w-[640px]">Every access decision in this hub is intentional, documented, and reviewed quarterly.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-[250ms] hover:text-green-bright">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[18px] flex items-center justify-between max-md:flex-col max-md:gap-2.5 max-md:text-center">
+    <span class="text-[11px] text-white/20 font-mono">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-6">
+      <a href="accessibility.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var activeFilters = { role:'all', tag:null, status:null };
+
+function setFilter(btn){
+  var type = btn.dataset.filterType;
+  var value = btn.dataset.filterValue;
+  if(type === 'role'){
+    document.querySelectorAll('[data-filter-type="role"]').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    activeFilters.role = value;
+  } else {
+    if(btn.classList.contains('active')){
+      btn.classList.remove('active');
+      activeFilters[type] = null;
+    } else {
+      document.querySelectorAll('[data-filter-type="'+type+'"]').forEach(function(b){b.classList.remove('active')});
+      btn.classList.add('active');
+      activeFilters[type] = value;
+    }
+  }
+  filterPeople();
+}
+
+function filterPeople(){
+  var q = (document.getElementById('dirSearch').value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.person-card');
+  var shown = 0;
+  cards.forEach(function(c){
+    var role = c.dataset.role;
+    var tags = (c.dataset.tags || '').split(' ');
+    var status = c.dataset.status;
+    var text = (c.dataset.text || '');
+    var roleOk = activeFilters.role === 'all' || role === activeFilters.role;
+    var tagOk = !activeFilters.tag || tags.indexOf(activeFilters.tag) > -1;
+    var statusOk = !activeFilters.status || status === activeFilters.status;
+    var searchOk = !q || text.indexOf(q) > -1;
+    var show = roleOk && tagOk && statusOk && searchOk;
+    c.style.display = show ? '' : 'none';
+    if(show) shown++;
+  });
+  document.getElementById('noResults').style.display = shown === 0 ? 'block' : 'none';
+}
+
+(function(){
+  var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!r&&window.matchMedia('(min-width:1081px)').matches){var s=document.querySelector('.spotlight');if(s){document.body.classList.add('spotlight-ready');var tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty;document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY},{passive:true});(function t(){cx+=(tx-cx)*0.08;cy+=(ty-cy)*0.08;s.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(t)})()}}
+  if('IntersectionObserver' in window && !r){var io=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-visible');io.unobserve(en.target)}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-visible')})}
+
+  // URL parameter filters
+  var params = new URLSearchParams(location.search);
+  var urlRole = params.get('role');
+  if(urlRole){
+    var btn = document.querySelector('[data-filter-type="tag"][data-filter-value="'+urlRole+'"]');
+    if(btn){
+      btn.classList.add('active');
+      activeFilters.tag = urlRole;
+      var nice = urlRole.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()});
+      document.getElementById('filterCrumb').textContent = ' — ' + nice;
+      filterPeople();
+    }
+  }
+})();
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Community Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','green-bright':'#7de852','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* ═══ SPOTLIGHT — JS-toggled .spotlight-ready on body ═══ */
+  .spotlight { position: fixed; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(42,74,120,0.14), rgba(27,54,93,0.06) 40%, rgba(27,54,93,0) 70%); pointer-events: none; z-index: 1; transform: translate(-50%, -50%); transition: opacity 600ms cubic-bezier(0.16,1,0.3,1); opacity: 0; filter: blur(30px); mix-blend-mode: multiply; }
+  body.spotlight-ready .spotlight { opacity: 1; }
+
+  /* ═══ HERO NOISE GRAIN (pseudo) ═══ */
+  .hero-grain::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); opacity: 0.05; mix-blend-mode: overlay; pointer-events: none; }
+
+  /* ═══ RESOURCE LINK — green left strip that scaleY's on hover (pseudo) ═══ */
+  .rlink::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.25); transform: scaleY(0); transform-origin: top; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .rlink:hover::before { transform: scaleY(1); }
+
+  /* ═══ SEARCH FOCUS (focus-within) ═══ */
+  .search-bar:focus-within { border-color: #4CBB17; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ REVEAL — JS-toggled .is-visible ═══ */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 900ms cubic-bezier(0.16,1,0.3,1), transform 900ms cubic-bezier(0.16,1,0.3,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .spotlight, .hero-breath { display: none; }
+    .reveal { opacity: 1; transform: none; }
+  }
+  @media (max-width: 1080px) {
+    .spotlight { display: none; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased min-h-screen overflow-x-hidden relative">
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- NAV -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 max-md:px-6 flex items-center justify-between h-full">
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite]">JJR</a>
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite] [animation-delay:0.6s]">Hub</a>
+      </div>
+      <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/25 -mt-px">Your front door</div>
+    </div>
+    <div class="flex items-center h-full gap-0.5 max-lg:hidden">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Communities</a>
+      <span class="text-[11px] text-white/15 mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-bar flex items-center gap-2 bg-white/5 border border-white/[0.08] px-3.5 h-[34px] min-w-[240px] transition-all duration-300 max-lg:hidden">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 text-xs text-white min-w-0 placeholder:text-white/30"/>
+        <span class="font-mono text-[9px] text-white/20">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Notifications"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Messages"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="mt-14 relative z-[2] bg-[linear-gradient(180deg,#152a48,#1B365D,#1e3a63)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-2.5 flex items-center justify-between">
+    <div class="font-mono text-[10px] text-white/50 tracking-[0.5px]"><a href="jjr-hub-tw.html" class="text-white/20 transition-colors duration-200 hover:text-white/50">Home</a><span class="text-white/10 mx-2">/</span><a href="communities.html" class="text-white/20 transition-colors duration-200 hover:text-white/50">Communities</a><span class="text-white/10 mx-2">/</span><span id="crumbName">Community</span></div>
+    <a href="start-here.html" class="font-mono text-[10px] tracking-[0.5px] text-green/60 transition-colors duration-[250ms] hover:text-green">Start Here →</a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="max-w-[1400px] mx-auto px-12 max-md:px-6 pt-12 pb-[120px] max-md:pt-7 max-md:pb-[60px] relative z-[2]">
+
+  <!-- HERO -->
+  <div class="reveal mb-10 relative">
+    <div class="hero-grain relative overflow-hidden bg-[linear-gradient(135deg,#0F2340_0%,#1B365D_55%,#2A4A78_100%)] p-12 max-md:p-6">
+      <div class="hero-breath absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10),rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <a href="communities.html" class="relative z-[1] inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[1.5px] uppercase text-green/70 mb-6 transition-colors duration-200 hover:text-green-bright"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back to all communities</a>
+      <div class="relative z-[1] grid grid-cols-[auto_1fr_auto] gap-7 items-center mb-6 max-lg:grid-cols-[1fr_auto] max-lg:gap-5 max-md:grid-cols-1 max-md:text-left">
+        <div class="w-[88px] h-[88px] flex items-center justify-center bg-green/[0.12] border border-green/30 text-green-bright shadow-[0_0_22px_rgba(76,187,23,0.25),inset_0_1px_0_rgba(255,255,255,0.06)] shrink-0 max-lg:col-span-full">
+          <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </div>
+        <div class="min-w-0">
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-2.5 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Community of Practice</div>
+          <h1 class="font-display text-[clamp(2rem,3.5vw,2.6rem)] font-bold text-white leading-[1.08] tracking-[-0.025em] mb-3" id="commTitle">Innovation &amp; AI</h1>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-bright inline-flex items-center gap-2"><span class="w-[7px] h-[7px] rounded-full bg-green shadow-[0_0_6px_rgba(76,187,23,0.25)] animate-[pulse_2s_ease_infinite]"></span>Active · 8 posts this week</div>
+        </div>
+        <button class="font-body text-xs font-bold tracking-[0.04em] whitespace-nowrap bg-green text-white border-none px-[26px] py-3 cursor-pointer shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.2)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45)] inline-flex items-center gap-2 max-md:justify-self-start">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          Join this community
+        </button>
+      </div>
+      <div class="relative z-[1] text-[14.5px] leading-[1.75] text-white/55 max-w-[760px] mb-7">Emerging tech, responsible AI, and how JJR applies innovation in client work. This is where we explore what's next and test new approaches before they hit projects. If you work with AI tools — evaluating them, using them, governing them — this is your space.</div>
+      <div class="relative z-[1] flex flex-wrap items-center gap-7 pt-[22px] border-t border-white/[0.08]">
+        <div class="flex flex-col gap-1"><span class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/40">Members</span><span class="font-display text-[1.4rem] font-bold text-white tracking-[-0.01em] leading-none">24</span></div>
+        <div class="flex flex-col gap-1"><span class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/40">Posts / Week</span><span class="font-display text-[1.4rem] font-bold text-white tracking-[-0.01em] leading-none">8</span></div>
+        <div class="flex flex-col gap-1"><span class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/40">Resources</span><span class="font-display text-[1.4rem] font-bold text-white tracking-[-0.01em] leading-none">12</span></div>
+        <a href="my-profile.html?viewer=colleague&amp;user=d-laurent" class="ml-auto flex items-center gap-2.5 text-xs text-white/55">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center font-mono text-[10px] font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.12)] bg-[linear-gradient(135deg,#0F2340,#2A4A78)]">DL</div>
+          <div>Steward<br/><strong class="text-white font-semibold">D. Laurent</strong></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+    <div>
+      <!-- ABOUT -->
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-5 flex items-center gap-3.5">About <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[30px_34px] mb-7 shadow-[0_1px_2px_rgba(15,35,64,0.04)] [&_h3]:font-display [&_h3]:text-[1.05rem] [&_h3]:font-bold [&_h3]:text-navy [&_h3]:tracking-[-0.01em] [&_h3]:mb-2.5 [&_p]:text-sm [&_p]:text-txt-sec [&_p]:leading-[1.75] [&_p]:mb-3">
+        <h3>Purpose</h3>
+        <p>Innovation &amp; AI exists to make responsible AI practical at JJR. We review new tools before firm-wide adoption, curate a shared prompt library for procurement work, and maintain the AI Ethics Framework that governs every client-facing deliverable that uses AI.</p>
+        <h3 class="!mt-4">What this community does</h3>
+        <p>Monthly tool reviews (currently tracking Copilot, Claude Enterprise, and agentic workflows). Weekly async threads on prompt patterns. Quarterly Demo Day where members share what's working on live client work. Ethics reviews for AI-assisted deliverables that touch federal or regulated clients.</p>
+        <h3 class="!mt-4">Who this is for</h3>
+        <p>Any consultant who's using AI on client work — or curious about it. No technical background required. D. Laurent steward, S. Ahmed co-steward, M. Kim on governance, plus 21 active members across all four roles.</p>
+      </div>
+
+      <!-- MEMBERS -->
+      <div id="members" class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-5 flex items-center gap-3.5">Members <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[30px_34px] mb-7 shadow-[0_1px_2px_rgba(15,35,64,0.04)]">
+        <div class="grid grid-cols-2 max-lg:grid-cols-1 gap-3.5">
+          <a href="my-profile.html?viewer=colleague&amp;user=d-laurent" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#0F2340,#2A4A78)]">DL</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">D. Laurent</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">AI Strategy</div></div>
+            <span class="font-mono text-[9px] px-[7px] py-[3px] tracking-[0.8px] uppercase font-medium shrink-0 bg-pink/[0.08] text-pink">Steward</span>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=s-ahmed" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#3da312,#4CBB17)]">SA</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">S. Ahmed</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">Data Science</div></div>
+            <span class="font-mono text-[9px] px-[7px] py-[3px] tracking-[0.8px] uppercase font-medium shrink-0 bg-green/[0.1] text-green-dark">Expert</span>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=m-kim" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#1B365D,#2A4A78)]">MK</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">M. Kim</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">AI Governance</div></div>
+            <span class="font-mono text-[9px] px-[7px] py-[3px] tracking-[0.8px] uppercase font-medium shrink-0 bg-green/[0.1] text-green-dark">Expert</span>
+          </a>
+          <a href="my-profile.html" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852)]">SF</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">Sarah Foster</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">Consultant</div></div>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=j-williams" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#8B1A6A,#E91E8C)]">JW</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">J. Williams</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">Accessibility Lead</div></div>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=f-nakamura" class="flex items-center gap-3 px-4 py-3.5 bg-off-white border border-rule-light transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[38px] h-[38px] rounded-full flex items-center justify-center font-mono text-[10.5px] font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.1)] bg-[linear-gradient(135deg,#8B1A6A,#E91E8C)]">FN</div>
+            <div class="flex-1 min-w-0"><div class="text-[12.5px] font-semibold text-navy leading-[1.3]">F. Nakamura</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[0.5px] mt-0.5">PMO Lead</div></div>
+          </a>
+        </div>
+        <p class="mt-[18px] text-[12.5px] text-txt-muted">+ 18 more members. <a href="under-development.html?from=community-members-all" class="text-green-dark font-semibold">View all →</a></p>
+      </div>
+
+      <!-- RESOURCES -->
+      <div id="resources" class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-5 flex items-center gap-3.5">Resources <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[30px_34px] mb-7 shadow-[0_1px_2px_rgba(15,35,64,0.04)]">
+        <div class="flex flex-col">
+          <a href="under-development.html?from=community-resource-ai-ethics-framework" class="rlink relative overflow-hidden flex items-center gap-3.5 px-[18px] py-3.5 border border-rule-light mb-2 bg-off-white transition-all duration-[250ms] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center bg-white border border-rule text-txt-muted"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy">AI Ethics Framework v2</div>
+              <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px] mt-0.5">Updated 18 Mar · 22 pages · D. Laurent</div>
+            </div>
+            <span class="font-mono text-[9px] px-2 py-[3px] tracking-[1px] uppercase font-medium bg-navy-mid/[0.08] text-navy-mid">Document</span>
+          </a>
+          <a href="under-development.html?from=community-resource-copilot-demo" class="rlink relative overflow-hidden flex items-center gap-3.5 px-[18px] py-3.5 border border-rule-light mb-2 bg-off-white transition-all duration-[250ms] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center text-pink border border-pink/20 bg-pink/[0.04]"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy">Copilot for Consultants — Live Demo</div>
+              <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px] mt-0.5">Recorded 04 Mar · 28 min · S. Ahmed</div>
+            </div>
+            <span class="font-mono text-[9px] px-2 py-[3px] tracking-[1px] uppercase font-medium bg-navy-mid/[0.08] text-navy-mid">Video</span>
+          </a>
+          <a href="under-development.html?from=community-resource-responsible-ai-toolkit" class="rlink relative overflow-hidden flex items-center gap-3.5 px-[18px] py-3.5 border border-rule-light mb-2 bg-off-white transition-all duration-[250ms] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center bg-white border border-rule text-txt-muted"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy">Responsible AI Toolkit</div>
+              <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px] mt-0.5">28 prompts · 6 templates · S. Ahmed + M. Kim</div>
+            </div>
+            <span class="font-mono text-[9px] px-2 py-[3px] tracking-[1px] uppercase font-medium bg-navy-mid/[0.08] text-navy-mid">Toolkit</span>
+          </a>
+          <a href="under-development.html?from=community-resource-ai-governance-checklist" class="rlink relative overflow-hidden flex items-center gap-3.5 px-[18px] py-3.5 border border-rule-light mb-2 bg-off-white transition-all duration-[250ms] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-9 h-9 shrink-0 flex items-center justify-center bg-white border border-rule text-txt-muted"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy">AI Governance Checklist — Client Deliverables</div>
+              <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px] mt-0.5">Updated 12 Feb · Required for all AI-assisted work</div>
+            </div>
+            <span class="font-mono text-[9px] px-2 py-[3px] tracking-[1px] uppercase font-medium bg-navy-mid/[0.08] text-navy-mid">Checklist</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- DISCUSSIONS -->
+      <div id="discussions" class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-5 flex items-center gap-3.5">Recent Discussions <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[30px_34px] mb-7 shadow-[0_1px_2px_rgba(15,35,64,0.04)]">
+        <div class="flex flex-col">
+          <a href="under-development.html?from=community-discussion-copilot-agents" class="block py-4 border-b border-rule-light last:border-b-0 transition-[padding-left,background] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:pl-2.5 hover:bg-off-white">
+            <div class="text-[13.5px] font-semibold text-navy leading-[1.45] mb-[5px]">Has anyone tested Copilot agents for client discovery?</div>
+            <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px]">S. Ahmed · 3 replies · 2h ago · Viva Engage</div>
+          </a>
+          <a href="under-development.html?from=community-discussion-prompt-library" class="block py-4 border-b border-rule-light last:border-b-0 transition-[padding-left,background] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:pl-2.5 hover:bg-off-white">
+            <div class="text-[13.5px] font-semibold text-navy leading-[1.45] mb-[5px]">Prompt library for procurement analysis</div>
+            <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px]">M. Kim · 7 replies · 1d ago · Viva Engage</div>
+          </a>
+          <a href="under-development.html?from=community-discussion-governance-checklist-draft" class="block py-4 border-b border-rule-light last:border-b-0 transition-[padding-left,background] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:pl-2.5 hover:bg-off-white">
+            <div class="text-[13.5px] font-semibold text-navy leading-[1.45] mb-[5px]">AI governance checklist for proposals — draft for comment</div>
+            <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px]">D. Laurent · 5 replies · 3d ago · Viva Engage</div>
+          </a>
+          <a href="under-development.html?from=community-discussion-claude-pilot" class="block py-4 border-b border-rule-light last:border-b-0 transition-[padding-left,background] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:pl-2.5 hover:bg-off-white">
+            <div class="text-[13.5px] font-semibold text-navy leading-[1.45] mb-[5px]">Claude Enterprise evaluation — who wants to pilot?</div>
+            <div class="font-mono text-[10px] text-txt-muted tracking-[0.3px]">D. Laurent · 11 replies · 5d ago · Viva Engage</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-5 flex items-center gap-3.5">Upcoming Events <span class="flex-1 h-px bg-rule"></span></div>
+      <div class="reveal bg-white border border-rule p-[30px_34px] mb-7 shadow-[0_1px_2px_rgba(15,35,64,0.04)]">
+        <div class="flex flex-col gap-3">
+          <a href="under-development.html?from=community-event-ai-procurement-demo" class="flex gap-3.5 px-4 py-3.5 border border-rule-light bg-off-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[52px] h-[52px] flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)]">
+              <div class="font-mono text-xs font-bold text-white tracking-[0.3px]">28</div>
+              <div class="font-mono text-[8.5px] font-medium text-white/55 tracking-[1.5px] uppercase mt-0.5">Apr</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy leading-[1.35] mb-1">AI in Procurement — Live Demo</div>
+              <div class="font-mono text-[10.5px] text-txt-muted tracking-[0.3px]">11:00 · Zoom · Hosted by S. Ahmed</div>
+            </div>
+          </a>
+          <a href="under-development.html?from=community-event-copilot-quarterly" class="flex gap-3.5 px-4 py-3.5 border border-rule-light bg-off-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[52px] h-[52px] flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)]">
+              <div class="font-mono text-xs font-bold text-white tracking-[0.3px]">02</div>
+              <div class="font-mono text-[8.5px] font-medium text-white/55 tracking-[1.5px] uppercase mt-0.5">May</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy leading-[1.35] mb-1">Copilot Agents — Quarterly Review</div>
+              <div class="font-mono text-[10.5px] text-txt-muted tracking-[0.3px]">14:00 · Teams · Hosted by D. Laurent</div>
+            </div>
+          </a>
+          <a href="under-development.html?from=community-event-ethics-v3-open-comment" class="flex gap-3.5 px-4 py-3.5 border border-rule-light bg-off-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-green/35 hover:bg-white hover:shadow-[0_4px_12px_rgba(15,35,64,0.06)]">
+            <div class="w-[52px] h-[52px] flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)]">
+              <div class="font-mono text-xs font-bold text-white tracking-[0.3px]">15</div>
+              <div class="font-mono text-[8.5px] font-medium text-white/55 tracking-[1.5px] uppercase mt-0.5">May</div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-navy leading-[1.35] mb-1">Ethics Framework v3 — Open Comment</div>
+              <div class="font-mono text-[10.5px] text-txt-muted tracking-[0.3px]">Async · Viva Engage thread · All members</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside>
+      <div class="reveal bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-white/[0.06] mb-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20)]">
+        <div class="px-6 py-[22px] border-b border-white/[0.06]">
+          <div class="font-display text-base font-bold text-white tracking-[-0.01em]">Community Info</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/75 mt-1">Key Facts</div>
+        </div>
+        <div class="px-6 py-[22px]">
+          <div class="flex items-baseline justify-between py-2.5 border-b border-white/[0.06]"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Status</span><span class="text-[13px] text-white font-medium">Active</span></div>
+          <div class="flex items-baseline justify-between py-2.5 border-b border-white/[0.06]"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Founded</span><span class="text-[13px] text-white font-medium">Jan 2025</span></div>
+          <div class="flex items-baseline justify-between py-2.5 border-b border-white/[0.06]"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Steward</span><span class="text-[13px] text-white font-medium">D. Laurent</span></div>
+          <div class="flex items-baseline justify-between py-2.5 border-b border-white/[0.06]"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Co-Steward</span><span class="text-[13px] text-white font-medium">S. Ahmed</span></div>
+          <div class="flex items-baseline justify-between py-2.5 border-b border-white/[0.06]"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Cadence</span><span class="text-[13px] text-white font-medium">Monthly</span></div>
+          <div class="flex items-baseline justify-between py-2.5"><span class="font-mono text-[10px] tracking-[1.5px] uppercase text-white/40">Channel</span><span class="text-[13px] text-white font-medium">Viva Engage</span></div>
+        </div>
+      </div>
+
+      <div class="reveal bg-white border border-rule mb-5 shadow-[0_1px_2px_rgba(15,35,64,0.04)]">
+        <div class="px-6 py-[22px] border-b border-rule-light">
+          <div class="font-display text-base font-bold text-navy tracking-[-0.01em]">Related</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mt-1">Cross-Links</div>
+        </div>
+        <div class="py-1">
+          <a href="ai-for-good.html" class="block px-6 py-3 text-[13px] font-medium text-txt border-b border-rule-light transition-[padding-left,background] duration-[250ms] hover:pl-[30px] hover:bg-off-white">AI for Good →</a>
+          <a href="tool-guides.html#copilot" class="block px-6 py-3 text-[13px] font-medium text-txt border-b border-rule-light transition-[padding-left,background] duration-[250ms] hover:pl-[30px] hover:bg-off-white">Copilot Guide →</a>
+          <a href="under-development.html?from=ai-news" class="block px-6 py-3 text-[13px] font-medium text-txt transition-[padding-left,background] duration-[250ms] hover:pl-[30px] hover:bg-off-white">AI News &amp; Updates →</a>
+        </div>
+      </div>
+
+      <div class="reveal bg-white border border-rule px-[22px] py-5 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_8px_rgba(76,187,23,0.25)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1.5 tracking-[-0.01em]">Share what you've learned</div>
+        <div class="text-xs text-txt-sec leading-[1.7] mb-2.5">Wrapping up a project that used AI? Deposit your reusable prompts, frameworks, or lessons into the community toolkit.</div>
+        <a href="under-development.html?from=knowledge-artifact" class="text-xs font-bold text-green-dark transition-colors duration-200 hover:text-green">Submit a knowledge artifact →</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- EQUITY FOOTER -->
+<div class="bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border-t border-white/[0.06] relative z-[2]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[30px] flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap">
+    <div class="w-[2px] h-[46px] bg-[linear-gradient(180deg,#3da312,#7de852,#3da312)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite] shrink-0 shadow-[0_0_10px_rgba(76,187,23,0.25)]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[5px]">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/40 leading-[1.65] max-w-[640px]">Every access decision in this hub is intentional, documented, and reviewed quarterly.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-[250ms] hover:text-green-bright">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[18px] flex items-center justify-between max-md:flex-col max-md:gap-2.5 max-md:text-center">
+    <span class="text-[11px] text-white/20 font-mono">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-6">
+      <a href="accessibility.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!r&&window.matchMedia('(min-width:1081px)').matches){var s=document.querySelector('.spotlight');if(s){document.body.classList.add('spotlight-ready');var tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty;document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY},{passive:true});(function t(){cx+=(tx-cx)*0.08;cy+=(ty-cy)*0.08;s.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(t)})()}}
+  if('IntersectionObserver' in window && !r){var io=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-visible');io.unobserve(en.target)}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-visible')})}
+
+  // Community name from URL parameter (?community=Name)
+  var params = new URLSearchParams(location.search);
+  var community = params.get('community');
+  if(community){
+    var nice = decodeURIComponent(community).replace(/\+/g,' ');
+    document.getElementById('commTitle').textContent = nice;
+    document.getElementById('crumbName').textContent = nice;
+    document.title = 'JJR Hub — ' + nice;
+  }
+})();
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

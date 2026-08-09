@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Tool Guides</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ HERO SEARCH (focus-within with !important — overrides inline base classes) ═══ */
+  .hero-search:focus-within { border-color: rgba(76,187,23,0.6) !important; background: rgba(76,187,23,0.06) !important; box-shadow: 0 0 18px rgba(76,187,23,0.20); }
+
+  /* ═══ GUIDE ROW — green left-accent that scaleY's on hover (pseudo, used 8×) ═══ */
+  .guide-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.45); transform: scaleY(0); transform-origin: top; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .guide-row:hover::before { transform: scaleY(1); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
+
+<!-- ═══ NAV ═══ -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search guides..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">Tool Guides</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>
+        <span class="font-mono text-[9px] text-white/30 tracking-wide">8 guides available</span>
+      </div>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="mb-12 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7 flex items-center justify-between gap-10 max-md:flex-col max-md:gap-6">
+        <div>
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Tool Guides</div>
+          <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">How Do I…?</h1>
+          <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[460px]">Plain-language guides for every tool JJR uses. No jargon, no assumptions. Search for what you need or browse by tool — written so AI search can find them too.</p>
+        </div>
+        <!-- Search box large -->
+        <div class="w-[340px] max-md:w-full shrink-0">
+          <div class="hero-search bg-white/[0.06] border border-white/[0.1] p-1 flex items-center gap-2 transition-all duration-300">
+            <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.6" class="ml-3 shrink-0" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="guideSearch" type="text" placeholder="e.g. 'how do I log hours'" oninput="searchGuides(this.value)" class="bg-transparent border-none outline-none flex-1 font-body text-[13px] text-white py-2.5 min-w-0 placeholder:text-white/[0.25]"/>
+          </div>
+          <div class="mt-2.5 flex gap-1.5 flex-wrap">
+            <button onclick="document.getElementById('guideSearch').value='log hours';searchGuides('log hours')" class="font-mono text-[9px] text-white/30 border border-white/[0.1] px-2 py-1 cursor-pointer hover:text-green hover:border-green/40 transition-colors">log hours</button>
+            <button onclick="document.getElementById('guideSearch').value='planner';searchGuides('planner')" class="font-mono text-[9px] text-white/30 border border-white/[0.1] px-2 py-1 cursor-pointer hover:text-green hover:border-green/40 transition-colors">planner</button>
+            <button onclick="document.getElementById('guideSearch').value='sharepoint';searchGuides('sharepoint')" class="font-mono text-[9px] text-white/30 border border-white/[0.1] px-2 py-1 cursor-pointer hover:text-green hover:border-green/40 transition-colors">sharepoint</button>
+            <button onclick="document.getElementById('guideSearch').value='teams';searchGuides('teams')" class="font-mono text-[9px] text-white/30 border border-white/[0.1] px-2 py-1 cursor-pointer hover:text-green hover:border-green/40 transition-colors">teams</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOST USED GUIDES -->
+  <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Most Used <span class="flex-1 h-px bg-rule"></span></div>
+
+  <div class="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+    <!-- Guide 1: QuickBooks Time -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="h-[110px] flex items-center justify-center relative bg-[linear-gradient(135deg,#2D7D00,#4CBB17)]">
+        <div class="w-12 h-12 bg-white/20 flex items-center justify-center cursor-pointer transition-[transform,background,box-shadow] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-green/35 group-hover:shadow-[0_0_14px_rgba(76,187,23,0.4)] hover:!scale-[1.08] hover:!shadow-[0_0_16px_rgba(76,187,23,0.5)]"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="absolute top-3 left-3 font-mono text-[8px] font-bold tracking-wider uppercase text-white/50 bg-white/10 px-2 py-0.5">Video · 3 min</div>
+        <div class="absolute top-3 right-3 font-mono text-[8px] font-bold tracking-wider uppercase px-2 py-0.5 bg-pink text-white shadow-[0_0_10px_rgba(233,30,140,0.45)]">Most Used</div>
+      </div>
+      <div class="p-6">
+        <div class="font-mono text-[9px] font-medium tracking-[1.5px] uppercase text-green mb-2">QuickBooks Time</div>
+        <div class="font-display text-[1.05rem] font-bold text-navy leading-snug mb-2">How to Log Your Hours</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed mb-4">Step-by-step: open the app, select your project, enter billable and non-billable hours, and submit. Takes 2 minutes a day.</div>
+        <div class="flex items-center gap-3 pt-3 border-t border-rule-light">
+          <a href="under-development.html?from=quickbooks-time-full-guide" class="text-[11px] font-bold text-green hover:underline">Full Guide →</a>
+          <span class="text-rule">·</span>
+          <a href="under-development.html?from=quickbooks-advanced-settings" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Advanced Settings</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide 2: Planner -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="h-[110px] flex items-center justify-center relative bg-[linear-gradient(135deg,#0F2340,#2A4A78)]">
+        <div class="w-12 h-12 bg-white/20 flex items-center justify-center cursor-pointer transition-[transform,background,box-shadow] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-green/35 group-hover:shadow-[0_0_14px_rgba(76,187,23,0.4)] hover:!scale-[1.08] hover:!shadow-[0_0_16px_rgba(76,187,23,0.5)]"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="absolute top-3 left-3 font-mono text-[8px] font-bold tracking-wider uppercase text-white/50 bg-white/10 px-2 py-0.5">Video · 5 min</div>
+        <div class="absolute top-3 right-3 font-mono text-[8px] font-bold tracking-wider uppercase px-2 py-0.5 bg-green text-white shadow-[0_0_10px_rgba(76,187,23,0.5)]">Popular</div>
+      </div>
+      <div class="p-6">
+        <div class="font-mono text-[9px] font-medium tracking-[1.5px] uppercase text-navy-mid mb-2">Microsoft Planner</div>
+        <div class="font-display text-[1.05rem] font-bold text-navy leading-snug mb-2">Managing Tasks &amp; Boards</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed mb-4">Create tasks, set deadlines, assign team members, and track progress using boards, charts, and schedule views.</div>
+        <div class="flex items-center gap-3 pt-3 border-t border-rule-light">
+          <a href="under-development.html?from=microsoft-planner-full-guide" class="text-[11px] font-bold text-green hover:underline">Full Guide →</a>
+          <span class="text-rule">·</span>
+          <a href="under-development.html?from=planner-integrations" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Integrations</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide 3: Teams -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="h-[110px] flex items-center justify-center relative bg-[linear-gradient(135deg,#1B365D,#17304f)]">
+        <div class="w-12 h-12 bg-white/20 flex items-center justify-center cursor-pointer transition-[transform,background,box-shadow] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-green/35 group-hover:shadow-[0_0_14px_rgba(76,187,23,0.4)] hover:!scale-[1.08] hover:!shadow-[0_0_16px_rgba(76,187,23,0.5)]"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+        <div class="absolute top-3 left-3 font-mono text-[8px] font-bold tracking-wider uppercase text-white/50 bg-white/10 px-2 py-0.5">Video · 4 min</div>
+      </div>
+      <div class="p-6">
+        <div class="font-mono text-[9px] font-medium tracking-[1.5px] uppercase text-navy mb-2">Microsoft Teams</div>
+        <div class="font-display text-[1.05rem] font-bold text-navy leading-snug mb-2">Channels, Chats &amp; Meetings</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed mb-4">How JJR uses Teams: project channels, direct messages, scheduling meetings, and sharing files within conversations.</div>
+        <div class="flex items-center gap-3 pt-3 border-t border-rule-light">
+          <a href="under-development.html?from=microsoft-teams-full-guide" class="text-[11px] font-bold text-green hover:underline">Full Guide →</a>
+          <span class="text-rule">·</span>
+          <a href="under-development.html?from=teams-tips-shortcuts" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Tips &amp; Shortcuts</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL GUIDES -->
+  <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">All Guides <span class="flex-1 h-px bg-rule"></span></div>
+
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+    <div>
+      <!-- No results message -->
+      <div id="noResults" class="hidden bg-white border border-rule p-8 text-center mb-6">
+        <div class="text-txt-muted mb-2">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-3 text-rule" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="font-display text-[1rem] font-bold text-navy mb-1">No guides found</div>
+        <div class="text-[12.5px] text-txt-sec">Try a different search term or <a href="under-development.html?from=request-a-new-guide" class="text-green font-semibold hover:underline">request a new guide</a>.</div>
+      </div>
+
+      <!-- Guide rows -->
+      <div id="guideList">
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="quickbooks time hours log timesheet billable">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#2D7D00,#4CBB17)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1"><div class="font-display text-[1rem] font-bold text-navy">QuickBooks Time — Hour Logging</div><span class="font-mono text-[8px] px-2 py-0.5 bg-green/[0.1] text-green-dark tracking-wider uppercase shadow-[0_0_8px_rgba(76,187,23,0.22)]">Essential</span></div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">How to log billable and non-billable hours, correct mistakes, submit timesheets, and set up mobile access for on-the-go logging.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=quickbooks-time-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=quickbooks-time-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (3 min)</a><a href="under-development.html?from=quickbooks-time-advanced" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Advanced →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="planner tasks board kanban deadlines assignments project management">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#0F2340,#2A4A78)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1"><div class="font-display text-[1rem] font-bold text-navy">Microsoft Planner — Task Management</div><span class="font-mono text-[8px] px-2 py-0.5 bg-green/[0.1] text-green-dark tracking-wider uppercase shadow-[0_0_8px_rgba(76,187,23,0.22)]">Essential</span></div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Creating boards, assigning tasks, setting due dates, using labels, tracking progress with charts, and connecting Planner to Teams channels.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=microsoft-planner-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=microsoft-planner-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (5 min)</a><a href="under-development.html?from=power-automate" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Power Automate →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="teams chat meetings channels video call schedule">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#1B365D,#17304f)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="flex-1">
+            <div class="font-display text-[1rem] font-bold text-navy mb-1">Microsoft Teams — Communication</div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Project channels vs. direct chat, scheduling meetings, screen sharing, recording sessions, and file sharing within conversations.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=microsoft-teams-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=microsoft-teams-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (4 min)</a><a href="under-development.html?from=teams-shortcuts" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Shortcuts →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="sharepoint sites documents libraries files upload hub pages">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#2A4A78,#1B365D)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div class="flex-1">
+            <div class="font-display text-[1rem] font-bold text-navy mb-1">SharePoint — Document Management</div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Navigating the Hub, uploading files, using document libraries, version history, metadata tagging, and sharing permissions.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=sharepoint-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=sharepoint-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (6 min)</a><a href="under-development.html?from=sharepoint-admin-guide" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Admin Guide →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="power bi dashboard analytics reports data visualisation charts">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#8B1A6A,#E91E8C)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="flex-1">
+            <div class="font-display text-[1rem] font-bold text-navy mb-1">Power BI — Dashboards &amp; Analytics</div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Accessing project dashboards, reading KPI charts, filtering data, exporting reports, and understanding the metrics that matter.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=power-bi-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=power-bi-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (4 min)</a><a href="under-development.html?from=power-bi-custom-reports" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Custom Reports →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="outlook email calendar scheduling invites signature">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#3D2B00,#8B6914)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div class="flex-1">
+            <div class="font-display text-[1rem] font-bold text-navy mb-1">Outlook — Email &amp; Calendar</div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Setting up your JJR email signature, managing calendar invites, shared calendars for project teams, and out-of-office protocols.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=outlook-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=signature-template" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Signature Template →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="onedrive files sync backup personal storage cloud">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#1a3a1a,#2D7D00)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="flex-1">
+            <div class="font-display text-[1rem] font-bold text-navy mb-1">OneDrive — Personal File Storage</div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Syncing files to your desktop, organising personal documents, sharing links vs. granting access, and storage limits.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=onedrive-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=sync-setup" class="text-[11px] text-txt-muted hover:text-navy transition-colors">Sync Setup →</a></div>
+          </div>
+        </div>
+
+        <div class="guide-row relative overflow-hidden bg-white border border-rule p-6 mb-4 flex items-start gap-5 cursor-pointer transition-[transform,box-shadow,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)] hover:-translate-y-px" data-keywords="copilot ai assistant search questions help smart">
+          <div class="w-16 h-16 shrink-0 flex items-center justify-center bg-[linear-gradient(135deg,#4a1a3a,#8B1A6A)]"><svg width="22" height="22" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg></div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-1"><div class="font-display text-[1rem] font-bold text-navy">Microsoft Copilot — AI Assistant</div><span class="font-mono text-[8px] px-2 py-0.5 bg-pink/[0.1] text-pink tracking-wider uppercase shadow-[0_0_8px_rgba(233,30,140,0.22)]">New</span></div>
+            <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Using Copilot in Teams, Word, and the Hub. How to ask good questions, what it can and can't do, and JJR's responsible AI guidelines.</div>
+            <div class="flex items-center gap-4"><a href="under-development.html?from=copilot-guide" class="text-[11px] font-bold text-green hover:underline">Read Guide →</a><a href="under-development.html?from=copilot-video" class="text-[11px] text-txt-muted hover:text-navy transition-colors flex items-center gap-1"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch Video (5 min)</a><a href="under-development.html?from=ai-ethics" class="text-[11px] text-txt-muted hover:text-navy transition-colors">AI Ethics →</a></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-white border border-rule py-3 px-5 relative overflow-hidden text-xs text-txt-sec leading-[1.6]">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        Need a guide that doesn't exist yet? <a href="under-development.html?from=request-a-guide" class="text-green font-bold hover:text-green-dark transition-colors">Request one here</a> — we write them in plain language so everyone can follow.
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Quick Answers -->
+      <div class="bg-white border border-rule">
+        <div class="px-5 py-4 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">Quick Answers</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Top Questions</div>
+        </div>
+        <div class="p-4 flex flex-col gap-0">
+          <a href="under-development.html?from=quick-answer" class="flex items-start gap-3 px-2 py-3 border-b border-rule-light hover:bg-off-white transition-colors">
+            <span class="font-mono text-[10px] text-green font-bold shrink-0 mt-0.5 [text-shadow:0_0_6px_rgba(76,187,23,0.35)]">Q</span>
+            <div><div class="text-[12px] font-semibold text-txt leading-snug">Where do I log my hours?</div><div class="text-[10px] text-txt-muted mt-0.5">QuickBooks Time → Log Hours tab</div></div>
+          </a>
+          <a href="under-development.html?from=quick-answer" class="flex items-start gap-3 px-2 py-3 border-b border-rule-light hover:bg-off-white transition-colors">
+            <span class="font-mono text-[10px] text-green font-bold shrink-0 mt-0.5 [text-shadow:0_0_6px_rgba(76,187,23,0.35)]">Q</span>
+            <div><div class="text-[12px] font-semibold text-txt leading-snug">How do I find my project files?</div><div class="text-[10px] text-txt-muted mt-0.5">SharePoint → Your project site → Documents</div></div>
+          </a>
+          <a href="under-development.html?from=quick-answer" class="flex items-start gap-3 px-2 py-3 border-b border-rule-light hover:bg-off-white transition-colors">
+            <span class="font-mono text-[10px] text-green font-bold shrink-0 mt-0.5 [text-shadow:0_0_6px_rgba(76,187,23,0.35)]">Q</span>
+            <div><div class="text-[12px] font-semibold text-txt leading-snug">How do I schedule a meeting?</div><div class="text-[10px] text-txt-muted mt-0.5">Teams → Calendar → New Meeting</div></div>
+          </a>
+          <a href="under-development.html?from=quick-answer" class="flex items-start gap-3 px-2 py-3 border-b border-rule-light hover:bg-off-white transition-colors">
+            <span class="font-mono text-[10px] text-green font-bold shrink-0 mt-0.5 [text-shadow:0_0_6px_rgba(76,187,23,0.35)]">Q</span>
+            <div><div class="text-[12px] font-semibold text-txt leading-snug">How do I update my tasks?</div><div class="text-[10px] text-txt-muted mt-0.5">Planner → My Tasks → Click to update</div></div>
+          </a>
+          <a href="under-development.html?from=quick-answer" class="flex items-start gap-3 px-2 py-3 hover:bg-off-white transition-colors">
+            <span class="font-mono text-[10px] text-green font-bold shrink-0 mt-0.5 [text-shadow:0_0_6px_rgba(76,187,23,0.35)]">Q</span>
+            <div><div class="text-[12px] font-semibold text-txt leading-snug">Where are the templates?</div><div class="text-[10px] text-txt-muted mt-0.5"><a href="templates.html" class="text-green hover:underline">Templates page</a> → Browse or search</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Video Library -->
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+        <div class="px-5 py-4 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">Video Library</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">Walkthroughs</div>
+        </div>
+        <div class="p-4 flex flex-col gap-3">
+          <a href="under-development.html?from=video-hour-logging" class="flex items-center gap-3 group">
+            <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-green shadow-[0_0_10px_rgba(76,187,23,0.5),inset_0_1px_0_rgba(255,255,255,0.15)]"><svg width="10" height="10" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Hour Logging Walkthrough</div><div class="text-[9px] text-white/40 mt-0.5 font-mono">3 min · QuickBooks</div></div>
+          </a>
+          <a href="under-development.html?from=video-planner-setup" class="flex items-center gap-3 group">
+            <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-white/[0.08] border border-white/10 transition-all duration-[250ms] group-hover:bg-green/[0.15] group-hover:border-green/[0.35]"><svg width="10" height="10" fill="currentColor" class="text-white/60 group-hover:text-green transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Planner Board Setup</div><div class="text-[9px] text-white/40 mt-0.5 font-mono">5 min · Planner</div></div>
+          </a>
+          <a href="under-development.html?from=video-teams-channels" class="flex items-center gap-3 group">
+            <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-white/[0.08] border border-white/10 transition-all duration-[250ms] group-hover:bg-green/[0.15] group-hover:border-green/[0.35]"><svg width="10" height="10" fill="currentColor" class="text-white/60 group-hover:text-green transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Teams Channels Explained</div><div class="text-[9px] text-white/40 mt-0.5 font-mono">4 min · Teams</div></div>
+          </a>
+          <a href="under-development.html?from=video-sharepoint-basics" class="flex items-center gap-3 group">
+            <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-white/[0.08] border border-white/10 transition-all duration-[250ms] group-hover:bg-green/[0.15] group-hover:border-green/[0.35]"><svg width="10" height="10" fill="currentColor" class="text-white/60 group-hover:text-green transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">SharePoint for Beginners</div><div class="text-[9px] text-white/40 mt-0.5 font-mono">6 min · SharePoint</div></div>
+          </a>
+          <a href="under-development.html?from=video-copilot-intro" class="flex items-center gap-3 group">
+            <div class="w-8 h-8 flex items-center justify-center shrink-0 bg-white/[0.08] border border-white/10 transition-all duration-[250ms] group-hover:bg-green/[0.15] group-hover:border-green/[0.35]"><svg width="10" height="10" fill="currentColor" class="text-white/60 group-hover:text-green transition-colors" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Copilot — Getting Started</div><div class="text-[9px] text-white/40 mt-0.5 font-mono">5 min · AI</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Help CTA -->
+      <div class="bg-white border border-rule px-5 py-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Still stuck?</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5">These guides cover the basics. If you're hitting something specific or unusual, a real person is always better than a document.</div>
+        <a href="under-development.html?from=help-desk" class="text-[12px] font-bold text-green hover:text-green-dark transition-colors">Ask the Help Desk →</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function searchGuides(query) {
+  const q = query.toLowerCase().trim();
+  const rows = document.querySelectorAll('.guide-row');
+  const noResults = document.getElementById('noResults');
+  let visible = 0;
+
+  rows.forEach(row => {
+    if (!q) {
+      row.classList.remove('hidden');
+      visible++;
+      return;
+    }
+    const keywords = row.dataset.keywords;
+    const title = row.querySelector('.font-display')?.textContent?.toLowerCase() || '';
+    const desc = row.querySelector('.text-txt-sec')?.textContent?.toLowerCase() || '';
+    const match = keywords.includes(q) || title.includes(q) || desc.includes(q);
+    row.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+
+  noResults.classList.toggle('hidden', visible > 0);
+}
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -10,93 +10,165 @@
 tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
 </script>
 <style>
-  body{font-family:'IBM Plex Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
-  a{text-decoration:none;color:inherit}
-  .nav-3d{background:linear-gradient(180deg,#17304f 0%,#0F2340 40%,#0b1c35 100%);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(0,0,0,0.3);box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 2px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.04)}
-  .context-recessed{background:linear-gradient(180deg,#152a48 0%,#1B365D 50%,#1e3a63 100%);border-bottom:1px solid rgba(0,0,0,0.12);box-shadow:inset 0 2px 6px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.02)}
-  .shimmer{background:linear-gradient(135deg,#3da312 0%,#4CBB17 20%,#7de852 35%,#b8f5a0 42%,#4CBB17 50%,#3da312 65%,#5cd42a 80%,#a4f08a 88%,#4CBB17 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 6s ease-in-out infinite}
-  .shimmer-delay{animation-delay:0.4s}
-  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
-  .nav-active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:rgba(255,255,255,0.3)}
-  .equity-3d{background:linear-gradient(180deg,#17304f 0%,#0F2340 30%,#0b1c35 100%);border-top:1px solid rgba(255,255,255,0.06);box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 -2px 12px rgba(0,0,0,0.1)}
-  .marker-shimmer{background:linear-gradient(180deg,#4CBB17,#7de852,#4CBB17);background-size:100% 200%;animation:shimmer 6s ease-in-out infinite}
-  .section-rule{flex:1;height:1px;background:#D0CCC4}
-  @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-  .anim-1{animation:rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both}
-  .anim-2{animation:rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.15s both}
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes threadPulse { 0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); } 50% { opacity: 0.55; transform: translateY(-50%) scale(1.3); } }
 
-  /* Filter button states */
-  .filter-btn{transition:all 0.2s}
-  .filter-btn.active{background:#1B365D;color:white;border-color:#1B365D}
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo-element) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
 
-  /* Project row hover */
-  .proj-row{transition:all 0.2s}
-  .proj-row:hover{background:#F8F7F4;border-color:#2A4A78}
+  /* ═══ PROJECT CARDS — used 6× (base + hover) ═══ */
+  .proj-card { background: #fff; border: 1px solid #D0CCC4; position: relative; overflow: hidden; cursor: pointer; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s; }
+  .proj-card:hover { transform: translateY(-2px); border-color: #2A4A78; box-shadow: 0 8px 24px rgba(27,54,93,0.10); }
+
+  /* ═══ STATUS ACCENT STRIPS (used 6×) ═══ */
+  .proj-strip { position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 1; }
+  .proj-strip--green { background: #4CBB17; box-shadow: 0 0 10px rgba(76,187,23,0.45); }
+  .proj-strip--amber { background: #E8A838; box-shadow: 0 0 10px rgba(232,168,56,0.40); }
+  .proj-strip--navy  { background: #2A4A78; box-shadow: 0 0 10px rgba(42,74,120,0.35); }
+
+  /* ═══ STATUS PILLS (used 6×) ═══ */
+  .pill-status { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; display: inline-flex; align-items: center; }
+  .pill-status--green { color: #3da312; background: rgba(76,187,23,0.12); box-shadow: 0 0 10px rgba(76,187,23,0.20); }
+  .pill-status--amber { color: #A06B1A; background: rgba(232,168,56,0.14); box-shadow: 0 0 10px rgba(232,168,56,0.18); }
+  .pill-status--navy  { color: #2A4A78; background: rgba(42,74,120,0.10); box-shadow: 0 0 8px rgba(42,74,120,0.15); }
+
+  /* ═══ MINI BUTTONS (used 18×) ═══ */
+  .mini-btn { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; color: #5A6B80; padding: 4px 9px; border: 1px solid #E8E5DF; background: #fff; transition: all 0.2s cubic-bezier(0.16,1,0.3,1); }
+  .mini-btn:hover { color: #3da312; border-color: rgba(76,187,23,0.4); background: rgba(76,187,23,0.04); box-shadow: 0 0 8px rgba(76,187,23,0.12); }
+
+  /* ═══ PROGRESS BARS (with pulse-dot pseudo-element) ═══ */
+  .prog-track { background: #F0EEEA; box-shadow: inset 0 1px 1px rgba(15,35,64,0.06); position: relative; overflow: visible; }
+  .prog-fill { height: 100%; position: relative; box-shadow: 0 0 8px currentColor; }
+  .prog-fill::after { content: ''; position: absolute; top: 50%; right: -3px; width: 7px; height: 7px; transform: translateY(-50%); border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; animation: threadPulse 2.4s ease-in-out infinite; }
+  .prog-fill--green { background: #4CBB17; color: #4CBB17; }
+  .prog-fill--amber { background: #E8A838; color: #E8A838; }
+  .prog-fill--navy  { background: #2A4A78; color: #2A4A78; }
+
+  /* ═══ FIRST AVATAR — green ring (combinator) ═══ */
+  .proj-team .flex > div:first-child { box-shadow: 0 0 0 1.5px #4CBB17, 0 0 10px rgba(76,187,23,0.35) !important; }
+
+  /* ═══ FILTER BUTTONS (JS-toggled .active) ═══ */
+  .filter-btn { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 14px; background: #fff; border: 1px solid #D0CCC4; color: #5A6B80; cursor: pointer; transition: all 0.25s cubic-bezier(0.16,1,0.3,1); }
+  .filter-btn:hover { color: #1B365D; border-color: #2A4A78; }
+  .filter-btn.active { color: #fff; border-color: #0F2340; background: linear-gradient(180deg, #1a3554 0%, #0F2340 55%, #081425 100%); box-shadow: 0 0 16px rgba(76,187,23,0.25), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -2px 0 #4CBB17, inset 0 -3px 10px rgba(76,187,23,0.22); }
+
+  /* ═══ DATE TILE (used 5×) ═══ */
+  .date-tile-mini { background: linear-gradient(180deg, #17304f 0%, #0F2340 50%, #0b1c35 100%); border: 1px solid rgba(0,0,0,0.15); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(15,35,64,0.15); }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within combinator) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
 </style>
 </head>
-<body class="bg-off-white text-txt text-[15px] leading-relaxed">
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
 
 <!-- ═══ NAV ═══ -->
-<div class="nav-3d fixed top-0 left-0 right-0 z-[200] h-14 flex items-center">
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
   <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
-    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tailwind.html" class="shimmer font-display text-xl font-extrabold tracking-tight">JJR</a><a href="jjr-hub-tailwind.html" class="shimmer shimmer-delay font-display text-xl font-extrabold tracking-tight">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center">
+      <div class="flex flex-col">
+        <div class="flex items-baseline gap-1">
+          <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a>
+          <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a>
+        </div>
+        <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div>
+      </div>
+    </div>
     <div class="flex items-center h-full gap-0.5">
-      <a href="jjr-hub-tailwind.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
-      <a href="#" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Projects</a>
-      <a href="#" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
       <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
       <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
-      <a href="#" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
-      <a href="#" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
     </div>
     <div class="flex items-center gap-1">
-      <div class="flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08] focus-within:border-white/[0.14]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search projects..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search projects..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
       <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
       <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
-      <div class="w-[30px] h-[30px] bg-white/[0.08] border border-white/10 flex items-center justify-center font-body text-[10px] font-semibold text-white/[0.55] cursor-pointer ml-2 rounded-sm transition-colors duration-200 hover:border-white/25">SF</div>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- ═══ CONTEXT BAR ═══ -->
-<div class="context-recessed mt-14">
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
   <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <a href="jjr-hub-tailwind.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
       <span class="text-white/10 text-[10px]">/</span>
       <span class="font-mono text-[10px] text-white/50 tracking-wide">Active Projects</span>
     </div>
-    <div class="font-mono text-[9px] text-white/20 tracking-wide"><span id="visibleCount">6</span> projects</div>
+    <div class="flex items-center gap-4">
+      <div class="font-mono text-[9px] text-white/30 tracking-wide"><span id="visibleCount">6</span> projects</div>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
   </div>
 </div>
 
 <!-- ═══ PAGE ═══ -->
-<div class="max-w-[1400px] mx-auto px-12 pt-11 pb-28 max-md:px-6 max-md:pt-6 max-md:pb-16">
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
 
   <!-- HERO -->
-  <div class="anim-1 mb-10">
-    <div class="nav-3d relative overflow-hidden" style="box-shadow:0 4px 16px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.04);">
+  <div class="mb-10 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
       <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
-      <div class="p-12 max-md:p-8 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-6">
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-6">
         <div>
-          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-4">Active Projects</div>
-          <h1 class="font-display text-[2.2rem] max-md:text-[1.6rem] font-bold text-white leading-[1.15] tracking-tight mb-3">Project Portfolio</h1>
-          <p class="text-[14px] leading-[1.7] text-white/[0.38] max-w-[480px]">Every active engagement at JJR — track progress, access files, and stay connected to your team. Filter by client, status, or service line.</p>
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Active Projects</div>
+          <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-4">Project Portfolio.</h1>
+          <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[480px]">Every active engagement at JJR — track progress, access files, and stay connected to your team. Filter by client, status, or service line.</p>
         </div>
         <div class="flex gap-5 shrink-0">
           <div class="text-center">
-            <div class="font-display text-[2rem] font-bold text-white">6</div>
-            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">Active</div>
+            <div class="font-display text-[2.2rem] font-bold text-white leading-none [text-shadow:0_0_16px_rgba(76,187,23,0.35)]">6</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/70 mt-1.5">Active</div>
           </div>
-          <div class="w-px h-12 bg-white/[0.08] self-center"></div>
+          <div class="w-px h-14 bg-white/[0.08] self-center"></div>
           <div class="text-center">
-            <div class="font-display text-[2rem] font-bold text-amber">2</div>
-            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">In Review</div>
+            <div class="font-display text-[2.2rem] font-bold text-amber leading-none [text-shadow:0_0_16px_rgba(232,168,56,0.35)]">2</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">In Review</div>
           </div>
-          <div class="w-px h-12 bg-white/[0.08] self-center"></div>
+          <div class="w-px h-14 bg-white/[0.08] self-center"></div>
           <div class="text-center">
-            <div class="font-display text-[2rem] font-bold text-navy-mid">1</div>
-            <div class="font-mono text-[9px] tracking-wider uppercase text-white/25">Wrapping</div>
+            <div class="font-display text-[2.2rem] font-bold text-[#8FA9D1] leading-none">1</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">Wrapping</div>
           </div>
         </div>
       </div>
@@ -104,14 +176,14 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
   </div>
 
   <!-- FILTERS -->
-  <div class="anim-2 flex items-center gap-3 mb-8 flex-wrap">
+  <div class="flex items-center gap-2 mb-10 flex-wrap animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
     <div class="font-mono text-[9px] tracking-[2px] uppercase text-txt-muted mr-2">Filter</div>
-    <button class="filter-btn active font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white cursor-pointer" onclick="filterProjects('all')">All</button>
-    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('active')">Active</button>
-    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('review')">In Review</button>
-    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('wrap')">Wrapping Up</button>
-    <div class="w-px h-5 bg-rule mx-1"></div>
-    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-4 py-2 border border-rule bg-white text-txt-sec cursor-pointer" onclick="filterProjects('mine')">My Projects</button>
+    <button class="filter-btn active" onclick="filterProjects('all')">All</button>
+    <button class="filter-btn" onclick="filterProjects('active')">Active</button>
+    <button class="filter-btn" onclick="filterProjects('review')">In Review</button>
+    <button class="filter-btn" onclick="filterProjects('wrap')">Wrapping Up</button>
+    <div class="w-px h-5 bg-rule mx-2"></div>
+    <button class="filter-btn" onclick="filterProjects('mine')">My Projects</button>
   </div>
 
   <!-- MAIN GRID -->
@@ -119,216 +191,213 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
 
     <!-- LEFT: Project list -->
     <div>
-      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">All Projects <span class="section-rule"></span></div>
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">All Projects <span class="flex-1 h-px bg-rule"></span></div>
 
       <!-- Project 1 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="true">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="active" data-mine="true" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-digital-transformation'">
+        <div class="proj-strip proj-strip--green"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Acme Corp · Strategic Planning</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Digital Transformation Roadmap</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Strategy &amp; Systems Design — reimagining operations through digital-first frameworks and stakeholder alignment.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">Digital Transformation Roadmap</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Strategy &amp; Systems Design — reimagining operations through digital-first frameworks and stakeholder alignment.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">SF</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">MK</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">LR</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 2</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 2</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Dashboard</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=planner-board" class="mini-btn">Planner</a>
+                <a href="under-development.html?from=power-bi-dashboard" class="mini-btn">Dashboard</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">68%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--green">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">68%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:68%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: Apr 15, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--green" style="width:68%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 15 Apr 2026</div>
           </div>
         </div>
       </div>
 
       <!-- Project 2 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="review" data-mine="true">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-amber"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="review" data-mine="true" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-supply-chain-optimization'">
+        <div class="proj-strip proj-strip--amber"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">NovaTech · Operations</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Supply Chain Optimization</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Agile Project Management — streamlining procurement processes and vendor relationships.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">Supply Chain Optimization</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Agile Project Management — streamlining procurement processes and vendor relationships.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-amber">JP</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-pink">FN</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 1</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 1</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">SOW</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=planner-board" class="mini-btn">Planner</a>
+                <a href="under-development.html?from=sow-document" class="mini-btn">SOW</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-amber/[0.12] text-[#A06B1A]">In Review</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">41%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--amber">In Review</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">41%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-amber" style="width:41%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: May 30, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--amber" style="width:41%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 30 May 2026</div>
           </div>
         </div>
       </div>
 
       <!-- Project 3 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="wrap" data-mine="false">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-navy-mid"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="wrap" data-mine="false" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-workforce-planning'">
+        <div class="proj-strip proj-strip--navy"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">GovServices · HR</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Workforce Planning Initiative</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Talent Acquisition &amp; Succession — building a sustainable pipeline for federal workforce needs.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">Workforce Planning Initiative</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Talent Acquisition &amp; Succession — building a sustainable pipeline for federal workforce needs.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">DL</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">SA</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">RT</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 3</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 3</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Dashboard</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">KT Checklist</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=power-bi-dashboard" class="mini-btn">Dashboard</a>
+                <a href="under-development.html?from=kt-checklist" class="mini-btn">KT Checklist</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-navy-mid/10 text-navy-mid">Wrapping Up</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">85%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--navy">Wrapping Up</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">85%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-navy-mid" style="width:85%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: Mar 31, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--navy" style="width:85%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 31 Mar 2026</div>
           </div>
         </div>
       </div>
 
       <!-- Project 4 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="true">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="active" data-mine="true" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-equity-transit'">
+        <div class="proj-strip proj-strip--green"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Metro Transit Authority · Planning</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Equity-Centered Transit Study</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Environmental Justice — assessing route equity across underserved communities using EJ40 methodology.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">Equity-Centered Transit Study</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Environmental Justice — assessing route equity across underserved communities using EJ40 methodology.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-pink">RT</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">SF</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 4</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 4</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Planner</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">EJ Data</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=planner-board" class="mini-btn">Planner</a>
+                <a href="under-development.html?from=ej-data" class="mini-btn">EJ Data</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">22%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--green">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">22%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:22%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: Jul 31, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--green" style="width:22%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 31 Jul 2026</div>
           </div>
         </div>
       </div>
 
       <!-- Project 5 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="active" data-mine="false">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-green"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="active" data-mine="false" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-ehr-procurement'">
+        <div class="proj-strip proj-strip--green"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Beacon Health · IT</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">EHR System Procurement</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Procurement Advisory — vendor evaluation and RFP development for electronic health records.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">EHR System Procurement</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Procurement Advisory — vendor evaluation and RFP development for electronic health records.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy">MK</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-amber">JP</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 2</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 2</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">RFP Draft</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Scorecard</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=rfp-draft" class="mini-btn">RFP Draft</a>
+                <a href="under-development.html?from=scorecard" class="mini-btn">Scorecard</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-green/[0.12] text-green-dark">Active</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">55%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--green">Active</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">55%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-green" style="width:55%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: May 15, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--green" style="width:55%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 15 May 2026</div>
           </div>
         </div>
       </div>
 
       <!-- Project 6 -->
-      <div class="proj-row bg-white border border-rule p-6 mb-4 relative cursor-pointer" data-status="review" data-mine="false">
-        <div class="absolute top-0 left-0 right-0 h-[3px] bg-amber"></div>
+      <div class="proj-card proj-row p-6 pt-7 mb-4" data-status="review" data-mine="false" onclick="if(!event.target.closest('a'))location='under-development.html?from=project-clean-energy-audit'">
+        <div class="proj-strip proj-strip--amber"></div>
         <div class="flex items-start gap-5 max-md:flex-col">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] font-medium tracking-[1.5px] uppercase text-txt-muted mb-1.5">Dept of Energy · Compliance</div>
-            <div class="font-display text-[1.15rem] font-bold text-navy leading-snug mb-1">Clean Energy Compliance Audit</div>
-            <div class="text-[12.5px] text-txt-sec mb-4">Regulatory Advisory — IRA compliance review and reporting framework for clean energy grants.</div>
+            <div class="font-display text-[1.2rem] font-bold text-navy leading-snug mb-1.5 tracking-tight">Clean Energy Compliance Audit</div>
+            <div class="text-[12.5px] text-txt-sec mb-4 leading-[1.65] max-w-[560px]">Regulatory Advisory — IRA compliance review and reporting framework for clean energy grants.</div>
             <div class="flex items-center gap-4 flex-wrap">
-              <div class="flex items-center gap-1.5">
+              <div class="proj-team flex items-center gap-1.5">
                 <div class="flex -space-x-1.5">
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-green">DL</div>
                   <div class="w-6 h-6 border-[1.5px] border-white text-[8px] font-bold text-white flex items-center justify-center bg-navy-mid">SA</div>
                 </div>
-                <span class="text-[10px] text-txt-muted">+ 1</span>
+                <span class="text-[10px] text-txt-muted font-mono">+ 1</span>
               </div>
-              <div class="flex gap-1">
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Files</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Audit Log</a>
-                <a href="#" class="font-mono text-[10px] font-medium text-txt-sec px-2 py-1 border border-rule-light hover:border-navy-mid hover:text-navy transition-all">Report</a>
+              <div class="flex gap-1.5">
+                <a href="under-development.html?from=project-files" class="mini-btn">Files</a>
+                <a href="under-development.html?from=audit-log" class="mini-btn">Audit Log</a>
+                <a href="under-development.html?from=audit-report" class="mini-btn">Report</a>
               </div>
             </div>
           </div>
           <div class="w-[180px] shrink-0 max-md:w-full">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[10px] font-medium tracking-wider uppercase px-2 py-0.5 bg-amber/[0.12] text-[#A06B1A]">In Review</span>
-              <span class="font-mono text-[11px] text-txt-sec font-medium">78%</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="pill-status pill-status--amber">In Review</span>
+              <span class="font-mono text-[11px] text-txt-sec font-semibold">78%</span>
             </div>
-            <div class="h-[4px] bg-warm-gray overflow-hidden"><div class="h-full bg-amber" style="width:78%"></div></div>
-            <div class="text-[10px] text-txt-muted mt-2">Due: Apr 8, 2026</div>
+            <div class="prog-track h-[3px]"><div class="prog-fill prog-fill--amber" style="width:78%"></div></div>
+            <div class="text-[10px] text-txt-muted mt-2 font-mono">Due: 8 Apr 2026</div>
           </div>
         </div>
       </div>
-
-      <!-- Access note -->
-      <div class="mt-2 py-3 px-5 border-l-2 border-green bg-white text-xs text-txt-sec">Not seeing a project you're on? <a href="#" class="text-green font-bold hover:underline">Request access here</a> — all requests are reviewed within one business day.</div>
 
     </div>
 
@@ -338,97 +407,97 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
       <!-- Upcoming Milestones -->
       <div class="bg-white border border-rule">
         <div class="px-6 py-5 border-b border-rule-light">
-          <div class="font-display text-[0.95rem] font-bold text-navy">Upcoming Milestones</div>
+          <div class="font-display text-[0.95rem] font-bold text-navy tracking-tight">Upcoming Milestones</div>
           <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Next 30 Days</div>
         </div>
-        <div class="p-5 flex flex-col gap-0">
-          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
-            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+        <div class="px-5 py-2 flex flex-col">
+          <a href="under-development.html?from=project-digital-transformation" class="flex items-start gap-3 py-3.5 border-b border-rule-light group">
+            <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0">
               <div class="font-mono text-[10px] font-bold text-white leading-none">28</div>
-              <div class="font-mono text-[8px] text-white/40 uppercase">Mar</div>
+              <div class="font-mono text-[8px] text-white/50 uppercase mt-0.5">Mar</div>
             </div>
-            <div>
-              <div class="text-[12px] font-semibold text-txt leading-snug">Acme — Phase 2 Deliverable</div>
-              <div class="text-[10px] text-txt-muted mt-0.5">Strategy deck due to client</div>
-              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">SF</div><span class="text-[9px] text-txt-muted">Lead: S. Foster</span></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12.5px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">Acme — Phase 2 Deliverable</div>
+              <div class="text-[10px] text-txt-muted mt-0.5 font-mono">Strategy deck due to client</div>
+              <div class="flex items-center gap-1.5 mt-1.5"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">SF</div><span class="text-[9px] text-txt-muted font-mono">Lead: S. Foster</span></div>
             </div>
-          </div>
-          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
-            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+          </a>
+          <a href="under-development.html?from=project-workforce-planning" class="flex items-start gap-3 py-3.5 border-b border-rule-light group">
+            <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0">
               <div class="font-mono text-[10px] font-bold text-white leading-none">31</div>
-              <div class="font-mono text-[8px] text-white/40 uppercase">Mar</div>
+              <div class="font-mono text-[8px] text-white/50 uppercase mt-0.5">Mar</div>
             </div>
-            <div>
-              <div class="text-[12px] font-semibold text-txt leading-snug">GovServices — Knowledge Transfer</div>
-              <div class="text-[10px] text-txt-muted mt-0.5">Final handoff &amp; closeout docs</div>
-              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-navy-mid text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted">Lead: D. Laurent</span></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12.5px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">GovServices — Knowledge Transfer</div>
+              <div class="text-[10px] text-txt-muted mt-0.5 font-mono">Final handoff &amp; closeout docs</div>
+              <div class="flex items-center gap-1.5 mt-1.5"><div class="w-4 h-4 bg-navy-mid text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted font-mono">Lead: D. Laurent</span></div>
             </div>
-          </div>
-          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
-            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+          </a>
+          <a href="under-development.html?from=project-clean-energy-audit" class="flex items-start gap-3 py-3.5 border-b border-rule-light group">
+            <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0">
               <div class="font-mono text-[10px] font-bold text-white leading-none">08</div>
-              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+              <div class="font-mono text-[8px] text-white/50 uppercase mt-0.5">Apr</div>
             </div>
-            <div>
-              <div class="text-[12px] font-semibold text-txt leading-snug">DoE — Draft Audit Report</div>
-              <div class="text-[10px] text-txt-muted mt-0.5">Internal review before client submission</div>
-              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted">Lead: D. Laurent</span></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12.5px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">DoE — Draft Audit Report</div>
+              <div class="text-[10px] text-txt-muted mt-0.5 font-mono">Internal review before client submission</div>
+              <div class="flex items-center gap-1.5 mt-1.5"><div class="w-4 h-4 bg-green text-[7px] font-bold text-white flex items-center justify-center">DL</div><span class="text-[9px] text-txt-muted font-mono">Lead: D. Laurent</span></div>
             </div>
-          </div>
-          <div class="flex items-start gap-3 py-3 border-b border-rule-light">
-            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+          </a>
+          <a href="under-development.html?from=project-digital-transformation" class="flex items-start gap-3 py-3.5 border-b border-rule-light group">
+            <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0">
               <div class="font-mono text-[10px] font-bold text-white leading-none">15</div>
-              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+              <div class="font-mono text-[8px] text-white/50 uppercase mt-0.5">Apr</div>
             </div>
-            <div>
-              <div class="text-[12px] font-semibold text-txt leading-snug">Acme — Final Presentation</div>
-              <div class="text-[10px] text-txt-muted mt-0.5">Board-level strategy presentation</div>
-              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-navy text-[7px] font-bold text-white flex items-center justify-center">MK</div><span class="text-[9px] text-txt-muted">Lead: M. Kim</span></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12.5px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">Acme — Final Presentation</div>
+              <div class="text-[10px] text-txt-muted mt-0.5 font-mono">Board-level strategy presentation</div>
+              <div class="flex items-center gap-1.5 mt-1.5"><div class="w-4 h-4 bg-navy text-[7px] font-bold text-white flex items-center justify-center">MK</div><span class="text-[9px] text-txt-muted font-mono">Lead: M. Kim</span></div>
             </div>
-          </div>
-          <div class="flex items-start gap-3 py-3">
-            <div class="w-11 h-11 nav-3d flex flex-col items-center justify-center shrink-0" style="box-shadow:none;border:none;">
+          </a>
+          <a href="under-development.html?from=project-supply-chain-optimization" class="flex items-start gap-3 py-3.5 group">
+            <div class="date-tile-mini w-11 h-11 flex flex-col items-center justify-center shrink-0">
               <div class="font-mono text-[10px] font-bold text-white leading-none">22</div>
-              <div class="font-mono text-[8px] text-white/40 uppercase">Apr</div>
+              <div class="font-mono text-[8px] text-white/50 uppercase mt-0.5">Apr</div>
             </div>
-            <div>
-              <div class="text-[12px] font-semibold text-txt leading-snug">NovaTech — Vendor Shortlist</div>
-              <div class="text-[10px] text-txt-muted mt-0.5">Final vendor recommendations to client</div>
-              <div class="flex items-center gap-1 mt-1"><div class="w-4 h-4 bg-amber text-[7px] font-bold text-white flex items-center justify-center">JP</div><span class="text-[9px] text-txt-muted">Lead: J. Park</span></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[12.5px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">NovaTech — Vendor Shortlist</div>
+              <div class="text-[10px] text-txt-muted mt-0.5 font-mono">Final vendor recommendations to client</div>
+              <div class="flex items-center gap-1.5 mt-1.5"><div class="w-4 h-4 bg-amber text-[7px] font-bold text-white flex items-center justify-center">JP</div><span class="text-[9px] text-txt-muted font-mono">Lead: J. Park</span></div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
       <!-- Portfolio health -->
-      <div class="nav-3d" style="box-shadow:0 2px 8px rgba(0,0,0,0.15),inset 0 1px 0 rgba(255,255,255,0.04);">
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
         <div class="px-6 py-5 border-b border-white/[0.06]">
-          <div class="font-display text-[0.95rem] font-bold text-white">Portfolio Health</div>
-          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/25 font-medium mt-0.5">This Quarter</div>
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">Portfolio Health</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">This Quarter</div>
         </div>
         <div class="p-5 flex flex-col gap-4">
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[11px] text-white/50">On Track</span>
-              <span class="font-mono text-[10px] text-green font-medium">4 projects</span>
+              <span class="text-[11px] text-white/60">On Track</span>
+              <span class="font-mono text-[10px] text-green font-semibold [text-shadow:0_0_6px_rgba(76,187,23,0.5)]">4 projects</span>
             </div>
-            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-green" style="width:67%"></div></div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden shadow-[inset_0_1px_1px_rgba(0,0,0,0.2)]"><div class="h-full bg-green shadow-[0_0_6px_rgba(76,187,23,0.5)]" style="width:67%"></div></div>
           </div>
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[11px] text-white/50">Needs Attention</span>
-              <span class="font-mono text-[10px] text-amber font-medium">2 projects</span>
+              <span class="text-[11px] text-white/60">Needs Attention</span>
+              <span class="font-mono text-[10px] text-amber font-semibold [text-shadow:0_0_6px_rgba(232,168,56,0.5)]">2 projects</span>
             </div>
-            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-amber" style="width:33%"></div></div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden shadow-[inset_0_1px_1px_rgba(0,0,0,0.2)]"><div class="h-full bg-amber shadow-[0_0_6px_rgba(232,168,56,0.45)]" style="width:33%"></div></div>
           </div>
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[11px] text-white/50">At Risk</span>
-              <span class="font-mono text-[10px] text-pink font-medium">0 projects</span>
+              <span class="text-[11px] text-white/60">At Risk</span>
+              <span class="font-mono text-[10px] text-pink font-semibold">0 projects</span>
             </div>
-            <div class="h-[3px] bg-white/[0.06] overflow-hidden"><div class="h-full bg-pink" style="width:0%"></div></div>
+            <div class="h-[3px] bg-white/[0.06] overflow-hidden shadow-[inset_0_1px_1px_rgba(0,0,0,0.2)]"><div class="h-full bg-pink" style="width:0%"></div></div>
           </div>
-          <div class="pt-3 border-t border-white/[0.06] text-[11px] text-white/30">Avg. completion: <strong class="text-white/60">58%</strong></div>
+          <div class="pt-3 border-t border-white/[0.06] text-[11px] text-white/40 font-mono">Avg. completion <strong class="text-white font-semibold">58%</strong></div>
         </div>
       </div>
 
@@ -436,7 +505,7 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
       <div class="border-l-2 border-green bg-white px-5 py-4">
         <div class="text-[12.5px] font-semibold text-txt mb-1">Need access to a project?</div>
         <div class="text-[11.5px] text-txt-sec leading-relaxed mb-2">If you've been assigned to a project but can't see it here, request access and we'll sort it within one business day.</div>
-        <a href="#" class="text-[12px] font-bold text-green hover:underline">Request project access →</a>
+        <a href="under-development.html?from=request-project-access" class="text-[12px] font-bold text-green hover:text-green-dark transition-colors">Request project access →</a>
       </div>
 
     </div>
@@ -445,21 +514,21 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
 </div>
 
 <!-- ═══ EQUITY + FOOTER ═══ -->
-<div class="equity-3d">
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
   <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
-    <div class="marker-shimmer w-[3px] h-9 shrink-0"></div>
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
     <div>
       <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
       <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
     </div>
-    <a href="#" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
   </div>
   <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
     <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
     <div class="flex gap-5">
-      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
-      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
-      <a href="#" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
     </div>
   </div>
 </div>
@@ -468,9 +537,8 @@ tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','
 function filterProjects(status) {
   const rows = document.querySelectorAll('.proj-row');
   const btns = document.querySelectorAll('.filter-btn');
-  btns.forEach(b => { b.classList.remove('active'); b.classList.add('text-txt-sec'); });
+  btns.forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-  event.target.classList.remove('text-txt-sec');
 
   let count = 0;
   rows.forEach(row => {
@@ -486,6 +554,30 @@ function filterProjects(status) {
   });
   document.getElementById('visibleCount').textContent = count;
 }
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
 </script>
 
 </body>

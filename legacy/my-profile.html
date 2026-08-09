@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{
+  colors:{
+    navy:'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','navy-rec':'#0b1c35',
+    green:'#4CBB17','green-dark':'#3da312','green-bright':'#7de852','green-soft':'#b8f5a0',
+    pink:'#E91E8C',amber:'#E8A838',
+    'off-white':'#F8F7F4','warm-gray':'#F0EEEA',
+    rule:'#D0CCC4','rule-light':'#E8E5DF',
+    txt:'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5',
+  },
+  fontFamily:{
+    display:['"Playfair Display"','Georgia','serif'],
+    body:['"IBM Plex Sans"','-apple-system','sans-serif'],
+    mono:['"IBM Plex Mono"','"SF Mono"','monospace'],
+  },
+}}}
+</script>
+<style>
+  /* Shimmer text */
+  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+  .shimmer-text{background:linear-gradient(135deg,#3da312 0%,#4CBB17 20%,#7de852 35%,#b8f5a0 42%,#4CBB17 50%,#3da312 65%,#5cd42a 80%,#a4f08a 88%,#4CBB17 100%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 6s ease-in-out infinite}
+  .shimmer-text-d{animation-delay:.4s}
+  .shimmer-bar{background:linear-gradient(180deg,#4CBB17,#7de852,#4CBB17);background-size:100% 200%;animation:shimmer 6s ease-in-out infinite}
+
+  /* Nav active */
+  .nav-active{position:relative}
+  .nav-active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:#4CBB17;box-shadow:0 0 8px rgba(76,187,23,0.6)}
+
+  /* Avatar dropdown */
+  .profile-panel{position:absolute;top:calc(100% + 12px);right:0;width:240px;background:#fff;border:1px solid #D0CCC4;box-shadow:0 1px 2px rgba(15,35,64,0.06),0 16px 40px rgba(15,35,64,0.18);z-index:300;opacity:0;transform:translateY(-8px) scale(0.98);pointer-events:none;transition:opacity .25s cubic-bezier(0.16,1,0.3,1),transform .25s cubic-bezier(0.16,1,0.3,1)}
+  .profile-panel.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  .profile-panel::before{content:'';position:absolute;top:-6px;right:14px;width:12px;height:12px;background:#fff;border-top:1px solid #D0CCC4;border-left:1px solid #D0CCC4;transform:rotate(45deg)}
+  .p-link{display:flex;align-items:center;gap:11px;padding:10px 18px;font-size:12.5px;font-weight:500;color:#1B365D;text-decoration:none;transition:background .2s,color .2s,padding-left .25s cubic-bezier(0.16,1,0.3,1)}
+  .p-link:hover{background:#F8F7F4;color:#3da312;padding-left:22px}
+  .p-link svg,.p-link-danger svg{color:#8A95A5;transition:color .2s;flex-shrink:0}
+  .p-link:hover svg{color:#3da312}
+  .p-link-danger{color:#E91E8C}
+  .p-link-danger:hover{background:rgba(233,30,140,.05);color:#E91E8C}
+  .avatar-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#3da312 0%,#4CBB17 50%,#7de852 100%);border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer;position:relative;box-shadow:0 0 0 2px rgba(76,187,23,0.2),0 2px 6px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.25);transition:box-shadow .3s,transform .3s}
+  .avatar-btn:hover{transform:scale(1.06);box-shadow:0 0 0 3px rgba(76,187,23,0.35),0 0 18px rgba(76,187,23,0.45),0 2px 8px rgba(0,0,0,0.4)}
+  .avatar-dot{position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#fff;border:1.5px solid #0F2340}
+  .search-wrap:focus-within{border-color:#4CBB17!important;box-shadow:0 0 12px rgba(76,187,23,0.15)}
+
+  /* Card surfaces */
+  .card-light{background:linear-gradient(180deg,#ffffff 0%,#fbfaf6 100%);border:1px solid #E0DCD3;box-shadow:inset 0 1px 0 rgba(255,255,255,0.9),0 1px 2px rgba(15,35,64,0.04),0 10px 28px rgba(15,35,64,0.07)}
+  .card-dark{background:linear-gradient(180deg,#17304f 0%,#0F2340 45%,#0b1c35 100%);border:1px solid rgba(255,255,255,0.04);border-top-color:rgba(255,255,255,0.08);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 8px 24px rgba(0,0,0,0.20),0 2px 6px rgba(0,0,0,0.12)}
+
+  /* Edit fields — only active in edit-mode */
+  .edit-field{background:transparent;border:none;outline:none;width:100%;font-family:inherit;font-size:inherit;font-weight:inherit;color:inherit;padding:0;cursor:default;transition:all .2s}
+  body.edit-mode .edit-field{background:#F8F7F4;border:1px solid #D0CCC4;padding:6px 10px;cursor:text}
+  body.edit-mode .edit-field:focus{border-color:#4CBB17;background:#fff;box-shadow:0 0 0 3px rgba(76,187,23,0.1)}
+  .edit-area{background:transparent;border:none;outline:none;width:100%;font-family:inherit;font-size:inherit;color:inherit;padding:0;cursor:default;resize:none;transition:all .2s;line-height:1.65}
+  body.edit-mode .edit-area{background:#F8F7F4;border:1px solid #D0CCC4;padding:8px 10px;cursor:text;resize:vertical}
+  body.edit-mode .edit-area:focus{border-color:#4CBB17;background:#fff;box-shadow:0 0 0 3px rgba(76,187,23,0.1)}
+  .edit-select{background:transparent;border:none;outline:none;font-family:inherit;font-size:inherit;color:inherit;padding:0;cursor:default;-webkit-appearance:none;transition:all .2s}
+  body.edit-mode .edit-select{background:#F8F7F4;border:1px solid #D0CCC4;padding:6px 28px 6px 10px;cursor:pointer;-webkit-appearance:auto}
+  body.edit-mode .edit-select:focus{border-color:#4CBB17;background:#fff}
+  #progressBar{transition:width 0.6s cubic-bezier(0.25,0.46,0.45,0.94)}
+
+  /* Skill tag */
+  .skill-tag{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border:1px solid #D0CCC4;color:#5A6B80;background:#fff;transition:all .2s}
+  .skill-tag:hover{border-color:#1B365D;color:#1B365D}
+  .skill-remove{display:none;color:#8A95A5;cursor:pointer;font-size:14px;line-height:1}
+  .skill-remove:hover{color:#E91E8C}
+  body.edit-mode .skill-remove{display:inline-flex}
+
+  /* Tab */
+  .tab-btn{position:relative;transition:color .2s}
+  .tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:#4CBB17;box-shadow:0 0 8px rgba(76,187,23,0.5);transform:scaleX(0);transition:transform .3s cubic-bezier(0.16,1,0.3,1)}
+  .tab-btn.tab-active{color:#1B365D;font-weight:600}
+  .tab-btn.tab-active::after{transform:scaleX(1)}
+
+  /* Dark row hover */
+  .dark-row{border-top:1px solid rgba(255,255,255,0.06);transition:background .2s;position:relative}
+  .dark-row:first-child{border-top:none}
+  .dark-row:hover{background:rgba(255,255,255,0.03)}
+
+  /* Avatar upload */
+  .avatar-wrap{position:relative}
+  .avatar-up-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(15,35,64,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;opacity:0;transition:opacity .25s}
+  body.edit-mode .avatar-wrap:hover .avatar-up-overlay{opacity:1}
+  body.edit-mode .avatar-wrap{cursor:pointer}
+
+  /* Save toast */
+  #saveToast{position:fixed;bottom:32px;right:32px;z-index:500;transform:translateY(16px);opacity:0;transition:all .35s cubic-bezier(0.16,1,0.3,1);pointer-events:none}
+  #saveToast.show{transform:translateY(0);opacity:1}
+
+  /* Allocation bars */
+  .alloc-bar-bg{background:#E8E5DF;height:4px;border-radius:0;overflow:hidden;flex:1}
+  .alloc-bar-fill{height:100%;background:#4CBB17;box-shadow:0 0 8px rgba(76,187,23,0.4);border-radius:0}
+
+  /* Doc row hover */
+  .doc-row{border-bottom:1px solid #E8E5DF;transition:background .15s}
+  .doc-row:last-child{border-bottom:none}
+  .doc-row:hover{background:#F8F7F4}
+
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+
+<!--
+  VIEWER ROLES (set via URL param ?viewer=sarah|squad|colleague)
+  sarah     → own profile: full view + edit mode
+  squad     → CEO / IT / CEO assistant: full view, no edit, can delete profile
+  colleague → peer: identity + expertise + past projects + shared active only
+  Default   → sarah
+
+  Extra params for colleague:
+  ?viewer=colleague&shared=acme,govservices   (comma-separated project slugs in common)
+-->
+
+<body class="bg-off-white text-txt font-body antialiased">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center border-b border-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),inset_0_1px_0_rgba(255,255,255,0.04)]"
+     style="background:linear-gradient(180deg,#17304f 0%,#0F2340 40%,#0b1c35 100%)">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html" class="shimmer-text font-display text-xl font-extrabold tracking-tight">JJR</a>
+        <a href="jjr-hub-tw.html" class="shimmer-text shimmer-text-d font-display text-xl font-extrabold tracking-tight">Hub</a>
+      </div>
+      <div class="font-mono text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div>
+    </div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html"       class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center transition-colors hover:text-white/90">Home</a>
+      <a href="active-projects.html"  class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center transition-colors hover:text-white/90">Projects</a>
+      <a href="templates.html"        class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center transition-colors hover:text-white/90">Knowledge</a>
+      <a href="communities.html"      class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center transition-colors hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html"      class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors hover:text-green">Help</a>
+      <a href="start-here.html"       class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-wrap flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all hover:bg-white/[0.08]">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/>
+        <span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span>
+      </div>
+      <div class="relative ml-2.5">
+        <button class="avatar-btn" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="avatar-dot"></span></button>
+        <div class="profile-panel" id="profilePanel" role="menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold text-white" style="background:linear-gradient(135deg,#3da312 0%,#4CBB17 50%,#7de852 100%)">SF</div>
+            <div><div class="font-display text-[15px] font-bold text-navy">Sarah Foster</div><div class="font-mono text-[9.5px] text-txt-muted tracking-[1.2px] uppercase mt-0.5">Consultant</div></div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="p-link" style="color:#4CBB17"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="color:#4CBB17"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="p-link"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="p-link p-link-danger"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- CONTEXT BAR -->
+<div class="mt-14 border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)]"
+     style="background:linear-gradient(180deg,#152a48 0%,#1B365D 50%,#1e3a63 100%)">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-2 font-mono text-[10px] text-white/30 tracking-wide">
+      <a href="jjr-hub-tw.html" class="hover:text-white/60 transition-colors">Home</a>
+      <span class="text-white/15">/</span>
+      <a href="consultant-directory.html" class="hover:text-white/60 transition-colors">Directory</a>
+      <span class="text-white/15">/</span>
+      <span class="text-white/50" id="breadcrumbName">Sarah Foster</span>
+    </div>
+    <!-- Role-aware action bar -->
+    <div class="flex items-center gap-3" id="actionBar"></div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-28 max-md:px-6">
+
+  <!-- ROLE BANNER (injected by JS) -->
+  <div id="roleBanner" class="hidden mb-6"></div>
+
+  <!-- PROFILE HERO -->
+  <div class="card-light mb-8 relative overflow-hidden">
+    <!-- Edit mode strip -->
+    <div id="editStrip" class="hidden bg-green/10 border-b border-green/20 px-8 py-2.5 flex items-center gap-3">
+      <svg width="13" height="13" fill="none" stroke="#3da312" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">Edit mode — changes save automatically</span>
+      <button onclick="exitEdit()" class="ml-auto font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark border border-green/30 px-3 py-1 hover:bg-green/10 transition-all">Done Editing</button>
+    </div>
+
+    <div class="p-8 flex items-start gap-8 max-md:flex-col">
+      <!-- Avatar -->
+      <div class="flex-shrink-0 text-center">
+        <div class="avatar-wrap" id="avatarZone">
+          <div class="w-[100px] h-[100px] rounded-full flex items-center justify-center font-display text-3xl font-bold text-white"
+               style="background:linear-gradient(135deg,#3da312 0%,#4CBB17 50%,#7de852 100%);box-shadow:0 0 0 3px rgba(76,187,23,0.25),0 4px 16px rgba(0,0,0,0.15)">SF</div>
+          <div class="avatar-up-overlay">
+            <svg width="18" height="18" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span class="font-mono text-[8px] tracking-[1px] uppercase text-white/80">Change</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-center gap-1.5 mt-2.5">
+          <div class="w-1.5 h-1.5 rounded-full bg-green" style="box-shadow:0 0 6px rgba(76,187,23,0.5)"></div>
+          <span class="font-mono text-[9px] tracking-[1px] uppercase text-txt-muted">Active</span>
+        </div>
+      </div>
+
+      <!-- Identity -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-4 mb-4 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <input type="text" class="edit-field font-display text-[1.85rem] font-bold text-navy tracking-tight leading-none block" id="fName" value="Sarah Foster" readonly/>
+            <input type="text" class="edit-field font-body text-[15px] text-txt-sec font-medium mt-1 block" id="fTitle" value="Consultant" readonly/>
+          </div>
+          <!-- Colleague: message button -->
+          <div id="msgBtn" class="hidden">
+            <a href="under-development.html?from=message-sarah" class="inline-flex items-center gap-2 font-body text-xs font-bold text-white px-4 py-2.5 transition-all hover:opacity-90"
+               style="background:#1B365D;box-shadow:0 2px 8px rgba(27,54,93,0.2)">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Message Sarah
+            </a>
+          </div>
+        </div>
+
+        <!-- Meta chips -->
+        <div class="flex items-center flex-wrap gap-x-5 gap-y-2 mb-5">
+          <div class="flex items-center gap-1.5 text-[12.5px] text-txt-sec">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <select class="edit-select text-[12.5px] text-txt-sec" id="fServiceLine" disabled>
+              <option selected>Procurement &amp; Strategy</option>
+              <option>Environmental Justice</option>
+              <option>Operations &amp; HR</option>
+              <option>Research &amp; Analytics</option>
+              <option>Technology &amp; Innovation</option>
+            </select>
+          </div>
+          <div class="w-px h-3.5 bg-rule"></div>
+          <div class="flex items-center gap-1.5 text-[12.5px] text-txt-sec">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="text-txt-muted text-[12px]">Reports to</span>
+            <input type="text" class="edit-field text-[12.5px] text-txt-sec" id="fReportsTo" value="Jenna Williams (CEO)" readonly/>
+          </div>
+          <div class="w-px h-3.5 bg-rule"></div>
+          <div class="flex items-center gap-1.5 text-[12.5px] text-txt-sec">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <span class="text-txt-muted text-[12px]">Joined</span>
+            <input type="text" class="edit-field text-[12.5px] text-txt-sec" id="fJoined" value="March 2023" readonly/>
+          </div>
+          <div class="w-px h-3.5 bg-rule"></div>
+          <div class="flex items-center gap-1.5 text-[12.5px] text-txt-sec">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <input type="text" class="edit-field text-[12.5px] text-txt-sec" id="fPronouns" value="she/her" readonly placeholder="Add pronouns"/>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <textarea class="edit-area text-[13.5px] text-txt-sec leading-[1.65] w-full" id="fBio" rows="2" readonly
+                  placeholder="Add a short bio...">Procurement consultant with a focus on environmental justice and public sector engagements. 3 years at JJR, specialising in vendor assessment and community-centered procurement frameworks.</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="flex items-center border-b border-rule mb-8 gap-0" id="tabBar">
+    <button class="tab-btn tab-active font-body text-[13px] font-medium text-txt-sec px-5 py-3 border-b-2 border-transparent" data-tab="overview" onclick="switchTab('overview',this)">Overview</button>
+    <button class="tab-btn font-body text-[13px] font-medium text-txt-sec px-5 py-3 border-b-2 border-transparent" data-tab="projects" onclick="switchTab('projects',this)">Projects</button>
+    <button class="tab-btn font-body text-[13px] font-medium text-txt-sec px-5 py-3 border-b-2 border-transparent" data-tab="settings" id="settingsTab" onclick="switchTab('settings',this)">Account Settings</button>
+  </div>
+
+  <!-- TAB: OVERVIEW -->
+  <div id="tab-overview" class="grid grid-cols-[1fr_360px] gap-10 max-lg:grid-cols-1">
+
+    <!-- LEFT: Content sections -->
+    <div class="flex flex-col gap-8">
+
+      <!-- Past Project Highlights -->
+      <div>
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Past Project Highlights <div class="flex-1 h-px bg-rule"></div>
+          <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-green/30 text-green-dark bg-green/5">Everyone</span>
+        </div>
+        <div class="card-light divide-y divide-rule-light">
+          <a href="under-development.html?from=project-doe" class="block p-6 hover:bg-off-white transition-colors group">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy group-hover:text-green-dark transition-colors">DoE Workforce Planning Initiative</div>
+              <span class="font-mono text-[9px] tracking-[1px] uppercase px-2 py-0.5 bg-green/10 text-green-dark shrink-0">2024</span>
+            </div>
+            <div class="text-[12px] text-txt-muted mb-1.5">Procurement &amp; Strategy · GovServices</div>
+            <div class="text-[12.5px] text-txt-sec leading-[1.65]">Vendor assessment framework and community outreach protocol for a 12-month workforce planning engagement.</div>
+          </a>
+          <a href="under-development.html?from=project-ej" class="block p-6 hover:bg-off-white transition-colors group">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy group-hover:text-green-dark transition-colors">EJ Screening Toolkit — Phase 2</div>
+              <span class="font-mono text-[9px] tracking-[1px] uppercase px-2 py-0.5 bg-green/10 text-green-dark shrink-0">2024</span>
+            </div>
+            <div class="text-[12px] text-txt-muted mb-1.5">Environmental Justice · EPA Region 1</div>
+            <div class="text-[12.5px] text-txt-sec leading-[1.65]">Led data collection and community engagement for the second phase of the EJ screening toolkit.</div>
+          </a>
+          <a href="under-development.html?from=project-acme-prev" class="block p-6 hover:bg-off-white transition-colors group">
+            <div class="flex items-start justify-between gap-3 mb-1">
+              <div class="font-display text-[0.95rem] font-bold text-navy group-hover:text-green-dark transition-colors">Acme Corp Digital Transformation</div>
+              <span class="font-mono text-[9px] tracking-[1px] uppercase px-2 py-0.5 bg-warm-gray text-txt-muted shrink-0">2023</span>
+            </div>
+            <div class="text-[12px] text-txt-muted mb-1.5">Technology &amp; Innovation · Acme Corp</div>
+            <div class="text-[12.5px] text-txt-sec leading-[1.65]">Supported procurement strategy for vendor selection across the digital infrastructure roadmap.</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Expertise & Skills -->
+      <div>
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Expertise &amp; Skills <div class="flex-1 h-px bg-rule"></div>
+          <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-green/30 text-green-dark bg-green/5">Everyone</span>
+        </div>
+        <div class="card-light p-7">
+          <div class="mb-6">
+            <div class="font-mono text-[9px] tracking-[2px] uppercase text-txt-muted mb-3">Sector Focus</div>
+            <div class="flex flex-wrap gap-2" id="sectorTags">
+              <span class="skill-tag">Government<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Environmental Justice<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Public Health<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Nonprofit<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+            </div>
+          </div>
+          <div class="mb-6">
+            <div class="font-mono text-[9px] tracking-[2px] uppercase text-txt-muted mb-3">Core Skills</div>
+            <div class="flex flex-wrap gap-2" id="skillTags">
+              <span class="skill-tag">Vendor Assessment<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Procurement Strategy<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Stakeholder Engagement<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Data Analysis<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Community Frameworks<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+            </div>
+          </div>
+          <div>
+            <div class="font-mono text-[9px] tracking-[2px] uppercase text-txt-muted mb-3">Tools &amp; Platforms</div>
+            <div class="flex flex-wrap gap-2" id="toolTags">
+              <span class="skill-tag">QuickBooks Time<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Microsoft Planner<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">Power BI<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+              <span class="skill-tag">SharePoint<span class="skill-remove" onclick="removeTag(this)">×</span></span>
+            </div>
+          </div>
+          <div id="tagControls" class="hidden mt-5 pt-5 border-t border-rule-light flex flex-wrap gap-2">
+            <button onclick="openAddTag('sector')" class="font-mono text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 border border-rule text-txt-muted hover:border-green hover:text-green-dark transition-all">+ Sector</button>
+            <button onclick="openAddTag('skill')" class="font-mono text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 border border-rule text-txt-muted hover:border-green hover:text-green-dark transition-all">+ Skill</button>
+            <button onclick="openAddTag('tool')" class="font-mono text-[9px] tracking-[1.5px] uppercase px-3 py-1.5 border border-rule text-txt-muted hover:border-green hover:text-green-dark transition-all">+ Tool</button>
+          </div>
+          <div id="addTagRow" class="hidden mt-3 flex items-center gap-2">
+            <input type="text" id="tagInput" placeholder="Type and press Enter"
+                   class="font-mono text-[10px] border border-rule px-3 py-1.5 outline-none focus:border-green transition-colors text-txt-sec bg-white w-[220px]"
+                   onkeydown="addTag(event)"/>
+            <button onclick="closeAddTag()" class="font-mono text-[10px] text-txt-muted hover:text-pink transition-colors">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents — SARAH + SQUAD only -->
+      <div id="documentsSection">
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Documents <div class="flex-1 h-px bg-rule"></div>
+          <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-amber/40 text-amber bg-amber/5">Sarah + Squad</span>
+        </div>
+        <div class="card-light divide-y divide-rule-light">
+          <div class="doc-row flex items-center gap-4 px-6 py-4">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13.5px] font-semibold text-navy">W-9 Tax Form</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-0.5">Uploaded · 12 Jan 2026 · <span class="text-txt-sec">Required</span></div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="font-mono text-[9.5px] tracking-[1.2px] uppercase px-2.5 py-1 border border-green/35 text-green-dark">On File</span>
+              <a href="under-development.html?from=replace-w9" class="font-mono text-[10px] tracking-[1px] uppercase px-3 py-1.5 border border-rule text-txt-sec hover:border-navy hover:text-navy transition-all">Replace</a>
+            </div>
+          </div>
+          <div class="doc-row flex items-center gap-4 px-6 py-4">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13.5px] font-semibold text-navy">Resume / CV</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-0.5">Uploaded · 08 Feb 2026 · <span class="text-txt-sec">Optional</span></div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="font-mono text-[9.5px] tracking-[1.2px] uppercase px-2.5 py-1 border border-green/35 text-green-dark">On File</span>
+              <a href="under-development.html?from=replace-resume" class="font-mono text-[10px] tracking-[1px] uppercase px-3 py-1.5 border border-rule text-txt-sec hover:border-navy hover:text-navy transition-all">Replace</a>
+            </div>
+          </div>
+          <div class="doc-row flex items-center gap-4 px-6 py-4">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13.5px] font-semibold text-navy">PMP Certification</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-0.5">Expires · 30 Jun 2027</div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="font-mono text-[9.5px] tracking-[1.2px] uppercase px-2.5 py-1 border border-green/35 text-green-dark">Current</span>
+              <a href="under-development.html?from=view-pmp" class="font-mono text-[10px] tracking-[1px] uppercase px-3 py-1.5 border border-rule text-txt-sec hover:border-navy hover:text-navy transition-all">View</a>
+            </div>
+          </div>
+          <div class="doc-row flex items-center gap-4 px-6 py-4">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13.5px] font-semibold text-navy">Ethics Training</div>
+              <div class="font-mono text-[10px] text-txt-muted mt-0.5">Annual renewal · Due 15 Mar 2026</div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="font-mono text-[9.5px] tracking-[1.2px] uppercase px-2.5 py-1 border border-pink/40 text-pink bg-pink/5">Due Soon</span>
+              <a href="under-development.html?from=complete-ethics" class="font-mono text-[10px] tracking-[1px] uppercase px-3 py-1.5 border border-green/30 text-green-dark hover:bg-green/5 transition-all">Complete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communities of Practice — SARAH + SQUAD only -->
+      <div id="copSection">
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          My Communities of Practice <div class="flex-1 h-px bg-rule"></div>
+        </div>
+        <div class="card-light divide-y divide-rule-light">
+          <a href="community-detail.html?community=Innovation+%26+AI" class="flex items-center gap-4 px-5 py-4 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0 group-hover:border-green group-hover:text-green transition-all">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13px] font-semibold text-navy group-hover:text-green-dark transition-colors">Innovation &amp; AI</div>
+              <div class="font-mono text-[9.5px] text-txt-muted mt-0.5">Member · 24 members · 8 posts this week</div>
+            </div>
+            <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-green/35 text-green-dark shrink-0">Joined</span>
+          </a>
+          <a href="community-detail.html?community=Project+Craft" class="flex items-center gap-4 px-5 py-4 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 border border-rule flex items-center justify-center text-txt-muted shrink-0 group-hover:border-pink group-hover:text-pink transition-all">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-body text-[13px] font-semibold text-navy group-hover:text-green-dark transition-colors">Project Craft</div>
+              <div class="font-mono text-[9.5px] text-txt-muted mt-0.5">Expert · 19 members · 3 posts this week</div>
+            </div>
+            <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-pink/30 text-pink bg-pink/5 shrink-0">Expert</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- HR & Compliance — SARAH + SQUAD only -->
+      <div id="hrSection">
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          HR &amp; Compliance <div class="flex-1 h-px bg-rule"></div>
+        </div>
+        <div class="card-light divide-y divide-rule-light">
+          <a href="under-development.html?from=compliance-hub" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+            <div><div class="text-[13px] font-semibold text-txt">Compliance Status</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">All policies acknowledged</div></div>
+            <div class="flex items-center gap-1.5 font-mono text-[10px] tracking-[1px] uppercase text-green-dark"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Current</div>
+          </a>
+          <a href="under-development.html?from=quickbooks-time" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+            <div><div class="text-[13px] font-semibold text-txt">Hours Logged This Month</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">QuickBooks Time</div></div>
+            <div class="font-mono text-[12px] font-bold text-navy">142h</div>
+          </a>
+          <a href="under-development.html?from=hr-employment" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+            <div><div class="text-[13px] font-semibold text-txt">Employment Type</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">Classification</div></div>
+            <div class="font-mono text-[11px] text-txt-sec">Full-Time W2</div>
+          </a>
+          <a href="under-development.html?from=hr-review" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+            <div><div class="text-[13px] font-semibold text-txt">Next Review</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">Annual performance</div></div>
+            <div class="font-mono text-[11px] text-txt-sec">Jun 2025</div>
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Personal & Contact — SARAH + SQUAD only -->
+      <div id="contactSection">
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Personal &amp; Contact Info <div class="flex-1 h-px bg-rule"></div>
+          <span class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-amber/40 text-amber bg-amber/5">Sarah + Squad</span>
+        </div>
+        <div class="card-light p-6">
+          <div class="flex flex-col gap-5">
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">Work Email</div>
+              <input type="email" class="edit-field text-[13px] text-txt w-full" id="fEmail" value="s.foster@jjrconsulting.com" readonly/>
+            </div>
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">Mobile Phone</div>
+              <input type="tel" class="edit-field text-[13px] text-txt w-full" id="fPhone" value="+1 (617) 555-0142" readonly/>
+            </div>
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">Office Location</div>
+              <input type="text" class="edit-field text-[13px] text-txt w-full" id="fOffice" value="Boston, MA — Hybrid" readonly/>
+            </div>
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">Time Zone</div>
+              <select class="edit-select text-[13px] text-txt" id="fTimezone" disabled>
+                <option selected>Eastern Time (ET)</option>
+                <option>Central Time (CT)</option>
+                <option>Mountain Time (MT)</option>
+                <option>Pacific Time (PT)</option>
+              </select>
+            </div>
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">LinkedIn</div>
+              <a href="https://linkedin.com/in/sarahfoster" target="_blank" class="text-[13px] text-green-dark hover:underline">linkedin.com/in/sarahfoster</a>
+            </div>
+            <div>
+              <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mb-1.5">Emergency Contact</div>
+              <input type="text" class="edit-field text-[13px] text-txt w-full" id="fEmergency" value="James Foster (617) 555-0199" readonly/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Availability — SARAH + SQUAD only -->
+      <div id="availabilitySection">
+        <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Availability <div class="flex-1 h-px bg-rule"></div>
+        </div>
+        <div class="card-light p-6">
+          <div class="font-display text-[1.05rem] font-bold text-navy mb-0.5">Availability</div>
+          <div class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted mb-5">Capacity &amp; Schedule</div>
+          <div class="border-t border-rule-light divide-y divide-rule-light">
+            <div class="flex items-center justify-between py-3">
+              <span class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted">Status</span>
+              <span class="font-body text-[13.5px] font-semibold text-green">Available</span>
+            </div>
+            <div class="flex items-center justify-between py-3">
+              <span class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted">Weekly Hours</span>
+              <span class="font-body text-[13.5px] font-bold text-navy">40 hrs</span>
+            </div>
+            <div class="flex items-center justify-between py-3">
+              <span class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted">Time Zone</span>
+              <span class="font-body text-[13.5px] font-bold text-navy">ET (UTC–5)</span>
+            </div>
+            <div class="flex items-center justify-between py-3">
+              <span class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted">Preferred Hours</span>
+              <span class="font-body text-[13.5px] font-bold text-navy">9:00 – 17:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /tab-overview -->
+
+  <!-- TAB: PROJECTS -->
+  <div id="tab-projects" class="hidden">
+    <div class="grid grid-cols-[1fr_360px] gap-10 max-lg:grid-cols-1">
+
+      <!-- LEFT: Active Engagements -->
+      <div class="flex flex-col gap-8">
+
+        <div>
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Active Engagements <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-light p-7">
+            <div class="flex flex-col divide-y divide-rule-light">
+              <a href="active-projects.html" class="flex items-center gap-4 py-4 hover:bg-off-white transition-colors group -mx-1 px-1" data-project="acme">
+                <div class="w-2 h-2 rounded-full bg-green shrink-0" style="box-shadow:0 0 6px rgba(76,187,23,0.5)"></div>
+                <div class="flex-1"><div class="font-body text-[13.5px] font-semibold text-navy group-hover:text-green-dark transition-colors">Digital Transformation Roadmap</div><div class="text-[12px] text-txt-muted mt-0.5">Acme Corp · Strategy &amp; Systems Design · 68%</div></div>
+                <span class="font-mono text-[10px] text-green shrink-0">View →</span>
+              </a>
+              <a href="active-projects.html" class="flex items-center gap-4 py-4 hover:bg-off-white transition-colors group -mx-1 px-1" data-project="govservices">
+                <div class="w-2 h-2 rounded-full bg-amber shrink-0" style="box-shadow:0 0 6px rgba(232,168,56,0.5)"></div>
+                <div class="flex-1"><div class="font-body text-[13.5px] font-semibold text-navy group-hover:text-green-dark transition-colors">Workforce Planning Initiative</div><div class="text-[12px] text-txt-muted mt-0.5">GovServices · HR · 85%</div></div>
+                <span class="font-mono text-[10px] text-green shrink-0">View →</span>
+              </a>
+              <a href="active-projects.html" class="flex items-center gap-4 py-4 hover:bg-off-white transition-colors group -mx-1 px-1" data-project="epa">
+                <div class="w-2 h-2 rounded-full bg-navy-mid shrink-0"></div>
+                <div class="flex-1"><div class="font-body text-[13.5px] font-semibold text-navy group-hover:text-green-dark transition-colors">EJ Screening Toolkit Phase 3</div><div class="text-[12px] text-txt-muted mt-0.5">EPA Region 1 · Environmental Justice · 41%</div></div>
+                <span class="font-mono text-[10px] text-green shrink-0">View →</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Now -->
+        <div id="activeNowSection">
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Active Now <div class="flex-1 h-px bg-rule"></div>
+            <span id="activeNowBadge" class="font-mono text-[9px] tracking-[1.2px] uppercase px-2 py-0.5 border border-amber/40 text-amber bg-amber/5">Sarah + Squad</span>
+          </div>
+          <div class="flex flex-col gap-2" id="activeNowList">
+            <a href="active-projects.html" class="card-light p-4 hover:shadow-[0_4px_14px_rgba(27,54,93,0.1)] transition-all group" data-project="acme">
+              <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-green shrink-0" style="box-shadow:0 0 6px rgba(76,187,23,0.5)"></div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-body text-[12.5px] font-semibold text-navy truncate group-hover:text-green-dark transition-colors">Digital Transformation Roadmap</div>
+                  <div class="font-mono text-[9.5px] text-txt-muted mt-0.5">Acme Corp · 68%</div>
+                </div>
+              </div>
+            </a>
+            <a href="active-projects.html" class="card-light p-4 hover:shadow-[0_4px_14px_rgba(27,54,93,0.1)] transition-all group" data-project="govservices">
+              <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-amber shrink-0" style="box-shadow:0 0 6px rgba(232,168,56,0.5)"></div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-body text-[12.5px] font-semibold text-navy truncate group-hover:text-green-dark transition-colors">Workforce Planning Initiative</div>
+                  <div class="font-mono text-[9.5px] text-txt-muted mt-0.5">GovServices · 85%</div>
+                </div>
+              </div>
+            </a>
+            <a href="active-projects.html" class="card-light p-4 hover:shadow-[0_4px_14px_rgba(27,54,93,0.1)] transition-all group" data-project="epa">
+              <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-navy-mid shrink-0"></div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-body text-[12.5px] font-semibold text-navy truncate group-hover:text-green-dark transition-colors">EJ Screening Toolkit Phase 3</div>
+                  <div class="font-mono text-[9.5px] text-txt-muted mt-0.5">EPA Region 1 · 41%</div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Stats + Allocation -->
+      <div class="flex flex-col gap-6">
+
+        <!-- At a Glance -->
+        <div id="glanceSection">
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            At a Glance <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-dark p-6 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <div><div class="font-display text-[1.6rem] font-bold text-white leading-none">7</div><div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/35 mt-1">Active Projects</div></div>
+              <div class="w-10 h-10 flex items-center justify-center" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                <svg width="18" height="18" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+            </div>
+            <div class="h-px bg-white/[0.06]"></div>
+            <div class="flex items-center justify-between">
+              <div><div class="font-display text-[1.6rem] font-bold text-white leading-none">14</div><div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/35 mt-1">Completed Projects</div></div>
+              <div class="w-10 h-10 flex items-center justify-center" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                <svg width="18" height="18" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+            <div class="h-px bg-white/[0.06]"></div>
+            <div class="flex items-center justify-between">
+              <div><div class="font-display text-[1.6rem] font-bold text-white leading-none">3</div><div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/35 mt-1">CoPs Joined</div></div>
+              <div class="w-10 h-10 flex items-center justify-center" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08)">
+                <svg width="18" height="18" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Allocation -->
+        <div id="allocationSection">
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Project Allocation <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-light p-6">
+            <div class="font-display text-[1.05rem] font-bold text-navy mb-0.5">This Quarter</div>
+            <div class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-txt-muted mb-5">Project Allocation</div>
+            <div class="border-t border-rule-light pt-4 flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <span class="text-[12.5px] text-txt w-[90px] shrink-0">Acme Corp</span>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width:55%"></div></div>
+                <span class="font-body text-[13px] font-bold text-navy w-8 text-right shrink-0">55%</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-[12.5px] text-txt w-[90px] shrink-0">Metro Transit</span>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width:30%"></div></div>
+                <span class="font-body text-[13px] font-bold text-navy w-8 text-right shrink-0">30%</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-[12.5px] text-txt w-[90px] shrink-0">Internal / CoP</span>
+                <div class="alloc-bar-bg"><div class="alloc-bar-fill" style="width:15%"></div></div>
+                <span class="font-body text-[13px] font-bold text-navy w-8 text-right shrink-0">15%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Time Tracking -->
+        <div id="timeSection">
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Time Tracking <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-dark p-6">
+            <div class="font-display text-[1.05rem] font-bold text-white mb-0.5">Time Tracking</div>
+            <div class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-green mb-5">QuickBooks Time</div>
+            <div class="flex flex-col gap-4 mb-6">
+              <div class="dark-row flex items-center justify-between pt-4">
+                <span class="text-[13px] text-white/60">This Week</span>
+                <span class="font-display text-[1.4rem] font-bold text-white">32 <span class="font-mono text-[11px] font-normal text-white/35 tracking-[1px] uppercase">hrs</span></span>
+              </div>
+              <div class="dark-row flex items-center justify-between pt-4">
+                <span class="text-[13px] text-white/60">This Month</span>
+                <span class="font-display text-[1.4rem] font-bold text-white">128 <span class="font-mono text-[11px] font-normal text-white/35 tracking-[1px] uppercase">hrs</span></span>
+              </div>
+              <div class="dark-row flex items-center justify-between pt-4">
+                <span class="text-[13px] text-white/60">Billable Rate</span>
+                <span class="font-display text-[1.4rem] font-bold text-white">87 <span class="font-mono text-[11px] font-normal text-white/35 tracking-[1px] uppercase">%</span></span>
+              </div>
+            </div>
+            <a href="under-development.html?from=quickbooks-time" class="block w-full text-center font-body text-[12px] font-bold text-white py-2.5 transition-all hover:opacity-90" style="background:#4CBB17;box-shadow:0 0 18px rgba(76,187,23,0.35)">Log Hours →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /tab-projects -->
+
+  <!-- TAB: SETTINGS -->
+  <div id="tab-settings" class="hidden">
+    <div class="grid grid-cols-[1fr_360px] gap-10 max-lg:grid-cols-1">
+
+      <!-- LEFT: Notification Preferences + Privacy & Visibility -->
+      <div class="flex flex-col gap-8">
+
+        <div>
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Notification Preferences <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-light divide-y divide-rule-light">
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Project Updates</div><div class="text-[12px] text-txt-muted mt-0.5">Milestones, status changes, and team messages</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Community Activity</div><div class="text-[12px] text-txt-muted mt-0.5">New posts in your Communities of Practice</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Compliance Reminders</div><div class="text-[12px] text-txt-muted mt-0.5">Policy deadlines and required training</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Hour Logging Alerts</div><div class="text-[12px] text-txt-muted mt-0.5">Weekly reminders to log hours in QuickBooks</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer"/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Privacy &amp; Visibility <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-light divide-y divide-rule-light">
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Show in Consultant Directory</div><div class="text-[12px] text-txt-muted mt-0.5">Your name and role visible to all JJR staff</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Show Active Projects</div><div class="text-[12px] text-txt-muted mt-0.5">Visible to Squad only — never to colleagues</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+            <div class="px-6 py-4 flex items-center justify-between">
+              <div><div class="text-[13.5px] font-semibold text-txt">Show Skills &amp; Expertise</div><div class="text-[12px] text-txt-muted mt-0.5">Sector focus, skills, and tools visible to all</div></div>
+              <label class="relative inline-flex items-center cursor-pointer"><input type="checkbox" class="sr-only peer" checked/><div class="w-9 h-5 bg-rule peer-checked:bg-green rounded-full transition-colors after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-4 after:h-4 after:rounded-full after:transition-all peer-checked:after:translate-x-4"></div></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Account -->
+      <div class="flex flex-col gap-5">
+        <div>
+          <div class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+            Account <div class="flex-1 h-px bg-rule"></div>
+          </div>
+          <div class="card-light divide-y divide-rule-light">
+            <a href="under-development.html?from=change-password" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+              <div><div class="text-[13px] font-semibold text-txt">Change Password</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">Microsoft SSO managed</div></div>
+              <span class="text-txt-muted text-xs group-hover:text-green group-hover:translate-x-0.5 transition-all">→</span>
+            </a>
+            <a href="under-development.html?from=download-data" class="flex items-center justify-between px-5 py-4 hover:bg-off-white transition-colors group">
+              <div><div class="text-[13px] font-semibold text-txt">Download My Data</div><div class="font-mono text-[10px] text-txt-muted mt-0.5">Export your profile data</div></div>
+              <span class="text-txt-muted text-xs group-hover:text-green group-hover:translate-x-0.5 transition-all">→</span>
+            </a>
+          </div>
+        </div>
+        <div class="card-light px-5 py-4 border-l-2 border-l-pink">
+          <div class="font-mono text-[9.5px] tracking-[1.5px] uppercase text-pink font-medium mb-1.5">Account Actions</div>
+          <div class="text-[12px] text-txt-sec leading-[1.6] mb-3">Need to take a leave of absence or update your employment status?</div>
+          <a href="under-development.html?from=hr-contact" class="text-[12px] font-bold text-pink hover:underline">Contact HR →</a>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-settings -->
+
+
+</div><!-- /page -->
+
+<!-- EQUITY FOOTER -->
+<div class="border-t border-white/[0.06]" style="background:linear-gradient(180deg,#17304f 0%,#0F2340 30%,#0b1c35 100%)">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04]">
+    <div class="shimmer-bar w-[3px] h-9 shrink-0"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/35 leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors hover:text-green-bright">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 hover:text-green transition-colors">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 hover:text-green transition-colors">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 hover:text-green transition-colors">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE TOAST -->
+<div id="saveToast" class="card-dark px-5 py-3.5 flex items-center gap-3 min-w-[240px]">
+  <div class="w-5 h-5 bg-green flex items-center justify-center shrink-0">
+    <svg width="11" height="11" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <span class="font-body text-[13px] font-medium text-white">Profile saved</span>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  ROLE DETECTION
+//  ?viewer=sarah | squad | colleague
+//  ?shared=acme,govservices   (colleague only — shared project slugs)
+// ══════════════════════════════════════════════════════════════
+var params = new URLSearchParams(window.location.search);
+var VIEWER = (params.get('viewer') || 'sarah').toLowerCase();  // sarah | squad | colleague
+var SHARED = (params.get('shared') || '').toLowerCase().split(',').filter(Boolean);
+
+// IDs of sections hidden from colleague — REMOVED FROM DOM (not just display:none)
+var SQUAD_ONLY_SECTIONS = ['contactSection','documentsSection','glanceSection','timeSection','allocationSection','availabilitySection','copSection','hrSection'];
+
+// ══════════════════════════════════════════════════════════════
+//  APPLY ROLE ON LOAD
+// ══════════════════════════════════════════════════════════════
+(function applyRole(){
+  var banner   = document.getElementById('roleBanner');
+  var actionBar= document.getElementById('actionBar');
+  var settingsTab = document.getElementById('settingsTab');
+  var msgBtn   = document.getElementById('msgBtn');
+  var editBtn  = '';
+
+  if (VIEWER === 'sarah') {
+    // ── SARAH: own profile, full edit ──────────────────────────
+    actionBar.innerHTML =
+      '<div class="flex items-center gap-1.5 font-mono text-[9px] tracking-[1.5px] uppercase text-white/30">' +
+        '<svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+        '<span>Your profile</span>' +
+      '</div>' +
+      '<button onclick="toggleEdit()" id="editBtn" class="flex items-center gap-2 font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3 py-1.5 border transition-all" style="color:#4CBB17;border-color:rgba(76,187,23,0.35)">' +
+        '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+        '<span id="editBtnLabel">Edit Profile</span>' +
+      '</button>';
+    settingsTab.style.display = '';
+
+  } else if (VIEWER === 'squad') {
+    // ── SQUAD: full view, read-only, can delete ────────────────
+    banner.className = 'mb-6 flex items-center gap-3 px-5 py-3 border border-amber/25 bg-amber/8 text-amber font-mono text-[10px] tracking-[1.5px] uppercase';
+    banner.innerHTML =
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' +
+      '<span>Squad view — full access, read-only</span>';
+    banner.classList.remove('hidden');
+
+    actionBar.innerHTML =
+      '<span class="font-mono text-[9px] tracking-[1.5px] uppercase text-amber/70">Squad</span>' +
+      '<a href="under-development.html?from=squad-delete-profile" class="flex items-center gap-2 font-mono text-[10px] font-medium tracking-[1.5px] uppercase px-3 py-1.5 border border-pink/35 text-pink hover:bg-pink/5 transition-all">' +
+        '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>' +
+        'Delete Profile' +
+      '</a>';
+    settingsTab.style.display = 'none';
+
+    // Squad can see all sections but NOT edit
+    document.querySelectorAll('.edit-field,.edit-area,.edit-select').forEach(function(el){
+      el.style.pointerEvents = 'none';
+    });
+    document.getElementById('tagControls') && (document.getElementById('tagControls').style.display = 'none');
+    document.querySelectorAll('.skill-remove').forEach(function(el){ el.style.display = 'none'; });
+    // Documents: View only — convert Replace / Complete actions to View
+    document.querySelectorAll('#documentsSection a[href*="replace-"],#documentsSection a[href*="complete-"]').forEach(function(el){
+      var slug = (el.getAttribute('href').match(/from=(replace|complete)-([\w-]+)/) || [])[2] || '';
+      el.setAttribute('href', 'under-development.html?from=view-' + slug);
+      el.textContent = 'View';
+      el.className = 'font-mono text-[10px] tracking-[1px] uppercase px-3 py-1.5 border border-rule text-txt-sec hover:border-navy hover:text-navy transition-all';
+    });
+    // Hide Log Hours button (Squad cannot log hours)
+    var logHoursBtn = document.querySelector('#timeSection a[href*="quickbooks-time"]');
+    if(logHoursBtn) logHoursBtn.style.display = 'none';
+
+  } else {
+    // ── COLLEAGUE: minimal view ────────────────────────────────
+    banner.className = 'mb-6 flex items-center gap-3 px-5 py-3 border border-navy-mid/30 bg-navy/5 text-navy-mid font-mono text-[10px] tracking-[1.5px] uppercase';
+    banner.innerHTML =
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>' +
+      '<span>Colleague view — shared context only</span>';
+    banner.classList.remove('hidden');
+
+    // Show message button
+    msgBtn.classList.remove('hidden');
+
+    // Hide settings tab and edit
+    settingsTab.style.display = 'none';
+    actionBar.innerHTML =
+      '<span class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30">Colleague view</span>';
+
+    // Remove squad-only sections from DOM completely (not just hidden)
+    SQUAD_ONLY_SECTIONS.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){ el.remove(); }
+    });
+
+    // Projects tab handling — hidden by default, shown only when ?shared= is provided
+    applyColleagueProjectFilter();
+
+    document.querySelectorAll('.edit-field,.edit-area,.edit-select').forEach(function(el){
+      el.style.pointerEvents = 'none';
+    });
+    document.querySelectorAll('.skill-remove').forEach(function(el){ el.style.display = 'none'; });
+  }
+})();
+
+// ── Filter active project rows for colleague ──────────────────
+function applyColleagueProjectFilter(){
+  // Colleague (no shared) → Projects tab hidden entirely (1 tab only: Overview)
+  if(SHARED.length === 0) {
+    var pTab = document.querySelector('[data-tab="projects"]');
+    if(pTab) pTab.style.display = 'none';
+    return;
+  }
+  // Colleague + shared → Projects tab visible, only shared rows shown
+  document.querySelectorAll('#tab-projects [data-project]').forEach(function(row){
+    var project = row.getAttribute('data-project');
+    if(SHARED.indexOf(project) === -1){
+      row.style.display = 'none';
+    }
+  });
+  var note = document.createElement('div');
+  note.className = 'px-1 pt-4 font-mono text-[9.5px] text-txt-muted tracking-[0.5px]';
+  note.textContent = 'Other active projects Sarah is on are not shown to you.';
+  document.getElementById('tab-projects').appendChild(note);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  EDIT MODE (sarah only)
+// ══════════════════════════════════════════════════════════════
+var isEdit = false;
+
+function toggleEdit(){
+  if(VIEWER !== 'sarah') return;
+  isEdit = !isEdit;
+  document.body.classList.toggle('edit-mode', isEdit);
+  document.getElementById('editStrip').classList.toggle('hidden', !isEdit);
+  document.querySelectorAll('.edit-field').forEach(function(el){ el.readOnly = !isEdit; });
+  document.querySelectorAll('.edit-area').forEach(function(el){ el.readOnly = !isEdit; });
+  document.querySelectorAll('.edit-select').forEach(function(el){ el.disabled = !isEdit; });
+  var label = document.getElementById('editBtnLabel');
+  if(label) label.textContent = isEdit ? 'Save Profile' : 'Edit Profile';
+  var ctrl = document.getElementById('tagControls');
+  if(ctrl){ ctrl.classList.toggle('hidden', !isEdit); ctrl.classList.toggle('flex', isEdit); }
+  if(!isEdit){ closeAddTag(); showToast(); }
+}
+
+function exitEdit(){ if(isEdit) toggleEdit(); }
+
+// ══════════════════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════════════════
+function switchTab(name, btn){
+  ['overview','projects','settings'].forEach(function(t){
+    var el = document.getElementById('tab-'+t);
+    if(el) el.classList.add('hidden');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('tab-active'); });
+  var target = document.getElementById('tab-'+name);
+  if(target) target.classList.remove('hidden');
+  if(btn) btn.classList.add('tab-active');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SKILL TAGS
+// ══════════════════════════════════════════════════════════════
+var activeTagTarget = null;
+
+function openAddTag(type){
+  activeTagTarget = type + 'Tags';
+  var row = document.getElementById('addTagRow');
+  row.classList.remove('hidden'); row.classList.add('flex');
+  document.getElementById('tagInput').focus();
+}
+
+function closeAddTag(){
+  activeTagTarget = null;
+  var row = document.getElementById('addTagRow');
+  row.classList.add('hidden'); row.classList.remove('flex');
+  document.getElementById('tagInput').value = '';
+}
+
+function addTag(e){
+  if(e.key !== 'Enter' || !activeTagTarget) return;
+  var val = e.target.value.trim();
+  if(!val) return;
+  var container = document.getElementById(activeTagTarget);
+  var tag = document.createElement('span');
+  tag.className = 'skill-tag';
+  tag.innerHTML = val + '<span class="skill-remove" onclick="removeTag(this)">×</span>';
+  container.appendChild(tag);
+  e.target.value = '';
+  showToast();
+}
+
+function removeTag(el){
+  if(!isEdit && VIEWER === 'sarah') return;
+  el.closest('.skill-tag').remove();
+  showToast();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  AUTO-SAVE TOAST
+// ══════════════════════════════════════════════════════════════
+var toastTimer;
+function showToast(){
+  var t = document.getElementById('saveToast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+document.querySelectorAll('.edit-field,.edit-area,.edit-select').forEach(function(el){
+  el.addEventListener('change', function(){ if(isEdit) showToast(); });
+});
+
+// ══════════════════════════════════════════════════════════════
+//  AVATAR DROPDOWN
+// ══════════════════════════════════════════════════════════════
+(function(){
+  var btn=document.getElementById('avatarBtn'), panel=document.getElementById('profilePanel');
+  if(!btn||!panel) return;
+  btn.addEventListener('click',function(e){e.stopPropagation();var o=panel.classList.contains('is-open');panel.classList.toggle('is-open',!o);btn.setAttribute('aria-expanded',(!o).toString());});
+  panel.addEventListener('click',function(e){e.stopPropagation();});
+  document.addEventListener('click',function(){panel.classList.remove('is-open');btn.setAttribute('aria-expanded','false');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){panel.classList.remove('is-open');btn.setAttribute('aria-expanded','false');}});
+})();
+</script>
+</body>
+</html>

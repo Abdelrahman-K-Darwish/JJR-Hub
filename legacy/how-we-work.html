@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — How We Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ FAQ ACCORDION — JS-toggled .open with descendant rules + max-height transition ═══ */
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .faq-item.open { background: linear-gradient(180deg, #FBFAF6 0%, #ffffff 100%); }
+  .faq-item.open .faq-answer { max-height: 400px; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: #4CBB17; }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
+
+<!-- ═══ NAV ═══ -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">How We Work</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="font-mono text-[9px] text-white/30 tracking-wide">Last updated Q1 2026</span>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="mb-12 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7">
+        <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">How We Work</div>
+        <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">This Is How JJR<br/>Gets Things Done.</h1>
+        <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[540px] mb-7">Not abstract principles on a poster. This is the real operating system — how we make decisions, deliver work, treat each other, and hold ourselves accountable. Updated quarterly. If it doesn't match reality, that's worth raising.</p>
+        <div class="flex items-center gap-3 flex-wrap">
+          <a href="#principles" class="font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.12)] transition-[box-shadow,background,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45),0_2px_12px_rgba(0,0,0,0.2)]">Our Principles →</a>
+          <a href="#faqs" class="font-body text-xs font-semibold border border-white/[0.15] text-white/50 px-5 py-2.5 inline-flex items-center transition-all duration-200 hover:border-green hover:text-green">FAQs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATING PRINCIPLES -->
+  <div id="principles" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Operating Principles <span class="flex-1 h-px bg-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted">What good looks like at JJR</span></div>
+
+  <div class="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.45)]"></div>
+      <div class="font-mono text-[48px] font-bold text-green/[0.06] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-green/[0.12]">01</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Equity First, Always</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">Every decision — from who gets access to how we scope work — passes through an equity lens. No exceptions, no shortcuts. We document the reasoning and revisit quarterly.</div>
+      </div>
+    </div>
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.45)]"></div>
+      <div class="font-mono text-[48px] font-bold text-green/[0.06] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-green/[0.12]">02</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Transparent by Default</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">Information is shared unless there's a documented reason not to. No hidden rules about access. If you can't find something, the system failed — not you.</div>
+      </div>
+    </div>
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.45)]"></div>
+      <div class="font-mono text-[48px] font-bold text-green/[0.06] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-green/[0.12]">03</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">One Source of Truth</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">Every document lives in one place. Every template has one version. If you find a duplicate, flag it. Trust in the system depends on this discipline.</div>
+      </div>
+    </div>
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-navy-mid shadow-[0_0_10px_rgba(42,74,120,0.35)]"></div>
+      <div class="font-mono text-[48px] font-bold text-navy/[0.04] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-navy/[0.08]">04</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Decisions Have Owners</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">Every project, page, and process has a named person accountable. Not a committee, not a role — a person. You always know who to ask.</div>
+      </div>
+    </div>
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-navy-mid shadow-[0_0_10px_rgba(42,74,120,0.35)]"></div>
+      <div class="font-mono text-[48px] font-bold text-navy/[0.04] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-navy/[0.08]">05</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Measure What Matters</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">We track utilisation, on-time delivery, and consultant satisfaction — not vanity metrics. Dashboards are open to everyone. Numbers don't hide.</div>
+      </div>
+    </div>
+    <div class="bg-white border border-rule p-7 group relative overflow-hidden transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+      <div class="absolute top-0 left-0 right-0 h-[2px] bg-navy-mid shadow-[0_0_10px_rgba(42,74,120,0.35)]"></div>
+      <div class="font-mono text-[48px] font-bold text-navy/[0.04] absolute top-3 right-5 leading-none select-none pointer-events-none transition-all duration-300 group-hover:text-navy/[0.08]">06</div>
+      <div class="relative z-10">
+        <div class="w-10 h-10 border border-rule flex items-center justify-center text-navy mb-4 transition-all duration-300 group-hover:border-green group-hover:text-green">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Learn and Deposit</div>
+        <div class="text-[12.5px] text-txt-sec leading-relaxed">Every project closeout deposits at least one reusable insight back into the hub. Knowledge hoarding is the only thing we don't tolerate.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+    <div>
+
+      <!-- DELIVERY PROCESS — Visual Timeline -->
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Delivery Process <span class="flex-1 h-px bg-rule"></span></div>
+
+      <div class="bg-white border border-rule p-8 mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+        <div class="flex flex-col">
+
+          <div class="flex gap-5 pb-8 relative">
+            <div class="absolute left-[19px] top-10 bottom-0 w-[2px] bg-[linear-gradient(180deg,#E8E5DF_0%,#D0CCC4_100%)]"></div>
+            <div class="relative z-[1] w-10 h-10 text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 bg-green shadow-[0_0_12px_rgba(76,187,23,0.5),inset_0_1px_0_rgba(255,255,255,0.2)]">1</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[1.08rem] font-bold text-navy mb-1 tracking-tight">Project Initiation</div>
+              <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">SOW signed, workspace created in SharePoint, team assigned via Planner, kickoff meeting scheduled. PM creates the project charter and risk register.</div>
+              <div class="flex items-center gap-4 flex-wrap">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 bg-green/[0.08] border border-green/15 flex items-center justify-center text-green"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="text-[10px] text-txt-muted">PM owns</span></div>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">SOW Template →</a>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Kickoff Deck →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-5 pb-8 relative">
+            <div class="absolute left-[19px] top-10 bottom-0 w-[2px] bg-[linear-gradient(180deg,#E8E5DF_0%,#D0CCC4_100%)]"></div>
+            <div class="relative z-[1] w-10 h-10 text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 bg-navy shadow-[0_0_10px_rgba(27,54,93,0.35),inset_0_1px_0_rgba(255,255,255,0.12)]">2</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[1.08rem] font-bold text-navy mb-1 tracking-tight">Planning &amp; Scoping</div>
+              <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Work plan built with milestones, budget baseline locked, deliverables defined. Team roles confirmed. Stakeholder map and communication cadence established.</div>
+              <div class="flex items-center gap-4 flex-wrap">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 bg-navy/[0.06] border border-navy/10 flex items-center justify-center text-navy"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="text-[10px] text-txt-muted">PM + Lead</span></div>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Budget Template →</a>
+                <a href="pmo.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Risk Playbook →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-5 pb-8 relative">
+            <div class="absolute left-[19px] top-10 bottom-0 w-[2px] bg-[linear-gradient(180deg,#E8E5DF_0%,#D0CCC4_100%)]"></div>
+            <div class="relative z-[1] w-10 h-10 text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 bg-navy shadow-[0_0_10px_rgba(27,54,93,0.35),inset_0_1px_0_rgba(255,255,255,0.12)]">3</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[1.08rem] font-bold text-navy mb-1 tracking-tight">Execution &amp; Delivery</div>
+              <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Deliverables produced against the work plan. Weekly status reports to the client. Hours logged in QuickBooks Time. Scope changes go through the formal change request process.</div>
+              <div class="flex items-center gap-4 flex-wrap">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 bg-green/[0.08] border border-green/15 flex items-center justify-center text-green"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><span class="text-[10px] text-txt-muted">Full team</span></div>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Status Report →</a>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Change Request →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-5 pb-8 relative">
+            <div class="absolute left-[19px] top-10 bottom-0 w-[2px] bg-[linear-gradient(180deg,#E8E5DF_0%,#D0CCC4_100%)]"></div>
+            <div class="relative z-[1] w-10 h-10 text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 bg-amber shadow-[0_0_12px_rgba(232,168,56,0.5),inset_0_1px_0_rgba(255,255,255,0.2)]">4</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[1.08rem] font-bold text-navy mb-1 tracking-tight">Quality Check &amp; Review</div>
+              <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">PMO reviews financials against budget. Deliverables go through QA. Client sign-off secured. Any scope deviations documented and reconciled.</div>
+              <div class="flex items-center gap-4 flex-wrap">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 bg-amber/[0.08] border border-amber/15 flex items-center justify-center text-amber"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><span class="text-[10px] text-txt-muted">PMO + PM</span></div>
+                <a href="pmo.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">QA Checklist →</a>
+                <a href="pmo.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Governance →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-5 relative">
+            <div class="relative z-[1] w-10 h-10 text-white font-mono text-[11px] font-bold flex items-center justify-center shrink-0 bg-navy-mid shadow-[0_0_10px_rgba(42,74,120,0.35),inset_0_1px_0_rgba(255,255,255,0.12)]">5</div>
+            <div class="flex-1 pt-1">
+              <div class="font-display text-[1.08rem] font-bold text-navy mb-1 tracking-tight">Closeout &amp; Knowledge Deposit</div>
+              <div class="text-[12.5px] text-txt-sec leading-relaxed mb-3">Knowledge transfer completed. Lessons learned deposited to relevant CoP. Final invoice sent. Workspace archived. Team expertise profiles updated.</div>
+              <div class="flex items-center gap-4 flex-wrap">
+                <div class="flex items-center gap-2"><div class="w-5 h-5 bg-navy-mid/10 border border-navy-mid/15 flex items-center justify-center text-navy-mid"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="text-[10px] text-txt-muted">PM owns</span></div>
+                <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Closeout Checklist →</a>
+                <a href="pmo.html#lessons" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Submit Lessons →</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ROLE RESPONSIBILITIES -->
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Who Does What <span class="flex-1 h-px bg-rule"></span></div>
+
+      <div class="bg-white border border-rule overflow-hidden mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+        <div class="grid grid-cols-[140px_1fr_1fr_1fr] max-md:grid-cols-1 text-[12px]">
+          <div class="bg-warm-gray/50 p-4 font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium border-b border-rule-light"></div>
+          <div class="bg-warm-gray/50 p-4 font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium border-b border-l border-rule-light">Consultant</div>
+          <div class="bg-warm-gray/50 p-4 font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium border-b border-l border-rule-light">Project Manager</div>
+          <div class="bg-warm-gray/50 p-4 font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium border-b border-l border-rule-light">Leadership</div>
+
+          <div class="p-4 font-semibold text-txt border-b border-rule-light bg-off-white">Hours</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Log daily in QuickBooks Time</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Review team hours weekly</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Monitor utilisation rates</div>
+
+          <div class="p-4 font-semibold text-txt border-b border-rule-light bg-off-white">Deliverables</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Produce assigned work products</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">QA review, manage scope, client delivery</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Final sign-off on key outputs</div>
+
+          <div class="p-4 font-semibold text-txt border-b border-rule-light bg-off-white">Budget</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Stay within allocated hours</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Track budget vs. actual, flag variances</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Approve budget changes over threshold</div>
+
+          <div class="p-4 font-semibold text-txt border-b border-rule-light bg-off-white">Knowledge</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Deposit artifacts to CoP at closeout</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Submit lessons learned form</div>
+          <div class="p-4 text-txt-sec border-b border-l border-rule-light">Curate strategy-level insights</div>
+
+          <div class="p-4 font-semibold text-txt bg-off-white">Escalation</div>
+          <div class="p-4 text-txt-sec border-l border-rule-light">Flag blockers to PM immediately</div>
+          <div class="p-4 text-txt-sec border-l border-rule-light">Escalate to PMO within 24h if unresolved</div>
+          <div class="p-4 text-txt-sec border-l border-rule-light">Final decision authority on scope/budget</div>
+        </div>
+      </div>
+
+      <!-- FAQs -->
+      <div id="faqs" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Frequently Asked Questions <span class="flex-1 h-px bg-rule"></span></div>
+
+      <div class="bg-white border border-rule mb-10 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.25s_both]">
+        <div class="faq-item open border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">How do I get assigned to a project?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">Project assignments are managed by the PMO in coordination with service line leads. When a new engagement starts, the PM identifies required roles and the PMO matches available consultants based on skills, capacity, and development goals. If you want to be considered for a specific type of work, update your consultant profile with your expertise areas and let your service line steward know.</div></div>
+        </div>
+        <div class="faq-item border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">What happens if a project goes over budget?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">The PM flags the variance to the PMO as soon as it's identified — not after it's happened. Variances under 10% are managed at the PM level with documentation. Anything over 10% requires PMO review and leadership approval. The Budget &amp; Scope template includes a built-in variance tracker.</div></div>
+        </div>
+        <div class="faq-item border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">How often should I log hours?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">Daily. Log your hours in QuickBooks Time at the end of each working day. This isn't bureaucracy — it's how we track project health, invoice clients accurately, and ensure no one is overloaded. Monthly submissions are due on the last business day of each month.</div></div>
+        </div>
+        <div class="faq-item border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">Who do I ask if I can't find a template or resource?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">First, use the Hub search bar — it searches across all pages and document libraries. If you still can't find it, check the Templates page or your service line's Community of Practice. Still stuck? Ask the PMO team directly — they'll either point you to it or create it.</div></div>
+        </div>
+        <div class="faq-item border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">What does "equity-centered consulting" mean in practice?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">It means we ask "who benefits and who's left out?" at every stage of an engagement. From how we structure RFP responses to how we collect community data to how we present findings — equity isn't a separate workstream, it's embedded in the process. The Equity &amp; Impact CoP maintains the toolkits and frameworks.</div></div>
+        </div>
+        <div class="faq-item border-b border-rule-light last:border-b-0 transition-[background] duration-[250ms] hover:bg-[#FBFAF6]" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between px-7 py-5 cursor-pointer">
+            <div class="font-display text-[0.95rem] font-bold text-navy pr-4">How do I escalate a problem on a project?</div>
+            <svg class="faq-chevron text-txt-muted shrink-0 transition-[transform,color] duration-300" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="faq-answer"><div class="px-7 pb-5 text-[13px] text-txt-sec leading-relaxed">Tell your PM first — always. If it's not resolved within 24 hours, the PM escalates to the PMO. If it involves client relationship issues or budget overruns exceeding 10%, leadership gets involved. The Governance Framework document has the full escalation matrix with timelines.</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Tools & Technologies -->
+      <div class="bg-white border border-rule">
+        <div class="px-5 py-4 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">Our Tools</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Standard Stack</div>
+        </div>
+        <div class="p-4 flex flex-col gap-1">
+          <a href="under-development.html?from=quickbooks-time" class="flex items-center gap-3 px-3 py-3 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 bg-green/[0.08] border border-green/15 flex items-center justify-center text-green shrink-0"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+            <div><div class="text-[12.5px] font-semibold text-txt">QuickBooks Time</div><div class="text-[10px] text-txt-muted">Hour logging &amp; timesheets</div></div>
+          </a>
+          <a href="under-development.html?from=microsoft-planner" class="flex items-center gap-3 px-3 py-3 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 bg-navy/[0.06] border border-navy/10 flex items-center justify-center text-navy shrink-0"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <div><div class="text-[12.5px] font-semibold text-txt">Microsoft Planner</div><div class="text-[10px] text-txt-muted">Tasks &amp; project boards</div></div>
+          </a>
+          <a href="under-development.html?from=microsoft-teams" class="flex items-center gap-3 px-3 py-3 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 bg-navy/[0.06] border border-navy/10 flex items-center justify-center text-navy shrink-0"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div><div class="text-[12.5px] font-semibold text-txt">Microsoft Teams</div><div class="text-[10px] text-txt-muted">Chat, meetings, channels</div></div>
+          </a>
+          <a href="under-development.html?from=sharepoint" class="flex items-center gap-3 px-3 py-3 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 bg-navy/[0.06] border border-navy/10 flex items-center justify-center text-navy shrink-0"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div><div class="text-[12.5px] font-semibold text-txt">SharePoint</div><div class="text-[10px] text-txt-muted">Document libraries &amp; sites</div></div>
+          </a>
+          <a href="under-development.html?from=power-bi" class="flex items-center gap-3 px-3 py-3 hover:bg-off-white transition-colors group">
+            <div class="w-9 h-9 bg-pink/[0.06] border border-pink/15 flex items-center justify-center text-pink shrink-0"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div><div class="text-[12.5px] font-semibold text-txt">Power BI</div><div class="text-[10px] text-txt-muted">Dashboards &amp; analytics</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- SOPs Quick Links -->
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+        <div class="px-5 py-4 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">SOPs &amp; Policies</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">Standard Procedures</div>
+        </div>
+        <div class="p-3 flex flex-col">
+          <a href="under-development.html?from=project-setup-sop" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Project Setup SOP</a>
+          <a href="under-development.html?from=client-communication-sop" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Client Communication SOP</a>
+          <a href="under-development.html?from=data-handling-policy" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Data Handling Policy</a>
+          <a href="under-development.html?from=expense-reimbursement-sop" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Expense Reimbursement SOP</a>
+          <a href="under-development.html?from=conflict-of-interest-policy" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Conflict of Interest Policy</a>
+          <a href="under-development.html?from=quality-assurance-sop" class="pl-2 flex items-center gap-2.5 py-2 text-[12px] font-medium text-white/70 hover:text-green transition-all duration-200 hover:pl-3"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-white/35 shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Quality Assurance SOP</a>
+        </div>
+      </div>
+
+      <!-- Suggest improvement -->
+      <div class="bg-white border border-rule px-5 py-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">This page is alive</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5">If something here doesn't match how things actually work, say so. This page is updated quarterly and your input shapes it.</div>
+        <a href="under-development.html?from=suggest-an-update" class="text-[12px] font-bold text-green hover:text-green-dark transition-colors">Suggest an update →</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleFaq(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Start Here</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78',
+        'green':'#4CBB17','green-dark':'#3da312',
+        'pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838',
+        'off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC',
+        'rule':'#D0CCC4','rule-light':'#E8E5DF',
+        'txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5',
+      },
+      fontFamily: {
+        'display':['"Playfair Display"','Georgia','serif'],
+        'body':['"IBM Plex Sans"','-apple-system','sans-serif'],
+        'mono':['"IBM Plex Mono"','"SF Mono"','monospace'],
+      },
+    },
+  },
+}
+</script>
+<style>
+  body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+
+  .nav-3d {
+    background: linear-gradient(180deg, #17304f 0%, #0F2340 40%, #0b1c35 100%);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .context-recessed {
+    background: linear-gradient(180deg, #152a48 0%, #1B365D 50%, #1e3a63 100%);
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.02);
+  }
+  .shimmer {
+    background: linear-gradient(135deg, #3da312 0%, #4CBB17 20%, #7de852 35%, #b8f5a0 42%, #4CBB17 50%, #3da312 65%, #5cd42a 80%, #a4f08a 88%, #4CBB17 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; animation: shimmer 6s ease-in-out infinite;
+  }
+  .shimmer-delay { animation-delay: 0.4s; }
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+
+  .nav-active::after {
+    content: ''; position: absolute; bottom: 0; left: 16px; right: 16px;
+    height: 1px; background: #4CBB17;
+    box-shadow: 0 0 8px rgba(76,187,23,0.6);
+  }
+  .filter-active::after {
+    content: ''; position: absolute; bottom: 0; left: 10px; right: 10px;
+    height: 1px; background: rgba(255,255,255,0.2);
+  }
+  .equity-3d {
+    background: linear-gradient(180deg, #17304f 0%, #0F2340 30%, #0b1c35 100%);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 -2px 12px rgba(0,0,0,0.1);
+  }
+  .marker-shimmer {
+    background: linear-gradient(180deg, #4CBB17, #7de852, #4CBB17);
+    background-size: 100% 200%; animation: shimmer 6s ease-in-out infinite;
+  }
+  .section-rule { flex: 1; height: 1px; background: #D0CCC4; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .anim-1 { animation: rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both; }
+  .anim-2 { animation: rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s both; }
+  .anim-3 { animation: rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.3s both; }
+  .anim-4 { animation: rise 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.4s both; }
+
+  /* Checklist custom checkbox */
+  .check-item input[type="checkbox"] { display: none; }
+  .check-item label {
+    display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+    padding: 14px 0; border-bottom: 1px solid #E8E5DF;
+    transition: all 0.2s;
+  }
+  .check-item:last-child label { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px; border: 1.5px solid #D0CCC4; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s; margin-top: 1px;
+  }
+  .check-box svg { opacity: 0; transform: scale(0.5); transition: all 0.25s; }
+  .check-item input:checked + label .check-box {
+    background: #4CBB17; border-color: #4CBB17;
+  }
+  .check-item input:checked + label .check-box svg { opacity: 1; transform: scale(1); }
+  .check-item input:checked + label .check-label { color: #8A95A5; text-decoration: line-through; }
+
+  /* Video play button pulse — keyframe used by Tailwind [animation:playPulse_...] */
+  @keyframes playPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(76,187,23,0.3); }
+    50% { box-shadow: 0 0 0 14px rgba(76,187,23,0); }
+  }
+
+  /* Role tab active */
+  .role-tab-active {
+    background: linear-gradient(135deg, #0F2340, #1B365D);
+    color: white; border-color: transparent;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* Progress bar fill animation */
+  .progress-fill { transition: width 0.6s cubic-bezier(0.25,0.46,0.45,0.94); }
+
+  /* ════════════════════════════════════════════════════════════════
+     JJR OLED LUXURY — 3D DEPTH PATTERN REFERENCE
+     Apply this system consistently across all hub sub-pages.
+
+     SURFACE LANGUAGE
+     - Page bg: off-white (#F8F7F4) — warm paper
+     - Dominant card surface: dark navy gradient (card-dark-3d / dark-tile / role-card)
+     - Relief card (one per dense-text section): card-light-3d (floats on warm bg)
+     - Nav + hero use nav-3d (existing gradient #17304f → #0F2340 → #0b1c35)
+
+     DARK 3D RECIPE (.card-dark-3d, .dark-tile, .role-card)
+       background: linear-gradient(180deg,#17304f 0%,#0F2340 45%,#0b1c35 100%)
+       border: 1px solid rgba(255,255,255,0.04); border-top: rgba(255,255,255,0.08)
+       box-shadow: inset 0 1px 0 rgba(255,255,255,0.05),  ← top highlight
+                   0 8px 24px rgba(0,0,0,0.20),          ← wide soft (atmosphere)
+                   0 2px 6px rgba(0,0,0,0.12)            ← tight crisp (raise)
+     Active variant: deeper gradient (#0F2340 → #0b1c35 → #081425)
+
+     LIGHT 3D RECIPE (.card-light-3d)
+       background: linear-gradient(180deg,#ffffff 0%,#fbfaf6 100%)
+       border: 1px solid #E0DCD3
+       box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),
+                   0 1px 2px rgba(15,35,64,0.04),
+                   0 10px 28px rgba(15,35,64,0.07)
+
+     GREEN-ACCENT HOVER MECHANICS
+     - Dark tile/row hover: 2px green bar scales in from left/top (box-shadow green glow)
+     - Role card hover: translateY(6px) + intensified shadow + green top-edge accent
+     - CTA button (.btn-green-glow): 0 0 24px rgba(76,187,23,0.25), → 32px/0.45 on hover
+     - Progress bar fill: 0 0 10px rgba(76,187,23,0.5)
+     - Nav active underline: box-shadow 0 0 8px rgba(76,187,23,0.6)
+     - #1 step markers: bg-green + box-shadow 0 0 12px rgba(76,187,23,0.5)
+     - "Required" pink labels: text-shadow 0 0 8px rgba(233,30,140,0.4)
+
+     ICON FRAMES (never raw SVGs on a surface)
+     .icon-glow       — active: green bg/border/icon, 14px green glow
+     .icon-frame-dark — inactive: white/4% bg, white/8% border, glows green on .group:hover
+
+     INTERACTIVE ROWS ON DARK SURFACES (.dark-row)
+     - 1px top divider: rgba(255,255,255,0.05)
+     - Hover: subtle green gradient bg from left + 2px green left accent (scaleY from top)
+
+     TYPE HIERARCHY INSIDE DARK CARDS
+     - Display title: font-display tracking-tight, white
+     - Monospace sublabel: font-mono 9px, tracking-[1.5px] uppercase, text-green/80 or white/30
+     - Body: text-white/50, leading-[1.65]
+     - Hover title → green; hover arrow → green + translate-x-1
+
+     EASING: cubic-bezier(0.16,1,0.3,1) — "ease out expo"
+     DURATION: 0.35s–0.55s for card transforms; 0.2s–0.3s for colors
+
+     REDUCED MOTION: @media (prefers-reduced-motion: reduce) kills all transitions
+     and reveals .reveal elements immediately.
+     ════════════════════════════════════════════════════════════════ */
+
+  /* ═══ CINEMATIC GLOWS ═══ */
+  .btn-green-glow {
+    box-shadow: 0 0 24px rgba(76,187,23,0.25), 0 2px 8px rgba(0,0,0,0.12);
+    transition: box-shadow 0.3s cubic-bezier(0.16,1,0.3,1), background 0.2s, transform 0.3s;
+  }
+  .btn-green-glow:hover {
+    box-shadow: 0 0 32px rgba(76,187,23,0.45), 0 2px 12px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+  }
+  .search-glow:focus-within {
+    border-color: #4CBB17 !important;
+    box-shadow: 0 0 12px rgba(76,187,23,0.15);
+  }
+
+  /* ═══ SCROLL REVEAL ═══ */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 900ms cubic-bezier(0.16,1,0.3,1), transform 900ms cubic-bezier(0.16,1,0.3,1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ 3D DEPTH SYSTEM ═══ */
+  /* Dark navy panel — the OLED luxury card */
+  .card-dark-3d {
+    background: linear-gradient(180deg, #17304f 0%, #0F2340 45%, #0b1c35 100%);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-top-color: rgba(255,255,255,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 8px 24px rgba(0,0,0,0.20),
+      0 2px 6px rgba(0,0,0,0.12);
+    position: relative;
+  }
+  /* White relief panel — layered shadow, light-catching top edge */
+  .card-light-3d {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfaf6 100%);
+    border: 1px solid #E0DCD3;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      0 1px 2px rgba(15,35,64,0.04),
+      0 10px 28px rgba(15,35,64,0.07);
+    position: relative;
+  }
+
+  /* Role cards — dark 3D with green top-accent on hover + slide */
+  .role-card {
+    background: linear-gradient(180deg, #17304f 0%, #0F2340 45%, #0b1c35 100%);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-top-color: rgba(255,255,255,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 6px 18px rgba(0,0,0,0.18),
+      0 1px 3px rgba(0,0,0,0.10);
+    color: rgba(255,255,255,0.82);
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.4s cubic-bezier(0.16,1,0.3,1),
+      box-shadow 0.4s cubic-bezier(0.16,1,0.3,1),
+      border-color 0.3s;
+  }
+  .role-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: #4CBB17;
+    box-shadow: 0 0 12px rgba(76,187,23,0.6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+  }
+  .role-card:hover {
+    transform: translateY(6px);
+    border-top-color: rgba(255,255,255,0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 18px 36px rgba(0,0,0,0.30),
+      0 4px 10px rgba(0,0,0,0.14);
+  }
+  .role-card:hover::before { transform: scaleX(1); }
+  .role-card.role-tab-active {
+    background: linear-gradient(180deg, #0F2340 0%, #0b1c35 60%, #081425 100%);
+    border-top-color: rgba(255,255,255,0.10);
+  }
+  .role-card.role-tab-active::before { transform: scaleX(1); }
+  .role-card .role-title { color: #ffffff; }
+  .role-card .role-desc { color: rgba(255,255,255,0.52); }
+
+  /* Green-glow icon frame */
+  .icon-glow {
+    background: rgba(76,187,23,0.08);
+    border: 1px solid rgba(76,187,23,0.25);
+    box-shadow: 0 0 14px rgba(76,187,23,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
+    color: #7de852;
+  }
+  .icon-frame-dark {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.55);
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .group:hover .icon-frame-dark {
+    border-color: rgba(76,187,23,0.35);
+    background: rgba(76,187,23,0.08);
+    box-shadow: 0 0 14px rgba(76,187,23,0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+    color: #7de852;
+  }
+
+  /* Dark-surface interactive row (Tools / Policies / Resources) */
+  .dark-row {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.3s, box-shadow 0.3s;
+    position: relative;
+  }
+  .dark-row:first-child { border-top: none; }
+  .dark-row::after {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 2px;
+    background: #4CBB17;
+    box-shadow: 0 0 10px rgba(76,187,23,0.5);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .dark-row:hover {
+    background: linear-gradient(90deg, rgba(76,187,23,0.05) 0%, rgba(76,187,23,0) 40%);
+  }
+  .dark-row:hover::after { transform: scaleY(1); }
+
+  /* Dark tile (Essential Tools grid) */
+  .dark-tile {
+    background: linear-gradient(180deg, #17304f 0%, #0F2340 50%, #0b1c35 100%);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-top-color: rgba(255,255,255,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 6px 18px rgba(0,0,0,0.18),
+      0 1px 3px rgba(0,0,0,0.10);
+    transition:
+      transform 0.4s cubic-bezier(0.16,1,0.3,1),
+      box-shadow 0.4s cubic-bezier(0.16,1,0.3,1),
+      border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .dark-tile::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: #4CBB17;
+    box-shadow: 0 0 10px rgba(76,187,23,0.5);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .dark-tile:hover {
+    transform: translateY(-3px);
+    border-top-color: rgba(255,255,255,0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 14px 32px rgba(0,0,0,0.28),
+      0 4px 10px rgba(0,0,0,0.14);
+  }
+  .dark-tile:hover::before { transform: scaleX(1); }
+
+  /* Alternating section band */
+  .band-off { background: #F2EFE9; border-top: 1px solid #E5E2DC; border-bottom: 1px solid #E5E2DC; }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+  }
+.nav__avatar-wrap{position:relative;margin-left:10px}
+.nav__avatar{width:32px;height:32px;background:linear-gradient(135deg,#3da312 0%,#4CBB17 50%,#7de852 100%);border:1.5px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer;padding:0;box-shadow:0 0 0 2px rgba(76,187,23,0.2),0 2px 6px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.25);transition:box-shadow 0.3s cubic-bezier(0.16,1,0.3,1),transform 0.3s cubic-bezier(0.16,1,0.3,1);letter-spacing:0.3px}
+.nav__avatar:hover{transform:scale(1.06);box-shadow:0 0 0 3px rgba(76,187,23,0.35),0 0 18px rgba(76,187,23,0.45),0 2px 8px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.3)}
+.nav__avatar-dot{position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#fff;border:1.5px solid #0F2340;box-shadow:0 0 4px rgba(255,255,255,0.6);pointer-events:none}
+.dropdown-panel{position:absolute;top:calc(100% + 12px);right:0;background:#ffffff;border:1px solid #D0CCC4;box-shadow:0 1px 2px rgba(15,35,64,0.06),0 16px 40px rgba(15,35,64,0.18),0 4px 12px rgba(15,35,64,0.10);z-index:300;opacity:0;transform:translateY(-8px) scale(0.98);pointer-events:none;transition:opacity 0.25s cubic-bezier(0.16,1,0.3,1),transform 0.25s cubic-bezier(0.16,1,0.3,1)}
+.dropdown-panel.is-open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.dropdown-panel::before{content:'';position:absolute;top:-6px;right:14px;width:12px;height:12px;background:#ffffff;border-top:1px solid #D0CCC4;border-left:1px solid #D0CCC4;transform:rotate(45deg)}
+.profile-panel{width:240px}
+.profile-panel__header{padding:18px;border-bottom:1px solid #E8E5DF;display:flex;align-items:center;gap:12px}
+.profile-panel__avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3da312 0%,#4CBB17 50%,#7de852 100%);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:14px;font-weight:700;color:#fff;box-shadow:0 0 0 2px rgba(76,187,23,0.2),inset 0 1px 0 rgba(255,255,255,0.3);flex-shrink:0}
+.profile-panel__name{font-family:'Playfair Display',Georgia,serif;font-size:15px;font-weight:700;color:#1B365D;letter-spacing:-0.01em}
+.profile-panel__role{font-family:'IBM Plex Mono','SF Mono',monospace;font-size:9.5px;font-weight:500;color:#8A95A5;letter-spacing:1.2px;text-transform:uppercase;margin-top:3px}
+.profile-panel__menu{padding:6px 0}
+.profile-panel__link{display:flex;align-items:center;gap:11px;padding:10px 18px;font-family:'IBM Plex Sans',-apple-system,sans-serif;font-size:12.5px;font-weight:500;color:#1B365D;cursor:pointer;transition:background 0.2s,color 0.2s,padding-left 0.25s cubic-bezier(0.16,1,0.3,1)}
+.profile-panel__link:hover{background:#F8F7F4;color:#3da312;padding-left:22px}
+.profile-panel__link svg{color:#8A95A5;transition:color 0.2s;flex-shrink:0}
+.profile-panel__link:hover svg{color:#3da312}
+.profile-panel__link--danger{color:#E91E8C}
+.profile-panel__link--danger:hover{background:rgba(233,30,140,0.05);color:#E91E8C}
+.profile-panel__link--danger svg{color:#E91E8C;opacity:0.7}
+.profile-panel__divider{height:1px;background:#E8E5DF;margin:4px 0}
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed">
+
+<!-- ═══ NAV ═══ -->
+<div class="nav-3d fixed top-0 left-0 right-0 z-[200] h-14 flex items-center">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center">
+      <div class="flex flex-col">
+        <div class="flex items-baseline gap-1">
+          <a href="jjr-hub-tw.html" class="shimmer font-display text-xl font-extrabold tracking-tight">JJR</a>
+          <a href="jjr-hub-tw.html" class="shimmer shimmer-delay font-display text-xl font-extrabold tracking-tight">Hub</a>
+        </div>
+        <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div>
+      </div>
+    </div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]" />
+        <span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div>
+      </button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
+      <div class="nav__avatar-wrap">
+  <button class="nav__avatar" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="nav__avatar-dot"></span></button>
+  <div class="dropdown-panel profile-panel" id="profilePanel" role="menu" aria-label="Profile menu">
+    <div class="profile-panel__header">
+      <div class="profile-panel__avatar">SF</div>
+      <div>
+        <div class="profile-panel__name">Sarah Foster</div>
+        <div class="profile-panel__role">Consultant</div>
+      </div>
+    </div>
+    <div class="profile-panel__menu">
+      <a href="my-profile.html" class="profile-panel__link"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+      <a href="under-development.html?from=preferences" class="profile-panel__link"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+      <div class="profile-panel__divider"></div>
+      <a href="under-development.html?from=sign-out" class="profile-panel__link profile-panel__link--danger"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+    </div>
+  </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="context-recessed mt-14">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO — Welcome banner -->
+  <div class="anim-1 mb-12">
+    <div class="nav-3d relative overflow-hidden" style="box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);">
+      <!-- Decorative corner -->
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+
+      <div class="grid grid-cols-[1fr_360px] max-lg:grid-cols-1">
+        <!-- Left: Welcome text -->
+        <div class="pl-11 pr-10 pt-9 pb-10 max-md:p-7 flex flex-col justify-center">
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3">Start Here</div>
+          <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">Welcome to<br/>the JJR Hub.</h1>
+          <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[420px] mb-7">Your front door to everything at JJR — tools, templates, projects, people, and knowledge. No assumptions about what you already know. Start here, find your footing, move at your own pace.</p>
+          <div class="flex items-center gap-3">
+            <a href="#checklist" class="btn-green-glow font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 hover:bg-green-dark">Begin Your Checklist →</a>
+          </div>
+        </div>
+
+        <!-- Right: Welcome video -->
+        <div class="border-l border-white/[0.06] flex items-center justify-center px-9 py-8 max-lg:border-l-0 max-lg:border-t max-lg:border-white/[0.06]">
+          <div class="text-center">
+            <button
+              class="w-[72px] h-[72px] bg-green/90 flex items-center justify-center mx-auto mb-4 cursor-pointer
+                     transition-transform duration-200 hover:scale-105 border-0 bg-transparent p-0
+                     [animation:playPulse_2.5s_ease-in-out_infinite]"
+              data-video-trigger
+              data-video-type="stream"
+              data-video-src="#"
+              data-video-title="A Message from Jenna"
+              data-video-duration="2 min"
+              aria-label="Play welcome video from Jenna"
+              style="background:rgba(76,187,23,0.9)"
+            >
+              <svg width="26" height="26" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </button>
+            <div class="font-display text-[0.95rem] font-bold text-white mb-1">A Message from Jenna</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/25">2 min · Welcome Video</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USE CASE SELECTOR -->
+  <div id="roles" class="flex items-center gap-3 mb-4 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+    Why Are You Here? <span class="section-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted italic">Your checklist and resources adapt</span>
+  </div>
+
+  <div class="anim-2 grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mb-14">
+
+    <!-- Scenario 1: New to JJR -->
+    <button onclick="setRole('new')" id="roleNew" class="role-card role-tab-active flex-1 px-6 py-6 text-left cursor-pointer group">
+      <div class="flex items-center gap-3 mb-3">
+        <div data-icon-wrap class="icon-glow w-10 h-10 flex items-center justify-center shrink-0">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div>
+          <div class="role-title font-display text-[1.05rem] font-bold tracking-tight leading-none">New to JJR</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">First week</div>
+        </div>
+      </div>
+      <div class="role-desc text-[12px] leading-[1.65]">Setting up tools, understanding how we work, and completing your first-week requirements.</div>
+    </button>
+
+    <!-- Scenario 2: Joining a Project -->
+    <button onclick="setRole('joining')" id="roleJoining" class="role-card flex-1 px-6 py-6 text-left cursor-pointer group">
+      <div class="flex items-center gap-3 mb-3">
+        <div data-icon-wrap class="icon-frame-dark w-10 h-10 flex items-center justify-center shrink-0">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="role-title font-display text-[1.05rem] font-bold tracking-tight leading-none">Joining a Project</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">Mid-stream onboarding</div>
+        </div>
+      </div>
+      <div class="role-desc text-[12px] leading-[1.65]">Dropped onto an active engagement and need to find the workspace, meet the team, and get up to speed.</div>
+    </button>
+
+    <!-- Scenario 3: Returning / Refreshing -->
+    <button onclick="setRole('returning')" id="roleReturning" class="role-card flex-1 px-6 py-6 text-left cursor-pointer group">
+      <div class="flex items-center gap-3 mb-3">
+        <div data-icon-wrap class="icon-frame-dark w-10 h-10 flex items-center justify-center shrink-0">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        </div>
+        <div>
+          <div class="role-title font-display text-[1.05rem] font-bold tracking-tight leading-none">Back &amp; Re-orienting</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">After time away</div>
+        </div>
+      </div>
+      <div class="role-desc text-[12px] leading-[1.65]">Back from leave or returning to the Hub after a gap — find what changed and pick up where you left off.</div>
+    </button>
+
+    <!-- Scenario 4: People Manager -->
+    <button onclick="setRole('manager')" id="roleManager" class="role-card flex-1 px-6 py-6 text-left cursor-pointer group">
+      <div class="flex items-center gap-3 mb-3">
+        <div data-icon-wrap class="icon-frame-dark w-10 h-10 flex items-center justify-center shrink-0">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="role-title font-display text-[1.05rem] font-bold tracking-tight leading-none">People Manager</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">Steward &amp; lead</div>
+        </div>
+      </div>
+      <div class="role-desc text-[12px] leading-[1.65]">Onboarding your team, checking compliance status, and making sure your people have access to what they need.</div>
+    </button>
+
+  </div>
+
+  <!-- MAIN GRID: Checklist + Sidebar -->
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+
+    <!-- LEFT: Checklist + Context Section + Policies -->
+    <div>
+
+      <!-- CHECKLIST -->
+      <div id="checklist" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+        <span id="checklistLabel">First Steps Checklist</span> <span class="section-rule"></span>
+      </div>
+
+      <div class="anim-3 card-light-3d p-8 mb-14">
+        <div class="flex items-center justify-between mb-5">
+          <div class="font-display text-[1.1rem] font-bold text-navy" id="checklistTitle">Your Progress</div>
+          <div class="font-mono text-[11px] text-txt-muted"><span id="progressCount">0</span> of <span id="progressTotal">8</span> complete</div>
+        </div>
+        <div class="h-[4px] bg-warm-gray mb-8 overflow-hidden" style="box-shadow: inset 0 1px 2px rgba(15,35,64,0.06);">
+          <div id="progressBar" class="progress-fill h-full bg-green" style="width: 0%; box-shadow: 0 0 10px rgba(76,187,23,0.5);"></div>
+        </div>
+        <div id="checklistBody"></div>
+      </div>
+
+      <!-- CONTEXT SECTION (tools / updates / team tools — changes per role) -->
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+        <span id="contextSectionLabel">Essential Tools</span> <span class="section-rule"></span>
+      </div>
+      <div class="anim-3 grid grid-cols-2 max-md:grid-cols-1 gap-4 mb-14" id="contextTools"></div>
+
+      <!-- POLICIES SECTION -->
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+        <span id="policiesSectionLabel">Key Policies</span> <span class="section-rule"></span>
+      </div>
+      <div class="anim-4 card-dark-3d mb-10" id="policiesBody"></div>
+
+      <!-- LOCKED CONTENT GATE (new hires only) -->
+      <div id="lockedGate" class="hidden mb-10">
+        <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">
+          Advanced Access <span class="section-rule"></span>
+        </div>
+        <div class="card-dark-3d overflow-hidden relative">
+          <div class="px-7 py-5 border-b border-white/[0.06] select-none pointer-events-none" style="filter:blur(3px);opacity:0.35">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="icon-frame-dark w-8 h-8 flex items-center justify-center shrink-0">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg>
+              </div>
+              <span class="font-display text-[0.9rem] font-bold text-white">PMO &amp; Reporting</span>
+            </div>
+            <div class="text-[11.5px] text-white/40">Project financials, KPI dashboards, and lessons learned...</div>
+          </div>
+          <div class="px-7 py-5 border-b border-white/[0.06] select-none pointer-events-none" style="filter:blur(3px);opacity:0.35">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="icon-frame-dark w-8 h-8 flex items-center justify-center shrink-0">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <span class="font-display text-[0.9rem] font-bold text-white">Communities of Practice</span>
+            </div>
+            <div class="text-[11.5px] text-white/40">Innovation &amp; AI, Equity &amp; Impact, Project Craft...</div>
+          </div>
+          <div class="px-7 py-5 select-none pointer-events-none" style="filter:blur(3px);opacity:0.35">
+            <div class="flex items-center gap-3 mb-2">
+              <div class="icon-frame-dark w-8 h-8 flex items-center justify-center shrink-0">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <span class="font-display text-[0.9rem] font-bold text-white">Executive &amp; Strategy</span>
+            </div>
+            <div class="text-[11.5px] text-white/40">Firm roadmap, OKRs, quarterly priorities...</div>
+          </div>
+          <!-- Lock overlay -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-3"
+               style="background: linear-gradient(180deg, rgba(15,35,64,0.75) 0%, rgba(11,28,53,0.95) 100%);">
+            <div class="w-10 h-10 border border-white/20 flex items-center justify-center text-white/40">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="text-center px-6">
+              <div class="font-display text-[0.95rem] font-bold text-white mb-1.5">Available after onboarding</div>
+              <div class="text-[11.5px] text-white/45 max-w-[300px] leading-relaxed">These sections open once your checklist is complete and compliance is done. Usually takes a few days.</div>
+            </div>
+            <a href="#checklist" class="font-mono text-[10px] tracking-[1.5px] uppercase text-green border border-green/30 px-4 py-2 hover:border-green hover:bg-green/5 transition-all mt-1">Complete your checklist →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Role-Specific Resources -->
+      <div class="card-dark-3d">
+        <div class="px-6 py-5 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white" id="roleSidebarTitle">New Hire Resources</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1" id="roleSidebarSub">For your first weeks</div>
+        </div>
+        <div class="p-3 flex flex-col" id="roleResources"></div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="card-dark-3d">
+        <div class="px-6 py-5 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white">Next Steps</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1" id="nextStepsSub">After Your Checklist</div>
+        </div>
+        <div class="p-5 flex flex-col gap-4" id="nextSteps"></div>
+      </div>
+
+      <!-- Context-sensitive help -->
+      <div class="card-light-3d px-5 py-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green" style="box-shadow: 0 0 10px rgba(76,187,23,0.5);"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight" id="helpTitle">Need help?</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5" id="helpDesc">Can't find something or stuck on a step? The Hub is built to help — but people are better.</div>
+        <a href="consultant-directory.html?role=onboarding-buddy" class="text-[12px] font-bold text-green hover:text-green-dark inline-flex items-center gap-1 transition-colors" id="helpLink">Reach out to your onboarding buddy →</a>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="equity-3d">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="marker-shimmer w-[3px] h-9 shrink-0"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ─── SVG ICON LIBRARY ────────────────────────────────────────────
+var SVG = {
+  clock:  '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>',
+  doc:    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  book:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  shield: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  file:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  users:  '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  flag:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>',
+  folder: '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  bar:    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg>',
+  chat:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  cal:    '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  list:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  refresh:'<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>',
+  lock:   '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
+};
+
+// ─── SCENARIO DATA ────────────────────────────────────────────────
+var scenarios = {
+
+  new: {
+    checklistLabel: 'First Steps Checklist',
+    checklistTitle: 'Your Progress',
+    showLock: true,
+    checklist: [
+      { group: 'Week 1 — Get Set Up', items: [
+        { label: 'Watch the welcome video from Jenna', desc: '2 minutes — understand JJR\'s mission and how the Hub fits in.' },
+        { label: 'Set up QuickBooks Time for hour logging', desc: 'Your primary tool for tracking billable and non-billable hours.' },
+        { label: 'Configure Microsoft Planner for task management', desc: 'Your task board for assignments, deadlines, and project tracking.' },
+        { label: 'Review the Brand Guidelines', desc: 'How JJR presents itself — colours, tone, templates, and standards.' }
+      ]},
+      { group: 'Week 2 — Get Connected', items: [
+        { label: 'Read "How We Work" — JJR\'s operating principles', desc: 'Decision-making, equity commitments, and what good looks like here.', link: 'how-we-work.html' },
+        { label: 'Join your service line\'s Community of Practice', desc: 'Connect with colleagues who do similar work. Find your people.' },
+        { label: 'Complete the Compliance Hub requirements', desc: 'Mandatory policies and acknowledgements — takes about 15 minutes.' },
+        { label: 'Request access to your first project workspace', desc: 'Reach out to your project lead or service line steward to get added.' }
+      ]}
+    ],
+    contextLabel: 'Essential Tools',
+    tools: [
+      { href: 'tool-guides.html#quickbooks', icon: 'clock',  title: 'QuickBooks Time',       desc: 'Log billable and non-billable hours. Required weekly.' },
+      { href: 'tool-guides.html#planner',    icon: 'cal',    title: 'Microsoft Planner',     desc: 'Tasks, deadlines, and project boards for your assignments.' },
+      { href: 'tool-guides.html#teams',      icon: 'chat',   title: 'Microsoft Teams',       desc: 'Chat, meetings, and collaboration with project teams.' },
+      { href: 'tool-guides.html#reporting',  icon: 'bar',    title: 'Reporting Dashboard',   desc: 'Project metrics, KPIs, and performance tracking.' }
+    ],
+    policiesLabel: 'Key Policies',
+    policies: [
+      { href: 'under-development.html?from=corporate-policies', icon: 'shield', title: 'Compliance & Ethics Policy',       desc: 'Required reading — JJR\'s standards for professional conduct.',       required: true },
+      { href: 'under-development.html?from=corporate-policies', icon: 'file',   title: 'Data Handling & Confidentiality', desc: 'How JJR protects client and internal information.',                   required: true },
+      { href: 'how-we-work.html#principles',                    icon: 'users',  title: 'Equity & Access Principles',       desc: 'JJR\'s commitment to equitable access and inclusive work.',          required: false },
+      { href: 'under-development.html?from=brand-guidelines',   icon: 'flag',   title: 'Brand Standards & Communication', desc: 'How JJR presents itself externally — voice, visuals, and guidelines.', required: false }
+    ],
+    sidebarTitle: 'New Hire Resources',
+    sidebarSub:   'For your first weeks',
+    resources: [
+      { href: 'tool-guides.html',                          icon: 'clock', color: 'green', title: 'IT Setup Guide',        desc: 'Accounts, VPN, and software installs on Day 1' },
+      { href: 'under-development.html?from=culture-guide', icon: 'book',  color: 'navy',  title: 'JJR Culture & Values', desc: 'How we work and what we care about' },
+      { href: 'consultant-directory.html',                 icon: 'doc',   color: 'green', title: 'Org Chart & Directory', desc: 'Who\'s who, who to call, who to ask' }
+    ],
+    nextStepsSub: 'After Your Checklist',
+    steps: [
+      { label: 'Access your first project workspace', desc: 'Find your assigned Teams channel and Planner board.', href: 'active-projects.html' },
+      { label: 'Complete mandatory training',         desc: 'Compliance, data handling — required within 30 days.', href: 'under-development.html?from=mandatory-training' },
+      { label: 'Set up your consultant profile',      desc: 'Add your expertise and project history to the directory.', href: 'my-profile.html' }
+    ],
+    helpTitle: 'Need help?',
+    helpDesc:  'Can\'t find something or stuck on a step? The Hub is built to help — but people are better.',
+    helpLink:  { label: 'Reach out to your onboarding buddy →', href: 'consultant-directory.html?role=onboarding-buddy' }
+  },
+
+  joining: {
+    checklistLabel: 'Project Ramp-Up',
+    checklistTitle: 'Ramp-Up Checklist',
+    showLock: false,
+    checklist: [
+      { group: 'Get Into the Project', items: [
+        { label: 'Find your project workspace in Active Projects', desc: 'Locate the Teams channel, Planner board, and SharePoint file library.' },
+        { label: 'Read the most recent status report or deck',     desc: 'Understand where the project stands before your first meeting.' },
+        { label: 'Review the SOW and project scope document',      desc: 'Know what\'s in scope, what\'s not, and what the client expects.' },
+        { label: 'Message your project lead to confirm your role', desc: 'Clarify your assignments, priorities for week 1, and any blockers.' },
+        { label: 'Add yourself to the team roster and Planner',    desc: 'Make sure tasks can be assigned to you from day one.' }
+      ]}
+    ],
+    contextLabel: 'Your Project Tools',
+    tools: [
+      { href: 'active-projects.html',                    icon: 'folder', title: 'Active Projects',     desc: 'Find your workspace, files, and Planner board.' },
+      { href: 'tool-guides.html#planner',                icon: 'list',   title: 'Microsoft Planner',   desc: 'Check your assigned tasks and upcoming deadlines.' },
+      { href: 'tool-guides.html#quickbooks',             icon: 'clock',  title: 'QuickBooks Time',     desc: 'Start logging hours from your first day on the project.' },
+      { href: 'under-development.html?from=sow-library', icon: 'doc',    title: 'SOW & Scope Library', desc: 'Find past deliverables and scope documents for context.' }
+    ],
+    policiesLabel: 'Project Compliance',
+    policies: [
+      { href: 'under-development.html?from=corporate-policies', icon: 'file',   title: 'Client Data Handling',      desc: 'How to handle client information on this engagement.',          required: true },
+      { href: 'under-development.html?from=nda-guide',          icon: 'shield', title: 'NDA & Confidentiality',     desc: 'What you can and can\'t share outside the project team.',       required: true },
+      { href: 'how-we-work.html#principles',                    icon: 'users',  title: 'Equity in Client Work',     desc: 'How JJR\'s equity principles apply to client engagements.',    required: false },
+      { href: 'under-development.html?from=hours-policy',       icon: 'clock',  title: 'Hour Logging Requirements', desc: 'Billable vs. non-billable classification for this project.',   required: false }
+    ],
+    sidebarTitle: 'Project Ramp-Up Resources',
+    sidebarSub:   'For your engagement',
+    resources: [
+      { href: 'active-projects.html',      icon: 'folder', color: 'green', title: 'Active Projects',      desc: 'Your workspace, files, and Planner board' },
+      { href: 'templates.html',            icon: 'doc',    color: 'navy',  title: 'Project Kickoff Deck', desc: 'Understand the engagement context fast' },
+      { href: 'consultant-directory.html', icon: 'book',   color: 'green', title: 'Consultant Directory', desc: 'Find your team lead and project colleagues' }
+    ],
+    nextStepsSub: 'First Things First',
+    steps: [
+      { label: 'Read the latest status report',         desc: 'Get up to speed before your first project meeting.',          href: 'active-projects.html' },
+      { label: 'Confirm your task assignments',         desc: 'Check Planner and ask your lead what\'s due this week.',      href: 'tool-guides.html#planner' },
+      { label: 'Introduce yourself to the client team', desc: 'Confirm introduction protocol with your project lead first.', href: 'under-development.html?from=client-intro' }
+    ],
+    helpTitle: 'Not sure who to ask?',
+    helpDesc:  'Your project lead is the first port of call. If they\'re unavailable, your service line steward can help.',
+    helpLink:  { label: 'Find your project lead →', href: 'consultant-directory.html' }
+  },
+
+  returning: {
+    checklistLabel: 'Re-orientation Checklist',
+    checklistTitle: 'Back Up to Speed',
+    showLock: false,
+    checklist: [
+      { group: 'What Changed While You Were Away', items: [
+        { label: 'Review the Hub changelog — what\'s new',            desc: 'New pages, tools, and structural changes since your last visit.' },
+        { label: 'Check for updated policies or compliance requirements', desc: 'Any new mandatory reads that were added in your absence.' },
+        { label: 'Reconnect with your project lead or steward',       desc: 'Let them know you\'re back and confirm your current assignments.' },
+        { label: 'Review your active project status reports',         desc: 'Check what milestones, decisions, or blockers occurred while you were out.' }
+      ]}
+    ],
+    contextLabel: 'What\'s Changed',
+    tools: [
+      { href: 'under-development.html?from=hub-changelog',  icon: 'refresh', title: 'Hub Changelog',           desc: 'Pages, tools, and processes updated recently.' },
+      { href: 'active-projects.html',                       icon: 'folder',  title: 'Your Active Projects',    desc: 'Check project status, new tasks, and team updates.' },
+      { href: 'communities.html',                           icon: 'users',   title: 'Communities of Practice', desc: 'New discussions and events while you were out.' },
+      { href: 'under-development.html?from=policy-updates', icon: 'shield',  title: 'Policy Updates',          desc: 'Compliance or data changes since your last visit.' }
+    ],
+    policiesLabel: 'Policy Refresh',
+    policies: [
+      { href: 'under-development.html?from=corporate-policies', icon: 'shield',  title: 'Compliance & Ethics — Latest',      desc: 'Confirm you\'re on the current version.',                  required: false },
+      { href: 'under-development.html?from=corporate-policies', icon: 'file',    title: 'Data Handling Updates',              desc: 'Any changes to how JJR handles client information.',        required: false },
+      { href: 'how-we-work.html',                               icon: 'users',   title: 'How We Work — Check for Updates',   desc: 'Operating principles and team norms may have evolved.',    required: false },
+      { href: 'under-development.html?from=leave-return-guide', icon: 'refresh', title: 'Return from Leave Guide',            desc: 'Practical steps for reconnecting after extended absence.',  required: false }
+    ],
+    sidebarTitle: 'Re-orientation Resources',
+    sidebarSub:   'Getting back up to speed',
+    resources: [
+      { href: 'under-development.html?from=hub-changelog',  icon: 'book',  color: 'green', title: 'What\'s New in the Hub', desc: 'Pages, tools, and processes updated recently' },
+      { href: 'under-development.html?from=policy-updates', icon: 'doc',   color: 'navy',  title: 'Policy Updates',         desc: 'Any compliance or data changes since your last visit' },
+      { href: 'active-projects.html',                       icon: 'clock', color: 'green', title: 'Active Projects',        desc: 'Check your project status and team updates' }
+    ],
+    nextStepsSub: 'Reconnect Quickly',
+    steps: [
+      { label: 'Check your active project status', desc: 'Review milestones and decisions that happened while you were out.', href: 'active-projects.html' },
+      { label: 'Review any updated policies',      desc: 'Confirm no new compliance requirements apply to you.',              href: 'under-development.html?from=policy-updates' },
+      { label: 'Message your team you\'re back',   desc: 'Drop a note in your project channel and CoP so people know.',       href: 'communities.html' }
+    ],
+    helpTitle: 'Been a while?',
+    helpDesc:  'If things look unfamiliar, that\'s normal. Your steward or onboarding buddy can walk you through what\'s changed.',
+    helpLink:  { label: 'Contact your service line steward →', href: 'consultant-directory.html?role=steward' }
+  },
+
+  manager: {
+    checklistLabel: 'Manager Onboarding Checklist',
+    checklistTitle: 'Team Onboarding Status',
+    showLock: false,
+    checklist: [
+      { group: 'Set Your Team Up for Success', items: [
+        { label: 'Confirm all new hires have QuickBooks Time and Planner access', desc: 'Verify accounts are active and linked to the right projects.' },
+        { label: 'Assign an onboarding buddy to each new team member',            desc: 'Pair them with a senior colleague for the first 30 days.' },
+        { label: 'Verify project workspace access for your team',                 desc: 'Check everyone is added to the correct Teams channels and SharePoint libraries.' },
+        { label: 'Review your team\'s compliance status in the Compliance Hub',   desc: 'Ensure required policies are acknowledged before the deadline.' },
+        { label: 'Schedule a 30-day check-in with each new hire',                 desc: 'Block time now so nothing falls through the cracks.' }
+      ]}
+    ],
+    contextLabel: 'Manager Tools',
+    tools: [
+      { href: 'under-development.html?from=compliance-hub',      icon: 'shield', title: 'Compliance Hub',        desc: 'Track who has completed required policy reads.' },
+      { href: 'under-development.html?from=access-requests',     icon: 'lock',   title: 'Access Request Tool',  desc: 'How to request Hub access for your team members.' },
+      { href: 'consultant-directory.html',                       icon: 'users',  title: 'Consultant Directory', desc: 'Find and manage your team roster.' },
+      { href: 'under-development.html?from=reporting-dashboard', icon: 'bar',    title: 'Reporting Dashboard',  desc: 'Track team utilisation, hours, and project status.' }
+    ],
+    policiesLabel: 'Manager Responsibilities',
+    policies: [
+      { href: 'under-development.html?from=onboarding-guide',  icon: 'users',  title: 'People Manager Onboarding Guide',  desc: 'Your responsibilities for a new hire\'s first 30 days.',                  required: true },
+      { href: 'under-development.html?from=compliance-hub',    icon: 'shield', title: 'Team Compliance Obligations',      desc: 'What you\'re accountable for if your team misses a deadline.',            required: true },
+      { href: 'under-development.html?from=access-policy',     icon: 'lock',   title: 'Access & Permissions Policy',     desc: 'What access you can grant and what needs IT approval.',                   required: false },
+      { href: 'how-we-work.html',                              icon: 'flag',   title: 'Equitable Onboarding Standards',  desc: 'JJR\'s commitment to consistent, equitable onboarding.',                  required: false }
+    ],
+    sidebarTitle: 'Manager Resources',
+    sidebarSub:   'For your team',
+    resources: [
+      { href: 'under-development.html?from=compliance-hub',  icon: 'doc',   color: 'green', title: 'Compliance Hub',          desc: 'Track who has completed required policy reads' },
+      { href: 'under-development.html?from=access-requests', icon: 'clock', color: 'navy',  title: 'Access Request Process', desc: 'How to request Hub access for your team members' },
+      { href: 'under-development.html?from=buddy-guide',     icon: 'book',  color: 'green', title: 'Onboarding Buddy Guide', desc: 'How to support a new hire in their first 30 days' }
+    ],
+    nextStepsSub: 'Manager Action Items',
+    steps: [
+      { label: 'Confirm your team\'s tool access', desc: 'Verify everyone has QuickBooks Time, Planner, and project workspace access.', href: 'under-development.html?from=access-requests' },
+      { label: 'Assign onboarding buddies',        desc: 'Pair new team members with a senior colleague for the first 30 days.',        href: 'consultant-directory.html' },
+      { label: 'Check compliance status',          desc: 'Make sure required policies are acknowledged before the deadline.',           href: 'under-development.html?from=compliance-hub' }
+    ],
+    helpTitle: 'Manager support',
+    helpDesc:  'Questions about access, compliance obligations, or onboarding responsibilities? HR and IT are your best escalation paths.',
+    helpLink:  { label: 'Reach HR or IT support →', href: 'under-development.html?from=manager-support' }
+  }
+
+};
+
+// ─── RENDER HELPERS ───────────────────────────────────────────────
+function makeCheckItem(id, label, desc, link) {
+  var display = link ? label.replace(/"([^"]+)"/, '"<a href="' + link + '" class="underline">' + '$1' + '</a>"') : label;
+  return '<div class="check-item">'
+    + '<input type="checkbox" id="c' + id + '" onchange="updateProgress()">'
+    + '<label for="c' + id + '">'
+    + '<div class="check-box"><svg width="12" height="12" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>'
+    + '<div>'
+    + '<div class="check-label text-[13.5px] font-semibold text-txt">' + display + '</div>'
+    + '<div class="text-[11.5px] text-txt-muted mt-0.5">' + desc + '</div>'
+    + '</div></label></div>';
+}
+
+function makeToolTile(t) {
+  return '<a href="' + t.href + '" class="dark-tile p-6 flex items-start gap-4 group">'
+    + '<div class="icon-frame-dark w-10 h-10 flex items-center justify-center shrink-0">' + SVG[t.icon] + '</div>'
+    + '<div>'
+    + '<div class="font-display text-[0.95rem] font-bold text-white mb-1 tracking-tight group-hover:text-green transition-colors">' + t.title + '</div>'
+    + '<div class="text-[11.5px] text-white/50 leading-[1.65]">' + t.desc + '</div>'
+    + '</div></a>';
+}
+
+function makePolicyRow(p) {
+  var badge = p.required
+    ? '<span class="font-mono text-[9px] tracking-[1.5px] uppercase shrink-0" style="color:#E91E8C;text-shadow:0 0 8px rgba(233,30,140,0.4)">Required</span>'
+    : '';
+  return '<a href="' + p.href + '" class="dark-row flex items-center gap-4 px-7 py-[18px] group">'
+    + '<span class="text-white/40 shrink-0 group-hover:text-green transition-colors">' + SVG[p.icon] + '</span>'
+    + '<div class="flex-1 min-w-0">'
+    + '<div class="text-[13px] font-semibold text-white group-hover:text-green transition-colors">' + p.title + '</div>'
+    + '<div class="text-[11px] text-white/40 mt-0.5">' + p.desc + '</div>'
+    + '</div>' + badge
+    + '<span class="text-white/30 text-xs group-hover:text-green group-hover:translate-x-1 transition-all ml-2">&#8594;</span></a>';
+}
+
+function makeSidebarResource(r) {
+  var frame = r.color === 'green' ? 'icon-glow' : 'icon-frame-dark';
+  return '<a href="' + r.href + '" class="flex items-center gap-3 px-3 py-3 transition-colors hover:bg-white/[0.03] group/r">'
+    + '<div class="' + frame + ' w-8 h-8 shrink-0 flex items-center justify-center">' + SVG[r.icon] + '</div>'
+    + '<div class="flex-1 min-w-0">'
+    + '<div class="text-[12.5px] font-semibold text-white group-hover/r:text-green transition-colors">' + r.title + '</div>'
+    + '<div class="text-[10px] text-white/40 mt-0.5">' + r.desc + '</div>'
+    + '</div></a>';
+}
+
+function makeStep(s, i) {
+  var numBg  = i === 0 ? 'bg-green' : 'bg-white/[0.06] border border-white/10';
+  var numCol = i === 0 ? 'text-white' : 'text-white/50';
+  var glow   = i === 0 ? ' style="box-shadow:0 0 12px rgba(76,187,23,0.5),inset 0 1px 0 rgba(255,255,255,0.2)"' : '';
+  return '<a href="' + s.href + '" class="flex items-start gap-3 group/n">'
+    + '<div class="w-7 h-7 ' + numBg + ' flex items-center justify-center shrink-0 mt-0.5"' + glow + '>'
+    + '<span class="font-mono text-[10px] font-bold ' + numCol + '">' + (i + 1) + '</span></div>'
+    + '<div>'
+    + '<div class="text-[12.5px] font-semibold text-white/80 group-hover/n:text-green transition-colors">' + s.label + '</div>'
+    + '<div class="text-[10.5px] text-white/30 leading-relaxed mt-0.5">' + s.desc + '</div>'
+    + '</div></a>';
+}
+
+// ─── MAIN setRole ─────────────────────────────────────────────────
+function setRole(role) {
+  var sc = scenarios[role];
+
+  // 1. Scenario tab cards
+  var tabMap = { new: 'roleNew', joining: 'roleJoining', returning: 'roleReturning', manager: 'roleManager' };
+  Object.keys(tabMap).forEach(function(key) {
+    var el = document.getElementById(tabMap[key]);
+    if (!el) return;
+    var active = key === role;
+    el.className = 'role-card' + (active ? ' role-tab-active' : '') + ' flex-1 px-6 py-6 text-left cursor-pointer group';
+    var wrap = el.querySelector('[data-icon-wrap]');
+    if (wrap) wrap.className = (active ? 'icon-glow' : 'icon-frame-dark') + ' w-10 h-10 flex items-center justify-center shrink-0';
+  });
+
+  // 2. Checklist
+  var checkHtml = '';
+  var idx = 0;
+  sc.checklist.forEach(function(group) {
+    checkHtml += '<div class="font-mono text-[9px] tracking-[2px] uppercase text-green mb-3">' + group.group + '</div><div class="mb-8">';
+    group.items.forEach(function(item) {
+      idx++;
+      checkHtml += makeCheckItem(idx, item.label, item.desc, item.link || null);
+    });
+    checkHtml += '</div>';
+  });
+  document.getElementById('checklistLabel').textContent = sc.checklistLabel;
+  document.getElementById('checklistTitle').textContent = sc.checklistTitle;
+  document.getElementById('checklistBody').innerHTML    = checkHtml;
+  document.getElementById('progressTotal').textContent  = idx;
+  document.getElementById('progressCount').textContent  = '0';
+  document.getElementById('progressBar').style.width    = '0%';
+
+  // 3. Context tools section
+  document.getElementById('contextSectionLabel').textContent = sc.contextLabel;
+  document.getElementById('contextTools').innerHTML = sc.tools.map(makeToolTile).join('');
+
+  // 4. Policies section
+  document.getElementById('policiesSectionLabel').textContent = sc.policiesLabel;
+  document.getElementById('policiesBody').innerHTML = sc.policies.map(makePolicyRow).join('');
+
+  // 5. Lock gate — visible only for new hires
+  var gate = document.getElementById('lockedGate');
+  if (gate) gate.style.display = sc.showLock ? 'block' : 'none';
+
+  // 6. Sidebar
+  document.getElementById('roleSidebarTitle').textContent = sc.sidebarTitle;
+  document.getElementById('roleSidebarSub').textContent   = sc.sidebarSub;
+  document.getElementById('roleResources').innerHTML      = sc.resources.map(makeSidebarResource).join('');
+  document.getElementById('nextStepsSub').textContent     = sc.nextStepsSub;
+  document.getElementById('nextSteps').innerHTML          = sc.steps.map(makeStep).join('');
+
+  // 7. Help box
+  document.getElementById('helpTitle').textContent    = sc.helpTitle;
+  document.getElementById('helpDesc').textContent     = sc.helpDesc;
+  var hl = document.getElementById('helpLink');
+  hl.textContent = sc.helpLink.label;
+  hl.href        = sc.helpLink.href;
+}
+
+// ─── PROGRESS ─────────────────────────────────────────────────────
+function updateProgress() {
+  var total   = parseInt(document.getElementById('progressTotal').textContent, 10);
+  var checked = 0;
+  for (var i = 1; i <= total; i++) {
+    var cb = document.getElementById('c' + i);
+    if (cb && cb.checked) checked++;
+  }
+  document.getElementById('progressCount').textContent = checked;
+  document.getElementById('progressBar').style.width   = Math.round(checked / total * 100) + '%';
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────
+setRole('new');
+</script>
+
+
+<script>
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll reveal
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+      document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+    }
+  })();
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+
+<!-- ═══════════════════ VIDEO MODAL ═══════════════════ -->
+<div id="videoModal"
+     role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="videoTitle"
+     class="fixed inset-0 z-[999] flex items-center justify-center
+            opacity-0 pointer-events-none
+            transition-opacity duration-[400ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+     style="">
+  <div id="videoOverlay" class="absolute inset-0 bg-black/85 cursor-zoom-out"></div>
+  <div id="videoContainer"
+       class="relative z-10 w-[80vw] max-w-[1024px]
+              bg-gradient-to-b from-[#17304f] to-[#0F2340]
+              shadow-[0_24px_80px_rgba(0,0,0,0.65)]
+              scale-95 transition-transform duration-[400ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]">
+    <!-- Modal header -->
+    <div class="flex items-center justify-between px-6 py-3.5 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <span id="videoTitle" class="font-display font-bold text-white text-[1.05rem] leading-tight"></span>
+        <span id="videoDuration" class="font-mono text-[10px] tracking-[2px] uppercase text-green/70"></span>
+      </div>
+      <button id="videoClose"
+              aria-label="Close video"
+              class="w-8 h-8 border border-white/15 bg-transparent text-white/50
+                     flex items-center justify-center cursor-pointer
+                     hover:text-green hover:border-green hover:shadow-[0_0_8px_rgba(76,187,23,0.6)]
+                     transition-all duration-200">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Video body -->
+    <div id="videoBody"
+         class="w-full aspect-video bg-[#0F2340] flex items-center justify-center overflow-hidden">
+      <div id="videoPlaceholder" class="flex flex-col items-center gap-4">
+        <div class="w-14 h-14 bg-green flex items-center justify-center shadow-[0_0_24px_rgba(76,187,23,0.4)]">
+          <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <span class="font-mono text-[11px] tracking-[2px] uppercase text-white/30">Video will load from SharePoint</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var modal    = document.getElementById('videoModal');
+  var overlay  = document.getElementById('videoOverlay');
+  var container= document.getElementById('videoContainer');
+  var body     = document.getElementById('videoBody');
+  var placeholder = document.getElementById('videoPlaceholder');
+  var titleEl  = document.getElementById('videoTitle');
+  var durEl    = document.getElementById('videoDuration');
+  var closeBtn = document.getElementById('videoClose');
+
+  function openVideoModal(opts) {
+    if (!modal) return;
+    if (titleEl)  titleEl.textContent  = opts.title    || '';
+    if (durEl)    durEl.textContent    = opts.duration || '';
+    /* clear previous iframe/video */
+    Array.prototype.slice.call(body.children).forEach(function(ch){
+      if (ch.id !== 'videoPlaceholder') body.removeChild(ch);
+    });
+    if (placeholder) placeholder.style.display = 'flex';
+    if (opts.src && opts.src !== '#') {
+      if (placeholder) placeholder.style.display = 'none';
+      if (opts.type === 'mp4') {
+        var vid = document.createElement('video');
+        vid.src = opts.src; vid.controls = true;
+        vid.setAttribute('playsinline','');
+        vid.style.cssText = 'width:100%;height:100%;display:block;';
+        body.appendChild(vid);
+      } else {
+        var ifr = document.createElement('iframe');
+        ifr.src = opts.src;
+        ifr.allowFullscreen = true;
+        ifr.setAttribute('allow','accelerometer;autoplay;encrypted-media;picture-in-picture');
+        ifr.setAttribute('frameborder','0');
+        ifr.style.cssText = 'width:100%;height:100%;display:block;border:0;';
+        body.appendChild(ifr);
+      }
+    }
+    modal.classList.remove('opacity-0','pointer-events-none');
+    modal.classList.add('opacity-100');
+    container.classList.remove('scale-95');
+    container.classList.add('scale-100');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideoModal() {
+    if (!modal) return;
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0','pointer-events-none');
+    container.classList.remove('scale-100');
+    container.classList.add('scale-95');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    setTimeout(function(){
+      var vid = body.querySelector('video');
+      if (vid) { vid.pause(); vid.src = ''; }
+      var ifr = body.querySelector('iframe');
+      if (ifr) { ifr.src = ''; body.removeChild(ifr); }
+      if (placeholder) placeholder.style.display = 'flex';
+    }, 420);
+  }
+
+  if (closeBtn)  closeBtn.addEventListener('click', closeVideoModal);
+  if (overlay)   overlay.addEventListener('click', closeVideoModal);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal && !modal.classList.contains('opacity-0')) closeVideoModal();
+  });
+
+  /* Wire all [data-video-trigger] elements */
+  window.initVideoTriggers = function(){
+    document.querySelectorAll('[data-video-trigger]').forEach(function(el){
+      if (el._vmWired) return;
+      el._vmWired = true;
+      function trigger(e){ e.preventDefault();
+        openVideoModal({
+          type:     el.dataset.videoType     || 'stream',
+          src:      el.dataset.videoSrc      || '#',
+          title:    el.dataset.videoTitle    || '',
+          duration: el.dataset.videoDuration || ''
+        });
+      }
+      el.addEventListener('click', trigger);
+      el.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' ') trigger(e); });
+    });
+  };
+  window.initVideoTriggers();
+})();
+</script>
+</body>
+</html>

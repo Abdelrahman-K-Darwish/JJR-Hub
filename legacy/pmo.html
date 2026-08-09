@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — PMO</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
+
+  /* ═══ FLOW STEP CONNECTOR (pseudo, hidden on last child) ═══ */
+  .flow-step::after { content: ''; position: absolute; top: 50%; right: -24px; width: 24px; height: 2px; background: #D0CCC4; }
+  .flow-step:last-child::after { display: none; }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ SIDEBAR PANEL — JS-toggled via data-collapsed attribute ═══ */
+  .sidebar-panel[data-collapsed="true"] .panel-content { display: none; }
+  .sidebar-panel[data-collapsed="true"] .panel-chevron { transform: rotate(180deg); }
+  .panel-chevron { transition: transform 0.25s ease; }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
+
+<!-- ═══ NAV ═══ -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search PMO..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">Project Management Office</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <div class="w-1.5 h-1.5 rounded-full bg-pink shadow-[0_0_6px_rgba(233,30,140,0.55)]"></div>
+        <span class="font-mono text-[9px] text-white/30 tracking-wide">PMO Lead: F. Nakamura</span>
+      </div>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="mb-12 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-6">
+        <div>
+          <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Project Management Office</div>
+          <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">How We Deliver.</h1>
+          <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[480px] mb-7">The PMO is JJR's delivery backbone — standardised processes, governance frameworks, and the tools that keep every engagement on track, on budget, and aligned to our values.</p>
+          <div class="flex items-center gap-3 flex-wrap">
+            <a href="#governance" class="font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.12)] transition-[box-shadow,background,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45),0_2px_12px_rgba(0,0,0,0.2)]">View Process Flow →</a>
+            <a href="#lessons" class="font-body text-xs font-semibold border border-white/[0.15] text-white/50 px-5 py-2.5 inline-flex items-center transition-all duration-200 hover:border-green hover:text-green">Submit Lessons Learned</a>
+            <a href="how-we-work.html" class="font-body text-xs font-semibold border border-white/[0.15] text-white/50 px-5 py-2.5 inline-flex items-center transition-all duration-200 hover:border-green hover:text-green">How We Work</a>
+          </div>
+        </div>
+        <div class="flex gap-5 shrink-0">
+          <div class="text-center">
+            <div class="font-display text-[2.2rem] font-bold text-white leading-none">6</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">Live Projects</div>
+          </div>
+          <div class="w-px h-14 bg-white/[0.08] self-center"></div>
+          <div class="text-center">
+            <div class="font-display text-[2.2rem] font-bold text-green leading-none [text-shadow:0_0_16px_rgba(76,187,23,0.4)]">94%</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/70 mt-1.5">On-Time Rate</div>
+          </div>
+          <div class="w-px h-14 bg-white/[0.08] self-center"></div>
+          <div class="text-center">
+            <div class="font-display text-[2.2rem] font-bold text-white/80 leading-none">23</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1.5">Lessons Logged</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PMO ANNOUNCEMENTS -->
+  <div class="border border-pink/20 p-6 mb-12 flex items-start gap-4 relative overflow-hidden bg-[linear-gradient(135deg,#FFFBF9_0%,#FFF8F4_50%,#FFF5F0_100%)] shadow-[0_4px_16px_rgba(233,30,140,0.06)] animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+    <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-pink shadow-[0_0_10px_rgba(233,30,140,0.5)]"></div>
+    <div class="w-10 h-10 bg-pink/10 border border-pink/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(233,30,140,0.15)]">
+      <svg width="16" height="16" fill="none" stroke="#E91E8C" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="flex-1">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-pink font-bold [text-shadow:0_0_8px_rgba(233,30,140,0.3)]">PMO Update</div>
+        <div class="font-mono text-[9px] text-txt-muted">21 Apr 2026</div>
+      </div>
+      <div class="text-[13px] text-txt leading-[1.65]"><strong class="font-semibold">Q1 project reviews start next week.</strong> All project leads — please ensure your status dashboards are current and closeout docs are staged for any wrapping projects. Review schedule is in the sidebar calendar.</div>
+    </div>
+    <a href="under-development.html?from=pmo-update" class="font-body text-[11px] font-bold text-pink border border-pink/25 px-3 py-1.5 shrink-0 transition-all duration-200 hover:bg-pink hover:text-white hover:border-pink hover:shadow-[0_0_14px_rgba(233,30,140,0.35)] whitespace-nowrap">View Details →</a>
+  </div>
+
+  <!-- PROCESS FLOW -->
+  <div id="governance" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Project Lifecycle <span class="flex-1 h-px bg-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted">JJR's standard delivery process</span></div>
+
+  <div class="bg-white border border-rule p-8 mb-14 overflow-x-auto animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+    <div class="flex items-stretch gap-6 min-w-[900px]">
+      <div class="flow-step relative bg-white flex-1 border border-green p-5 text-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_16px_rgba(76,187,23,0.15),0_4px_12px_rgba(27,54,93,0.06)] hover:-translate-y-0.5">
+        <div class="w-9 h-9 bg-green text-white font-mono text-[11px] font-bold flex items-center justify-center mx-auto mb-3 shadow-[0_0_12px_rgba(76,187,23,0.5),inset_0_1px_0_rgba(255,255,255,0.25)]">1</div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Initiation</div>
+        <div class="text-[11px] text-txt-sec leading-[1.6]">SOW signed, project workspace created, team assigned, kickoff scheduled.</div>
+        <div class="mt-3 pt-3 border-t border-rule-light flex flex-col gap-1">
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">SOW Template →</a>
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Kickoff Deck →</a>
+        </div>
+      </div>
+      <div class="flow-step relative bg-white flex-1 border border-rule p-5 text-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)]">
+        <div class="w-9 h-9 bg-warm-gray text-txt-muted font-mono text-[11px] font-bold flex items-center justify-center mx-auto mb-3">2</div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Planning</div>
+        <div class="text-[11px] text-txt-sec leading-[1.6]">Work plan built, milestones set, budget baseline locked, risk register created.</div>
+        <div class="mt-3 pt-3 border-t border-rule-light flex flex-col gap-1">
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Budget Template →</a>
+          <a href="under-development.html?from=risk-register" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Risk Register →</a>
+        </div>
+      </div>
+      <div class="flow-step relative bg-white flex-1 border border-rule p-5 text-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)]">
+        <div class="w-9 h-9 bg-warm-gray text-txt-muted font-mono text-[11px] font-bold flex items-center justify-center mx-auto mb-3">3</div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Execution</div>
+        <div class="text-[11px] text-txt-sec leading-[1.6]">Deliverables produced, weekly status reports, hours logged, scope managed.</div>
+        <div class="mt-3 pt-3 border-t border-rule-light flex flex-col gap-1">
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Status Report →</a>
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Change Request →</a>
+        </div>
+      </div>
+      <div class="flow-step relative bg-white flex-1 border border-rule p-5 text-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)]">
+        <div class="w-9 h-9 bg-warm-gray text-txt-muted font-mono text-[11px] font-bold flex items-center justify-center mx-auto mb-3">4</div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Review</div>
+        <div class="text-[11px] text-txt-sec leading-[1.6]">Client sign-off, QA check, PMO review of financials and deliverables.</div>
+        <div class="mt-3 pt-3 border-t border-rule-light flex flex-col gap-1">
+          <a href="under-development.html?from=qa-checklist" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">QA Checklist →</a>
+          <a href="under-development.html?from=sign-off-form" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Sign-off Form →</a>
+        </div>
+      </div>
+      <div class="flow-step relative bg-white flex-1 border border-rule p-5 text-center transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.08)]">
+        <div class="w-9 h-9 bg-warm-gray text-txt-muted font-mono text-[11px] font-bold flex items-center justify-center mx-auto mb-3">5</div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Closeout</div>
+        <div class="text-[11px] text-txt-sec leading-[1.6]">Knowledge transfer, lessons learned deposit, final invoice, archive workspace.</div>
+        <div class="mt-3 pt-3 border-t border-rule-light flex flex-col gap-1">
+          <a href="templates.html" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Closeout Checklist →</a>
+          <a href="#lessons" class="font-mono text-[10px] font-medium text-green-dark hover:text-green transition-colors">Lessons Form →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
+    <div>
+
+      <!-- GOVERNANCE & BEST PRACTICES -->
+      <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Governance &amp; Best Practices <span class="flex-1 h-px bg-rule"></span></div>
+
+      <div class="grid grid-cols-2 max-md:grid-cols-1 gap-4 mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+        <a href="under-development.html?from=project-governance-framework" class="bg-white border border-rule p-6 flex items-start gap-4 group transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+          <div class="w-12 h-12 border border-rule flex items-center justify-center text-navy shrink-0 bg-off-white transition-all duration-300 group-hover:border-green group-hover:text-green">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Project Governance Framework</div>
+            <div class="text-[12px] text-txt-sec leading-relaxed">Decision rights, escalation paths, approval gates, and accountability structure for all JJR engagements.</div>
+          </div>
+        </a>
+        <a href="under-development.html?from=budget-financial-controls" class="bg-white border border-rule p-6 flex items-start gap-4 group transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+          <div class="w-12 h-12 border border-rule flex items-center justify-center text-navy shrink-0 bg-off-white transition-all duration-300 group-hover:border-green group-hover:text-green">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Budget &amp; Financial Controls</div>
+            <div class="text-[12px] text-txt-sec leading-relaxed">Budget tracking standards, variance thresholds, and Power BI dashboard integration for real-time financials.</div>
+          </div>
+        </a>
+        <a href="under-development.html?from=risk-management" class="bg-white border border-rule p-6 flex items-start gap-4 group transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+          <div class="w-12 h-12 border border-rule flex items-center justify-center text-navy shrink-0 bg-off-white transition-all duration-300 group-hover:border-green group-hover:text-green">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </div>
+          <div>
+            <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Risk Management Playbook</div>
+            <div class="text-[12px] text-txt-sec leading-relaxed">How to identify, assess, escalate, and mitigate project risks. Includes the standard risk register format.</div>
+          </div>
+        </a>
+        <a href="under-development.html?from=stakeholder-management" class="bg-white border border-rule p-6 flex items-start gap-4 group transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+          <div class="w-12 h-12 border border-rule flex items-center justify-center text-navy shrink-0 bg-off-white transition-all duration-300 group-hover:border-green group-hover:text-green">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="font-display text-[0.95rem] font-bold text-navy mb-1">Stakeholder Management</div>
+            <div class="text-[12px] text-txt-sec leading-relaxed">Mapping, engagement plans, and communication cadences for client and internal stakeholders.</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- LESSONS LEARNED -->
+      <div id="lessons" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Lessons Learned <span class="flex-1 h-px bg-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted">From closed projects — feeding back into the hub</span></div>
+
+      <div class="mb-10 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.25s_both]">
+        <!-- Submit CTA -->
+        <div class="relative p-6 mb-5 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4 bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+          <div>
+            <div class="font-display text-[1.05rem] font-bold text-white mb-1 tracking-tight">Wrapping up a project?</div>
+            <div class="text-[12.5px] text-white/55 leading-[1.65]">Every project closeout should deposit at least one reusable insight. What worked, what was hard, what should the next team know?</div>
+          </div>
+          <a href="under-development.html?from=submit-lessons-learned" class="font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 shrink-0 shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.12)] transition-[box-shadow,background,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45),0_2px_12px_rgba(0,0,0,0.2)]">Submit Lessons Learned →</a>
+        </div>
+
+        <!-- Recent lessons -->
+        <div class="flex flex-col gap-3">
+          <div class="bg-white border border-rule p-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+            <div class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-green/[0.08] border border-green/15 flex items-center justify-center text-green shrink-0 mt-0.5">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <div class="font-display text-[0.9rem] font-bold text-navy">Client discovery phase needs more structure</div>
+                  <span class="font-mono text-[9px] px-2 py-0.5 bg-green/[0.1] text-green-dark tracking-wider uppercase shadow-[0_0_8px_rgba(76,187,23,0.18)]">What Worked</span>
+                </div>
+                <div class="text-[12.5px] text-txt-sec leading-relaxed mb-2">Adding a structured discovery questionnaire to the Acme engagement cut the scoping phase by 2 weeks. Recommend standardising this for all strategy projects.</div>
+                <div class="flex items-center gap-4 text-[10px] text-txt-muted font-mono">
+                  <span>S. Foster · Acme Corp</span>
+                  <span>18 Mar 2026</span>
+                  <span>Strategy · Active Projects</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-rule p-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+            <div class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-amber/[0.08] border border-amber/15 flex items-center justify-center text-amber shrink-0 mt-0.5">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <div class="font-display text-[0.9rem] font-bold text-navy">Scope creep signals missed in early sprints</div>
+                  <span class="font-mono text-[9px] px-2 py-0.5 bg-amber/[0.1] text-[#A06B1A] tracking-wider uppercase shadow-[0_0_8px_rgba(232,168,56,0.18)]">Challenge</span>
+                </div>
+                <div class="text-[12.5px] text-txt-sec leading-relaxed mb-2">NovaTech engagement had informal scope additions in sprint 2 that weren't caught until sprint 4. Need a scope change trigger in sprint reviews.</div>
+                <div class="flex items-center gap-4 text-[10px] text-txt-muted font-mono">
+                  <span>F. Nakamura · NovaTech</span>
+                  <span>10 Mar 2026</span>
+                  <span>Operations · PM Process</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-rule p-5 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)]">
+            <div class="flex items-start gap-4">
+              <div class="w-9 h-9 bg-green/[0.08] border border-green/15 flex items-center justify-center text-green shrink-0 mt-0.5">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <div class="font-display text-[0.9rem] font-bold text-navy">EJ screening data should be centralised</div>
+                  <span class="font-mono text-[9px] px-2 py-0.5 bg-navy/[0.08] text-navy tracking-wider uppercase shadow-[0_0_8px_rgba(27,54,93,0.12)]">Recommendation</span>
+                </div>
+                <div class="text-[12.5px] text-txt-sec leading-relaxed mb-2">The GovServices team recreated EJ screening datasets that Equity &amp; Impact CoP already had. Recommend linking CoP resource libraries to project workspaces.</div>
+                <div class="flex items-center gap-4 text-[10px] text-txt-muted font-mono">
+                  <span>D. Laurent · GovServices</span>
+                  <span>5 Mar 2026</span>
+                  <span>EJ · Knowledge Management</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="under-development.html?from=all-lessons-archive" class="mt-4 inline-flex items-center gap-2 text-[12px] font-bold text-green hover:underline">View all 23 lessons →</a>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Review Calendar -->
+      <div class="sidebar-panel bg-white border border-rule transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]" data-collapsed="false">
+        <div class="flex items-center justify-between px-5 py-4 cursor-pointer border-b border-rule-light" onclick="togglePanel('calPanel')">
+          <div>
+            <div class="font-display text-[0.95rem] font-bold text-navy">Review Calendar</div>
+            <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Upcoming Reviews</div>
+          </div>
+          <svg class="panel-chevron text-txt-muted" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+        </div>
+        <div class="panel-content" id="calPanel">
+          <div class="p-5 flex flex-col gap-4">
+            <a href="under-development.html?from=outlook-calendar-event" class="flex items-start gap-3 group">
+              <div class="w-11 h-11 flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f_0%,#0F2340_50%,#0b1c35_100%)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]"><div class="font-mono text-[10px] font-bold text-white leading-none">27</div><div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Apr</div></div>
+              <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">Q1 Portfolio Review</div><div class="text-[10px] text-txt-muted mt-0.5 font-mono">All PMs · 10:00 · Room 1A</div></div>
+            </a>
+            <a href="under-development.html?from=outlook-calendar-event" class="flex items-start gap-3 group">
+              <div class="w-11 h-11 flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f_0%,#0F2340_50%,#0b1c35_100%)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]"><div class="font-mono text-[10px] font-bold text-white leading-none">30</div><div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">Apr</div></div>
+              <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">GovServices Closeout Review</div><div class="text-[10px] text-txt-muted mt-0.5 font-mono">D. Laurent + PMO · 14:00</div></div>
+            </a>
+            <a href="under-development.html?from=outlook-calendar-event" class="flex items-start gap-3 group">
+              <div class="w-11 h-11 flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f_0%,#0F2340_50%,#0b1c35_100%)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]"><div class="font-mono text-[10px] font-bold text-white leading-none">08</div><div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">May</div></div>
+              <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">DoE Audit — Internal Gate</div><div class="text-[10px] text-txt-muted mt-0.5 font-mono">PMO + Leadership · 9:00</div></div>
+            </a>
+            <a href="under-development.html?from=outlook-calendar-event" class="flex items-start gap-3 group">
+              <div class="w-11 h-11 flex flex-col items-center justify-center shrink-0 bg-[linear-gradient(180deg,#17304f_0%,#0F2340_50%,#0b1c35_100%)] border border-black/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_3px_rgba(15,35,64,0.15)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)]"><div class="font-mono text-[10px] font-bold text-white leading-none">15</div><div class="font-mono text-[8px] text-white/55 uppercase mt-0.5">May</div></div>
+              <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-txt leading-snug group-hover:text-green transition-colors">Monthly PM Roundtable</div><div class="text-[10px] text-txt-muted mt-0.5 font-mono">All PMs · 11:00 · Teams</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PMO Contacts -->
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+        <div class="px-5 py-4 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">PMO Team</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">Key Contacts</div>
+        </div>
+        <div class="p-5 flex flex-col gap-4">
+          <a href="my-profile.html?viewer=colleague&amp;user=f-nakamura" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 bg-pink text-[9px] font-bold text-white flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(233,30,140,0.35),inset_0_1px_0_rgba(255,255,255,0.15)]">FN</div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">F. Nakamura</div><div class="text-[10px] text-white/40 font-mono mt-0.5">PMO Lead · Delivery Ops</div></div>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=j-park" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 bg-green text-[9px] font-bold text-white flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(76,187,23,0.4),inset_0_1px_0_rgba(255,255,255,0.15)]">JP</div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">J. Park</div><div class="text-[10px] text-white/40 font-mono mt-0.5">Senior PM · Process Owner</div></div>
+          </a>
+          <a href="my-profile.html" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 bg-navy-mid text-[9px] font-bold text-white flex items-center justify-center shrink-0">SF</div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">S. Foster</div><div class="text-[10px] text-white/40 font-mono mt-0.5">PM · Gov Engagements</div></div>
+          </a>
+          <a href="my-profile.html?viewer=colleague&amp;user=m-kim" class="flex items-center gap-3 group">
+            <div class="w-9 h-9 bg-navy text-[9px] font-bold text-white flex items-center justify-center shrink-0">MK</div>
+            <div class="flex-1 min-w-0"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">M. Kim</div><div class="text-[10px] text-white/40 font-mono mt-0.5">PM · Strategy &amp; Tech</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Templates -->
+      <div class="bg-white border border-rule">
+        <div class="px-5 py-4 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">PM Templates</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Quick Access</div>
+        </div>
+        <div class="p-4 flex flex-col gap-1">
+          <a href="templates.html" class="flex items-center gap-2.5 px-2 py-2 hover:bg-off-white transition-all duration-200 text-[12px] font-medium text-txt hover:text-green hover:!pl-2.5">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Scope of Work
+          </a>
+          <a href="templates.html" class="flex items-center gap-2.5 px-2 py-2 hover:bg-off-white transition-all duration-200 text-[12px] font-medium text-txt hover:text-green hover:!pl-2.5">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted shrink-0" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Budget &amp; Scope
+          </a>
+          <a href="templates.html" class="flex items-center gap-2.5 px-2 py-2 hover:bg-off-white transition-all duration-200 text-[12px] font-medium text-txt hover:text-green hover:!pl-2.5">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted shrink-0" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Project Closeout
+          </a>
+          <a href="templates.html" class="flex items-center gap-2.5 px-2 py-2 hover:bg-off-white transition-all duration-200 text-[12px] font-medium text-txt hover:text-green hover:!pl-2.5">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Monthly Status Report
+          </a>
+          <a href="templates.html" class="flex items-center gap-2.5 px-2 py-2 hover:bg-off-white transition-all duration-200 text-[12px] font-medium text-txt hover:text-green hover:!pl-2.5">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" class="text-txt-muted shrink-0" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Scope Change Request
+          </a>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="bg-white border border-rule px-5 py-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Improve the PMO</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5">See something that should be standardised, automated, or simplified? The PMO process is only as good as the feedback it gets.</div>
+        <a href="under-development.html?from=pmo-feedback" class="text-[12px] font-bold text-green hover:text-green-dark transition-colors">Submit PMO feedback →</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  const p = panel.closest('.sidebar-panel');
+  const isCollapsed = p.getAttribute('data-collapsed') === 'true';
+  p.setAttribute('data-collapsed', isCollapsed ? 'false' : 'true');
+}
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

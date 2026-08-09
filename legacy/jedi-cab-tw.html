@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<!--
+════════════════════════════════════════════════════════════════════════════════
+JJR HUB — JEDI CAB PAGE  |  Tailwind CSS  |  SPFX SharePoint Ready
+════════════════════════════════════════════════════════════════════════════════
+
+EVERY LINK IN THIS FILE IS MAPPED TO A SHAREPOINT SPFX DESTINATION.
+IT team: replace placeholder URLs with live SharePoint URLs at deployment.
+
+── COMPLETE LINK INVENTORY ────────────────────────────────────────────────────
+
+NAV / SHELL
+  Home                    → jjr-hub-tw.html (Hub homepage)
+  Projects                → active-projects.html
+  Knowledge               → templates.html
+  Communities             → communities.html
+  Help                    → tool-guides.html
+  Training                → start-here.html
+  My Account (dropdown)   → /SitePages/My-Profile.aspx
+  Sign Out (dropdown)     → /_layouts/15/SignOut.aspx
+
+HERO BUTTONS
+  Submit a CAB Request    → /Lists/CABRequests/NewForm.aspx       [WRITE: any authenticated user]
+  Apply for Cohort 3      → /Lists/CohortApplications/NewForm.aspx [WRITE: any authenticated user]
+
+PATHWAY STAGES (clickable boxes)
+  Cohort box              → jedi-cab-tw.html#cohort-program        [same-page scroll]
+  CAB box                 → jedi-cab-tw.html#active-topics          [same-page scroll]
+  Alumni box              → communities.html
+
+ACTIVE TOPICS — Loop links (role-locked for non-CAB users)
+  EJ40 topic              → /SitePages/CAB-Topic-EJ40.aspx         [READ: cab, ceo]
+  Fed Procurement topic   → /SitePages/CAB-Topic-FedProcurement.aspx [READ: cab, ceo]
+  Hiring topic            → /SitePages/CAB-Topic-Hiring.aspx        [READ: cab, ceo]
+  + Submit Request btn    → /Lists/CABRequests/NewForm.aspx         [WRITE: pm, consultant, cab, ceo]
+
+CAB MEMBERS PANEL (each name links to individual profile page)
+  Diana Reyes             → /SitePages/CAB-Member-DianaReyes.aspx
+  Marcus Thompson         → /SitePages/CAB-Member-MarcusThompson.aspx
+  Amara Chen              → /SitePages/CAB-Member-AmaraChen.aspx
+  James Patel             → /SitePages/CAB-Member-JamesPatel.aspx
+  Lena Williams           → /SitePages/CAB-Member-LenaWilliams.aspx
+  Rafael Ortega           → /SitePages/CAB-Member-RafaelOrtega.aspx
+  View Full Roster        → /SitePages/CAB-Members.aspx
+
+ACCESS NOTE
+  Request access          → /Lists/AccessRequests/NewForm.aspx     [WRITE: any authenticated user]
+
+MEETING HUB
+  Agenda (Loop)           → /SitePages/CAB-Session8-Agenda.aspx    [READ: cab, ceo — role-locked]
+  Add to Calendar         → /_layouts/15/calendar.aspx?CABSession8
+  Submit Async Input      → /Lists/CABAsyncInput/NewForm.aspx       [WRITE: cab — role-locked]
+  Meeting Notes           → /SitePages/CAB-Session7-Notes.aspx      [READ: cab, ceo — role-locked]
+  View Decisions          → jedi-cab-tw.html#decisions-log          [same-page anchor]
+  Past Sessions Archive   → /SitePages/CAB-Sessions-Archive.aspx
+
+DECISIONS LOG
+  Full Log btn            → /Lists/CABDecisions/AllItems.aspx       [READ: cab, ceo — role-locked]
+  Session #7 meta link    → /SitePages/CAB-Session7-Notes.aspx
+  Session #6 meta link    → /SitePages/CAB-Session6-Notes.aspx
+  Session #5 meta link    → /SitePages/CAB-Session5-Notes.aspx
+  Session #4 meta link    → /SitePages/CAB-Session4-Notes.aspx
+
+ACTION TRACKER (each task title links to Planner task)
+  EJ40 task               → /SitePages/CAB-Planner.aspx#task-ej40-001
+  Hiring translation task → /SitePages/CAB-Planner.aspx#task-hire-002
+  Governance meeting task → /SitePages/CAB-Planner.aspx#task-gov-003
+  Cohort facilitation     → /SitePages/CAB-Planner.aspx#task-pipe-004
+  Rubric update task      → /SitePages/CAB-Planner.aspx#task-hire-005
+  Pre-read distribution   → /SitePages/CAB-Planner.aspx#task-fed-006
+
+  Owner names in action cards:
+  P. Thomas               → /SitePages/Profile-PThomas.aspx
+  K. Morris               → /SitePages/Profile-KMorris.aspx
+  D. Reyes                → /SitePages/CAB-Member-DianaReyes.aspx
+  S. Foster               → /SitePages/Profile-SFoster.aspx
+  J. Patel                → /SitePages/CAB-Member-JamesPatel.aspx
+  M. Thompson             → /SitePages/CAB-Member-MarcusThompson.aspx
+
+COHORT PROGRAM CARDS
+  Learn More (Cohort Model) → jedi-cab-tw.html#cohort-program       [same-page anchor]
+  Meet Mentors              → /SitePages/CAB-Mentors.aspx
+  View Past Projects        → /SitePages/Capstone-Projects.aspx
+
+DEVELOPMENT TRACKS TIMELINE (each step links to curriculum page)
+  Foundations             → /SitePages/Cohort-Track-Foundations.aspx
+  Client Leadership       → /SitePages/Cohort-Track-ClientLeadership.aspx
+  Business Development    → /SitePages/Cohort-Track-BusinessDev.aspx
+  Capstone                → /SitePages/Cohort-Track-Capstone.aspx
+
+  See How We Work note    → how-we-work.html
+
+COHORT STATUS TRACKER
+  Cohort 1 — 2024         → /SitePages/Cohort-2024.aspx
+  Cohort 2 — 2025         → /SitePages/Cohort-2025.aspx
+  Cohort 3 — 2026         → /SitePages/Cohort-2026.aspx
+
+CAB RESOURCES SIDEBAR
+  CAB Request Template    → /Lists/CABRequests/NewForm.aspx
+  CAB Governance Model    → /SitePages/CAB-Governance.aspx
+  Capstone Template       → /Shared Documents/Capstone-Template.docx
+  Alumni Network          → communities.html
+  Action Tracker (Planner)→ pmo.html  [role-locked: planner-link]
+
+EQUITY FOOTER
+  Report access concern   → /Lists/AccessConcerns/NewForm.aspx
+  Accessibility           → /SitePages/Accessibility.aspx
+  Report an Issue         → /Lists/Issues/NewForm.aspx
+  Site Owners             → /SitePages/Site-Owners.aspx
+
+ACCESS POPUP
+  Request Access btn      → /Lists/AccessRequests/NewForm.aspx
+
+── ROLE ACCESS CONTROL ────────────────────────────────────────────────────────
+  URL param: ?role=new | consultant | cohort | pm | cab | ceo
+  Production: SPFX reads Azure AD group membership and auto-sets role
+  AD Groups to create:
+    JJR-NewMembers → role=new
+    JJR-Consultants → role=consultant
+    CAB-Cohort-Active → role=cohort
+    JJR-ProjectManagers → role=pm
+    CAB-Members → role=cab
+    JJR-Leadership → role=ceo
+
+── PAGES TO CREATE IN SHAREPOINT ──────────────────────────────────────────────
+  /SitePages/CAB-Member-{Name}.aspx  (6 individual profile pages)
+  /SitePages/CAB-Topic-{Name}.aspx   (3 topic Loop pages)
+  /SitePages/CAB-Session{N}-Notes.aspx (session notes, 1 per session)
+  /SitePages/CAB-Session{N}-Agenda.aspx (session agendas)
+  /SitePages/CAB-Sessions-Archive.aspx
+  /SitePages/CAB-Members.aspx (full roster)
+  /SitePages/CAB-Governance.aspx
+  /SitePages/CAB-Mentors.aspx
+  /SitePages/CAB-Planner.aspx (Planner embedded view)
+  /SitePages/Capstone-Projects.aspx
+  /SitePages/Cohort-{Year}.aspx (3 cohort overview pages)
+  /SitePages/Cohort-Track-{Name}.aspx (4 curriculum pages)
+  /SitePages/Profile-{Name}.aspx (non-CAB staff profiles)
+
+── LISTS TO CREATE IN SHAREPOINT ──────────────────────────────────────────────
+  /Lists/CABRequests (fields: project, stage, questions, requestor, date)
+  /Lists/CohortApplications (fields: name, cohort, statement, date)
+  /Lists/CABAsyncInput (fields: member, session, topic, input, date)
+  /Lists/CABDecisions (fields: recommendation, decision, status, session)
+  /Lists/AccessRequests (fields: name, role, reason, date)
+  /Lists/AccessConcerns (fields: name, concern, date)
+  /Lists/Issues (fields: description, reporter, date)
+
+════════════════════════════════════════════════════════════════════════════════
+-->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — JEDI CAB</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!-- ── Tailwind custom config ───────────────────────────────────────────── -->
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy:         '#1B365D',
+        'navy-deep':  '#0F2340',
+        'navy-mid':   '#2A4A78',
+        'navy-top':   '#17304f',
+        'navy-ctx':   '#152a48',
+        'navy-rec':   '#0b1c35',
+        green:        '#4CBB17',
+        'green-dk':   '#3da312',
+        'green-br':   '#7de852',
+        'green-sf':   '#b8f5a0',
+        gold:         '#C49A2A',
+        'gold-dk':    '#8B6914',
+        'gold-dp':    '#3D2B00',
+        'gold-br':    '#E8BE5A',
+        amber:        '#E8A838',
+        pink:         '#E91E8C',
+        'off-white':  '#F8F7F4',
+        stone:        '#E5E2DC',
+        rule:         '#D0CCC4',
+        'rule-lt':    '#E8E5DF',
+        'text-sec':   '#5A6B80',
+        'text-mute':  '#8A95A5',
+      },
+      fontFamily: {
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        body:    ['"IBM Plex Sans"', '-apple-system', 'sans-serif'],
+        mono:    ['"IBM Plex Mono"', '"SF Mono"', 'monospace'],
+      },
+      keyframes: {
+        shimmer: {
+          '0%':   { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
+        },
+        breathe: {
+          '0%,100%': { opacity: '0.5' },
+          '50%':     { opacity: '1'   },
+        },
+        rise: {
+          from: { opacity: '0', transform: 'translateY(40px)' },
+          to:   { opacity: '1', transform: 'translateY(0)'    },
+        },
+        pulse2: {
+          '0%,100%': { opacity: '1'    },
+          '50%':     { opacity: '0.35' },
+        },
+        reveal: {
+          from: { opacity: '0', transform: 'translateY(24px)' },
+          to:   { opacity: '1', transform: 'translateY(0)'    },
+        },
+      },
+      animation: {
+        shimmer:    'shimmer 9s ease-in-out infinite',
+        'shimmer-d':'shimmer 9s ease-in-out 0.6s infinite',
+        breathe:    'breathe 12s ease-in-out infinite',
+        rise:       'rise 0.7s cubic-bezier(0.16,1,0.3,1) both',
+        'rise-d':   'rise 0.7s cubic-bezier(0.16,1,0.3,1) 0.12s both',
+        pulse2:     'pulse2 2s ease-in-out infinite',
+      },
+    }
+  }
+}
+</script>
+
+<!-- ── Global CSS — only what Tailwind utilities cannot do ─────────────── -->
+<style>
+  /* Font shorthand helpers */
+  .font-display { font-family: "Playfair Display", Georgia, serif; }
+  .font-mono    { font-family: "IBM Plex Mono", "SF Mono", monospace; }
+  .font-body    { font-family: "IBM Plex Sans", -apple-system, sans-serif; }
+
+  /* Shimmer text gradient (background-clip trick) */
+  .shimmer-text {
+    background: linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 9s ease-in-out infinite;
+  }
+  .shimmer-text-d { animation-delay: 0.6s; }
+
+  /* Green shimmer bar (equity footer marker) */
+  .green-shimmer-bar {
+    background: linear-gradient(180deg,#3da312,#7de852,#3da312);
+    background-size: 100% 200%;
+    animation: shimmer 6s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(76,187,23,0.25);
+  }
+
+  /* Gradient presets */
+  .bg-nav      { background: linear-gradient(180deg,#17304f 0%,#0F2340 40%,#0b1c35 100%); }
+  .bg-ctx      { background: linear-gradient(180deg,#152a48,#1B365D,#1e3a63); }
+  .bg-hero     { background: linear-gradient(135deg,#3D2B00 0%,#6B4E10 35%,#8B6914 65%,#5A4210 100%); }
+  .bg-dark-panel { background: linear-gradient(180deg,#17304f,#0F2340,#0b1c35); }
+  .bg-footer   { background: linear-gradient(180deg,#17304f,#0F2340,#0b1c35); }
+  .bg-access   { background: linear-gradient(135deg,#3D2B00,#5A4210); }
+  .bg-popup    { background: linear-gradient(160deg,#17304f,#0F2340); }
+
+  /* Gradient top border on pathway panel */
+  .pathway-bar::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,#3D2B00,#C49A2A,#3da312,#4CBB17);
+  }
+
+  /* Noise texture overlay */
+  .noise::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.05; mix-blend-mode: overlay;
+  }
+
+  /* Breathing hero glow */
+  .hero-breath {
+    position: absolute; width: 1600px; height: 400px;
+    left: 50%; top: 50%; transform: translate(-50%,-50%);
+    background: radial-gradient(ellipse at center,rgba(196,154,42,0.1) 0%,rgba(196,154,42,0) 60%);
+    pointer-events: none; z-index: 0;
+    animation: breathe 12s ease-in-out infinite;
+    filter: blur(30px);
+  }
+
+  /* Spotlight cursor glow */
+  .spotlight {
+    position: fixed; width: 560px; height: 560px; border-radius: 50%;
+    background: radial-gradient(circle,rgba(42,74,120,0.14) 0%,rgba(27,54,93,0.06) 40%,rgba(27,54,93,0) 70%);
+    pointer-events: none; z-index: 1;
+    transform: translate(-50%,-50%); opacity: 0;
+    filter: blur(30px); mix-blend-mode: multiply;
+    transition: opacity 600ms;
+  }
+  body.spotlight-ready .spotlight { opacity: 1; }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 900ms cubic-bezier(0.16,1,0.3,1),
+                transform 900ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Avatar dropdown panel */
+  .dropdown-panel {
+    opacity: 0; transform: translateY(-8px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16,1,0.3,1),
+                transform 0.25s cubic-bezier(0.16,1,0.3,1);
+  }
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before {
+    content: ''; position: absolute; top: -6px; right: 14px;
+    width: 12px; height: 12px;
+    background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4;
+    transform: rotate(45deg);
+  }
+
+  /* Card left-border animation */
+  .card-accent { position: relative; overflow: hidden; }
+  .card-accent::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 2px; height: 0;
+    background: #C49A2A; box-shadow: 0 0 8px rgba(196,154,42,0.3);
+    transition: height 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .card-accent:hover::after { height: 100%; }
+
+  /* Meeting card left-border on hover */
+  .meeting-bar { position: relative; }
+  .meeting-bar::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 3px; height: 0;
+    background: #C49A2A;
+    transition: height 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .meeting-bar:hover::before { height: 100%; }
+
+  /* Access popup */
+  .popup-overlay {
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1);
+    backdrop-filter: blur(4px);
+  }
+  .popup-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .popup-box {
+    transform: translateY(12px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .popup-overlay.is-open .popup-box { transform: translateY(0) scale(1); }
+
+  /* Locked element */
+  .locked-trigger { opacity: 0.42 !important; cursor: pointer !important; pointer-events: auto !important; }
+  .locked-trigger:hover { opacity: 0.62 !important; }
+
+  /* Nav rise animations */
+  .nav-rise  { animation: rise 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+  .ctx-rise  { animation: rise 0.7s cubic-bezier(0.16,1,0.3,1) 0.12s both; }
+
+  /* Sidebar link hover indent */
+  .sidebar-link { transition: background 0.2s, color 0.2s, padding-left 0.3s cubic-bezier(0.16,1,0.3,1); }
+  .sidebar-link:hover { padding-left: 30px; color: #8B6914; background: #F8F7F4; }
+  .sidebar-link:hover .sl-arrow { color: #C49A2A; transform: translateX(4px); }
+  .sl-arrow { transition: color 0.2s, transform 0.3s; }
+
+  /* Topic link hover gap */
+  .topic-link { display: inline-flex; align-items: center; gap: 6px; transition: gap 0.25s, color 0.2s; }
+  .topic-link:hover { gap: 10px; color: #C49A2A; }
+
+  /* Meeting link hover */
+  .meeting-lnk { display: inline-flex; align-items: center; gap: 5px; transition: gap 0.2s, color 0.2s; }
+  .meeting-lnk:hover { gap: 9px; color: #8B6914; }
+
+  /* Status bar colors (top of action cards) */
+  .sb-open     { background: #C49A2A; }
+  .sb-progress { background: #E8A838; }
+  .sb-done     { background: #4CBB17; }
+</style>
+</head>
+
+<body class="bg-off-white text-navy font-body min-h-screen overflow-x-hidden antialiased">
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION 2 — NAV
+     ═══════════════════════════════════════════════════════════════════════ -->
+<nav class="nav-rise bg-nav fixed top-0 left-0 right-0 z-50 h-14
+            border-t border-white/[0.06] border-b border-black/30
+            shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="max-w-[1400px] mx-auto px-12 h-full flex items-center justify-between">
+
+    <!-- Brand -->
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html"
+           class="shimmer-text font-display text-xl font-black tracking-tight">JJR</a>
+        <a href="jjr-hub-tw.html"
+           class="shimmer-text shimmer-text-d font-display text-xl font-black tracking-tight">Hub</a>
+      </div>
+      <span class="font-mono text-[9px] font-medium tracking-[1.8px] uppercase text-white/25 -mt-0.5">
+        Your front door
+      </span>
+    </div>
+
+    <!-- Nav links -->
+    <div class="hidden lg:flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center hover:text-white transition-colors">Home</a>
+      <a href="active-projects.html"     class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center hover:text-white transition-colors">Projects</a>
+      <a href="templates.html"           class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center hover:text-white transition-colors">Knowledge</a>
+      <a href="communities.html"         class="font-body text-[13px] font-medium text-gold-br  px-4 h-full flex items-center hover:text-white transition-colors">Communities</a>
+      <span class="text-[11px] text-white/15 mx-2 select-none">/</span>
+      <a href="tool-guides.html"         class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center hover:text-green transition-colors">Help</a>
+      <a href="start-here.html"          class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center hover:text-green transition-colors">Training</a>
+    </div>
+
+    <!-- Right controls -->
+    <div class="flex items-center gap-1">
+      <!-- Search bar -->
+      <div class="hidden lg:flex items-center bg-white/5 border border-white/[0.08] px-3.5 h-[34px] gap-2 min-w-[260px]
+                  focus-within:border-green focus-within:shadow-[0_0_12px_rgba(76,187,23,0.15)] transition-all">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.6" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Search…"
+               class="bg-transparent border-0 outline-none flex-1 text-[12px] text-white placeholder:text-white/30"/>
+        <span class="font-mono text-[9px] text-white/20">⌘K</span>
+      </div>
+
+      <!-- Bell -->
+      <button class="w-8 h-8 flex items-center justify-center text-white/40 hover:text-white transition-colors relative bg-transparent border-0 cursor-pointer">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <div class="absolute top-[5px] right-[5px] w-1.5 h-1.5 bg-green rounded-full
+                    border border-navy-deep shadow-[0_0_6px_rgba(76,187,23,0.25)]"></div>
+      </button>
+
+      <!-- Avatar + dropdown -->
+      <div class="relative ml-2.5">
+        <button id="avatarBtn" aria-haspopup="true" aria-expanded="false"
+                class="w-8 h-8 rounded-full
+                       bg-gradient-to-br from-green-dk via-green to-green-br
+                       border-[1.5px] border-white/15
+                       flex items-center justify-center
+                       font-body text-[11px] font-bold text-white
+                       cursor-pointer relative
+                       shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)]
+                       hover:scale-105 transition-transform">
+          SF
+          <span class="absolute -top-px -right-px w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep"></span>
+        </button>
+
+        <div id="profilePanel" class="dropdown-panel absolute top-[calc(100%+12px)] right-0
+                                      bg-white border border-rule w-60 z-[300]
+                                      shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18)]"
+             role="menu">
+          <div class="p-[18px] border-b border-rule-lt flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-green-dk via-green to-green-br
+                        flex items-center justify-center text-sm font-bold text-white flex-shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] text-text-mute tracking-[1.2px] uppercase mt-0.5">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html"
+               class="flex items-center gap-2.5 px-[18px] py-2.5 text-[12.5px] font-medium text-navy
+                      hover:bg-off-white hover:text-green-dk transition-all">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" class="text-text-mute" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>My Account
+            </a>
+            <div class="h-px bg-rule-lt my-1"></div>
+            <a href="under-development.html?from=sign-out"
+               class="flex items-center gap-2.5 px-[18px] py-2.5 text-[12.5px] font-medium text-pink
+                      hover:bg-pink/5 transition-colors">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION 3 — CONTEXT BAR + SPFX BANNER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="ctx-rise bg-ctx mt-14 z-[2] relative
+            border-b border-black/10 shadow-[inset_0_2px_6px_rgba(0,0,0,0.2)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <!-- Breadcrumb -->
+    <div class="font-mono text-[10px] text-white/30 tracking-[0.5px]">
+      <a href="jjr-hub-tw.html" class="text-white/20 hover:text-white/50 transition-colors">Home</a>
+      <span class="text-white/10 mx-2">/</span>
+      <a href="communities.html" class="text-white/20 hover:text-white/50 transition-colors">Communities</a>
+      <span class="text-white/10 mx-2">/</span>JEDI CAB
+    </div>
+    <!-- Access badge -->
+    <div class="inline-flex items-center gap-1.5 font-mono text-[9px] tracking-[1.5px] uppercase
+                text-gold-br bg-gold/10 border border-gold/25 px-2.5 py-1">
+      <svg width="8" height="8" viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="3" fill="currentColor" opacity="0.7"/>
+        <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+      </svg>
+      Access-Controlled · CAB Members Only
+    </div>
+  </div>
+</div>
+
+<!-- SPFX banner -->
+<div class="bg-ctx border-b border-green/15 relative z-[3]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2 flex items-center gap-2.5">
+    <div class="w-1.5 h-1.5 rounded-full bg-green flex-shrink-0
+                shadow-[0_0_6px_rgba(76,187,23,0.5)]"
+         style="animation:pulse2 2s ease-in-out infinite"></div>
+    <div class="spfx-note__text font-mono text-[10px] text-white/30 tracking-[0.3px]">
+      <strong class="text-green font-medium">SharePoint SPFX Connected</strong>
+      — All buttons link to:
+      <strong class="text-green font-medium">jjrconsulting.sharepoint.com/sites/JJRHub</strong>
+      — Permissions auto-detected from Azure AD group membership.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MAIN PAGE WRAPPER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-12 pb-32 relative z-[2]" id="main-page">
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 4 — HERO
+       ═══════════════════════════════════════════════════════════════════ -->
+  <div class="reveal mb-14" id="hero">
+    <div class="bg-hero noise relative overflow-hidden min-h-[340px] flex items-center">
+      <!-- Breathing glow -->
+      <div class="hero-breath"></div>
+      <!-- Decorative corner frames -->
+      <div class="absolute top-10 right-12 w-[90px] h-[90px] border border-gold/25 pointer-events-none"></div>
+      <div class="absolute top-[50px] right-[58px] w-[90px] h-[90px] border border-gold/10 pointer-events-none"></div>
+
+      <!-- Hero content -->
+      <div class="relative z-10 px-14 py-14 max-w-[660px]">
+        <div class="flex items-center gap-2 font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-gold-br mb-4">
+          <span class="w-6 h-px bg-gold shadow-[0_0_6px_rgba(196,154,42,0.3)]"></span>
+          JEDI CAB · Community Advisory Board
+        </div>
+        <h1 class="font-display font-bold text-white leading-[1.06] tracking-[-0.025em] mb-5
+                   text-[clamp(2.2rem,4vw,3.4rem)]">
+          Where Community<br/>
+          <em class="italic text-gold-br">Intelligence</em> Meets<br/>
+          Client Delivery
+        </h1>
+        <p class="text-[14px] leading-[1.75] text-white/50 max-w-[500px] mb-7">
+          JJR's advisory body for equity-informed decision-making. CAB brings lived experience directly
+          into strategy, validates our approach before it reaches clients, and holds the firm accountable
+          to the communities it serves.
+        </p>
+        <div class="flex items-center gap-3.5 flex-wrap">
+          <!-- Primary CTA -->
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CABRequests/NewForm.aspx"
+             target="_blank"
+             class="btn-submit inline-flex items-center gap-2 font-body text-xs font-bold
+                    px-6 py-[11px] bg-gold text-navy-deep tracking-[0.04em]
+                    shadow-[0_0_24px_rgba(196,154,42,0.25),0_2px_8px_rgba(0,0,0,0.2)]
+                    hover:bg-gold-br hover:shadow-[0_0_36px_rgba(196,154,42,0.45)] hover:-translate-y-px
+                    transition-all">
+            Submit a CAB Request →
+          </a>
+          <!-- Secondary CTA -->
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CohortApplications/NewForm.aspx"
+             target="_blank"
+             class="btn-cohort inline-flex items-center gap-2 font-body text-xs font-bold
+                    px-6 py-[11px] bg-transparent border border-white/20 text-white/65 tracking-[0.04em]
+                    hover:border-gold hover:text-gold-br transition-all">
+            Apply for Cohort 3
+          </a>
+        </div>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="absolute bottom-0 right-0 hidden lg:flex">
+        <div class="px-7 py-5 border-l border-white/[0.06] text-center">
+          <div class="font-display text-[2rem] font-bold text-gold-br leading-none">7</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1">Active Members</div>
+        </div>
+        <div class="px-7 py-5 border-l border-white/[0.06] text-center">
+          <div class="font-display text-[2rem] font-bold text-gold-br leading-none">3</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1">Active Topics</div>
+        </div>
+        <div class="px-7 py-5 border-l border-white/[0.06] text-center">
+          <div class="font-display text-[2rem] font-bold text-gold-br leading-none">12</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1">Decisions Logged</div>
+        </div>
+        <div class="px-7 py-5 border-l border-white/[0.06] text-center">
+          <div class="font-display text-[2rem] font-bold text-gold-br leading-none">2</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mt-1">Cohorts Alumni</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 5 — PATHWAY FLOW
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <!-- Section label -->
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]">
+    The Pipeline
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case italic">
+      How people move through JEDI CAB
+    </span>
+  </div>
+
+  <div class="reveal bg-white border border-rule px-10 py-9 mb-14 relative pathway-bar" id="pathway">
+    <div class="font-display text-base font-bold text-navy mb-1.5">Cohort → CAB → Alumni</div>
+    <div class="font-mono text-[10px] tracking-[0.5px] text-text-mute mb-8">
+      A progression system — not a hierarchy, a deepening of responsibility
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-0">
+
+      <!-- Stage 1: Cohort -->
+      <div class="flex-1">
+        <a href="jedi-cab-tw.html#cohort-program" class="block border border-rule bg-off-white p-6 h-full
+                    hover:border-gold-dk hover:bg-white hover:shadow-[0_4px_16px_rgba(196,154,42,0.08)]
+                    transition-all no-underline">
+          <div class="font-mono text-[9px] tracking-[2px] uppercase text-gold-dk mb-2">01 · Entry</div>
+          <div class="font-display text-base font-bold text-navy mb-2">Cohort</div>
+          <p class="text-[11.5px] text-text-sec leading-relaxed mb-3">
+            6-month structured program. Small groups of 4–6 consultants learning JEDI principles,
+            practicing equity analysis, and completing a capstone project.
+          </p>
+          <span class="inline-block font-mono text-[9px] tracking-[1.5px] uppercase
+                       text-gold-dk border border-gold-dk/30 bg-gold/10 px-2 py-0.5">
+            Training Ground
+          </span>
+        </a>
+      </div>
+
+      <!-- Arrow -->
+      <div class="hidden lg:flex items-center justify-center w-12 flex-shrink-0 text-rule relative">
+        <div class="absolute left-2 right-2 h-px bg-rule"></div>
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24" class="bg-white relative z-10 p-0.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+      <!-- Stage 2: CAB -->
+      <div class="flex-1">
+        <a href="jedi-cab-tw.html#active-topics" class="block border border-gold/35 bg-gold/[0.04] p-6 h-full
+                    hover:border-gold hover:bg-white hover:shadow-[0_4px_16px_rgba(196,154,42,0.1)]
+                    transition-all no-underline">
+          <div class="font-mono text-[9px] tracking-[2px] uppercase text-gold mb-2">02 · Core</div>
+          <div class="font-display text-base font-bold text-navy mb-2">CAB</div>
+          <p class="text-[11.5px] text-text-sec leading-relaxed mb-3">
+            Selective advisory body. Members apply JEDI thinking to real client decisions,
+            validate strategies before delivery, and produce structured input that actually changes outcomes.
+          </p>
+          <span class="inline-block font-mono text-[9px] tracking-[1.5px] uppercase
+                       text-gold border border-gold/40 bg-gold/[0.08] px-2 py-0.5">
+            Real-World Impact
+          </span>
+        </a>
+      </div>
+
+      <!-- Arrow -->
+      <div class="hidden lg:flex items-center justify-center w-12 flex-shrink-0 text-rule relative">
+        <div class="absolute left-2 right-2 h-px bg-rule"></div>
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24" class="bg-white relative z-10 p-0.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+
+      <!-- Stage 3: Alumni -->
+      <div class="flex-1">
+        <a href="communities.html" class="block border border-rule bg-off-white p-6 h-full
+                    hover:border-green-dk hover:bg-white hover:shadow-[0_4px_16px_rgba(61,163,18,0.08)]
+                    transition-all no-underline">
+          <div class="font-mono text-[9px] tracking-[2px] uppercase text-green-dk mb-2">03 · Network</div>
+          <div class="font-display text-base font-bold text-navy mb-2">Alumni</div>
+          <p class="text-[11.5px] text-text-sec leading-relaxed mb-3">
+            Long-term community. Past cohort members and CAB alumni stay connected, mentor new cohorts,
+            contribute to advanced topics, and represent JJR's equity brand externally.
+          </p>
+          <span class="inline-block font-mono text-[9px] tracking-[1.5px] uppercase
+                       text-green-dk border border-green-dk/30 bg-green/10 px-2 py-0.5">
+            Community + Brand
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 6 — ACTIVE TOPICS + MEMBERS SIDEBAR
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]" id="active-topics-label">
+    CAB Active Work
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case">
+      Where influence is happening right now
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-7 mb-14"
+       id="active-topics" data-roles="ceo,pm,cab,cohort,consultant,new">
+
+    <!-- Topics Panel -->
+    <div class="bg-white border border-rule reveal">
+      <!-- Panel header -->
+      <div class="flex items-center justify-between px-7 py-[22px] border-b border-rule-lt">
+        <div>
+          <div class="font-display text-[1.05rem] font-bold text-navy">Active Topics &amp; Cases</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute mt-0.5">
+            Current issues under CAB review
+          </div>
+        </div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CABRequests/NewForm.aspx"
+           target="_blank"
+           class="btn-submit-inline font-body text-xs font-bold px-[18px] py-2
+                  bg-transparent border border-rule text-text-sec tracking-[0.04em]
+                  hover:border-navy hover:text-navy transition-all">
+          + Submit Request
+        </a>
+      </div>
+
+      <!-- Topic 1 -->
+      <div class="px-7 py-[22px] border-b border-rule-lt hover:bg-off-white transition-colors">
+        <div class="flex items-start justify-between gap-3 mb-2">
+          <div class="font-display text-[0.95rem] font-bold text-navy leading-[1.3]">
+            Equity Strategy for EJ40 Community Engagement Model
+          </div>
+          <span class="font-mono text-[9px] tracking-[1.5px] uppercase px-2.5 py-1 border flex-shrink-0
+                       text-gold-dk border-gold-dk/30 bg-gold/10">Design</span>
+        </div>
+        <p class="text-[12.5px] text-text-sec leading-relaxed mb-3">
+          Client is redesigning their community engagement approach for EJ40-designated areas. CAB is reviewing
+          proposed engagement protocols before final delivery to ensure lived-experience alignment.
+        </p>
+        <ul class="mb-3.5 space-y-0.5">
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Does the proposed community entry approach account for historical trust deficits?
+          </li>
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Are the feedback mechanisms accessible to non-English speaking residents?
+          </li>
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            What power dynamics exist between client staff and community members?
+          </li>
+        </ul>
+        <div class="flex items-center justify-between">
+          <div class="font-mono text-[10px] text-text-mute">Assigned to 4 members · Due May 9, 2026</div>
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Topic-EJ40.aspx"
+             target="_blank"
+             class="topic-item__link topic-link font-bold text-[11.5px] text-gold-dk">
+            Open in Loop →
+          </a>
+        </div>
+      </div>
+
+      <!-- Topic 2 -->
+      <div class="px-7 py-[22px] border-b border-rule-lt hover:bg-off-white transition-colors">
+        <div class="flex items-start justify-between gap-3 mb-2">
+          <div class="font-display text-[0.95rem] font-bold text-navy leading-[1.3]">
+            Federal Procurement Equity Framework — Problem Framing
+          </div>
+          <span class="font-mono text-[9px] tracking-[1.5px] uppercase px-2.5 py-1 border flex-shrink-0
+                       text-green-dk border-green-dk/25 bg-green/[0.06]">Discovery</span>
+        </div>
+        <p class="text-[12.5px] text-text-sec leading-relaxed mb-3">
+          New engagement with a federal agency. Before the project team finalizes discovery questions, CAB
+          is validating whether we're asking the right equity questions at the outset.
+        </p>
+        <ul class="mb-3.5 space-y-0.5">
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Are we even framing the equity challenge correctly for this context?
+          </li>
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Which communities are most affected and are they represented in scoping?
+          </li>
+        </ul>
+        <div class="flex items-center justify-between">
+          <div class="font-mono text-[10px] text-text-mute">Assigned to 3 members · Due Apr 28, 2026</div>
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Topic-FedProcurement.aspx"
+             target="_blank"
+             class="topic-item__link topic-link font-bold text-[11.5px] text-gold-dk">
+            Open in Loop →
+          </a>
+        </div>
+      </div>
+
+      <!-- Topic 3 -->
+      <div class="px-7 py-[22px] hover:bg-off-white transition-colors">
+        <div class="flex items-start justify-between gap-3 mb-2">
+          <div class="font-display text-[0.95rem] font-bold text-navy leading-[1.3]">
+            Internal Hiring Practices — Pre-Delivery Equity Review
+          </div>
+          <span class="font-mono text-[9px] tracking-[1.5px] uppercase px-2.5 py-1 border flex-shrink-0
+                       text-navy-mid border-navy-mid/25 bg-navy-mid/[0.06]">Validation</span>
+        </div>
+        <p class="text-[12.5px] text-text-sec leading-relaxed mb-3">
+          JJR is updating its internal hiring rubric. CAB was requested to stress-test materials for
+          unintended bias before rollout to hiring managers.
+        </p>
+        <ul class="mb-3.5 space-y-0.5">
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Does the revised rubric inadvertently disadvantage non-traditional career paths?
+          </li>
+          <li class="text-[12px] text-text-mute italic pl-4 relative
+                     before:content-['·'] before:absolute before:left-1.5 before:text-gold before:not-italic">
+            Are evaluation criteria culturally neutral or implicitly coded?
+          </li>
+        </ul>
+        <div class="flex items-center justify-between">
+          <div class="font-mono text-[10px] text-text-mute">Assigned to 5 members · Due May 2, 2026</div>
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Topic-Hiring.aspx"
+             target="_blank"
+             class="topic-item__link topic-link font-bold text-[11.5px] text-gold-dk">
+            Open in Loop →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Members Panel -->
+      <div class="bg-white border border-rule reveal" id="members-panel">
+        <div class="px-[22px] py-[18px] border-b border-rule-lt">
+          <div class="font-display text-[0.95rem] font-bold text-navy">CAB Members</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute mt-0.5">
+            Current Term · 2026
+          </div>
+        </div>
+        <!-- Member rows -->
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full bg-gold-dk flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0">DR</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-DianaReyes.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">Diana Reyes</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Community Organizer · EJ</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-gold-dk border-gold-dk/30 bg-gold/10">Chair</span>
+        </div>
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full bg-navy-mid flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0">MT</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-MarcusThompson.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">Marcus Thompson</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Policy Advisor</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-navy-mid border-navy-mid/25 bg-navy-mid/[0.06]">Advisor</span>
+        </div>
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0"
+               style="background:#2D5A1E">AC</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-AmaraChen.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">Amara Chen</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Public Health · Cohort 1</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-green-dk border-green-dk/25 bg-green/[0.06]">Community</span>
+        </div>
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0"
+               style="background:#5C2A6B">JP</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-JamesPatel.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">James Patel</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Housing Equity · Cohort 2</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-green-dk border-green-dk/25 bg-green/[0.06]">Community</span>
+        </div>
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full bg-gold-dk flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0">LW</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-LenaWilliams.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">Lena Williams</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Labor Organizer</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-navy-mid border-navy-mid/25 bg-navy-mid/[0.06]">Advisor</span>
+        </div>
+        <div class="member-row flex items-center gap-3 px-[22px] py-3 border-b border-rule-lt hover:bg-off-white transition-colors">
+          <div class="w-[34px] h-[34px] rounded-full bg-navy flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white flex-shrink-0">RO</div>
+          <div class="flex-1 min-w-0">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Member-RafaelOrtega.aspx" target="_blank" class="member-name text-[12.5px] font-semibold text-navy hover:text-gold-dk transition-colors cursor-pointer hover:underline underline-offset-2">Rafael Ortega</a>
+            <div class="font-mono text-[9.5px] text-text-mute">Civic Tech · Cohort 1</div>
+          </div>
+          <span class="font-mono text-[8.5px] tracking-[1px] uppercase px-1.5 py-0.5 border
+                       text-green-dk border-green-dk/25 bg-green/[0.06]">Community</span>
+        </div>
+        <div class="px-[22px] py-3">
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Members.aspx"
+             target="_blank"
+             class="text-[12px] font-bold text-gold-dk flex items-center gap-1.5
+                    hover:gap-2.5 transition-all">
+            View Full Roster &amp; Bios →
+          </a>
+        </div>
+      </div>
+
+      <!-- Access note panel -->
+      <div class="access-panel bg-access border border-gold/20 px-[22px] py-5 reveal">
+        <div class="font-mono text-[9px] tracking-[2px] uppercase text-gold-br mb-1.5">
+          🔒 Access Note
+        </div>
+        <div class="text-[12px] text-white/50 leading-relaxed">
+          Full CAB workspace — meeting notes, decision logs, and working documents — is restricted
+          to current CAB members and JJR leadership.
+          <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/AccessRequests/NewForm.aspx"
+             target="_blank" class="text-gold-br font-bold hover:underline"> Request access →</a>
+        </div>
+      </div>
+
+    </div><!-- /right sidebar -->
+  </div><!-- /two-col -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 7 — MEETING HUB
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]">
+    Meeting Hub
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case">
+      Sessions, agendas, and archives
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-14"
+       id="meetings" data-roles="ceo,pm,cab,cohort,consultant,new">
+
+    <!-- Upcoming session -->
+    <div class="meeting-bar bg-white border-l-[3px] border-l-gold border border-rule
+                px-7 py-[26px] reveal
+                hover:shadow-[0_6px_20px_rgba(27,54,93,0.08)] transition-all">
+      <div class="flex items-start justify-between gap-3 mb-3.5">
+        <div>
+          <div class="font-display text-[0.95rem] font-bold text-navy">CAB Session #8 — May Review</div>
+          <div class="font-mono text-[9.5px] text-green-dk mt-0.5">Upcoming</div>
+        </div>
+        <div class="font-mono text-[9.5px] tracking-[1px] text-gold-dk bg-gold/10
+                    border border-gold/20 px-2.5 py-1 whitespace-nowrap">
+          May 7, 2026 · 2:00 PM
+        </div>
+      </div>
+      <p class="text-[12.5px] text-text-sec leading-[1.65] mb-4">
+        Review of EJ40 engagement protocols and federal procurement framing. Pre-read shared via Loop
+        48 hours prior. All members expected; async input option available for conflicts.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session8-Agenda.aspx"
+           target="_blank"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Agenda (Loop) →
+        </a>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/_layouts/15/calendar.aspx?CABSession8"
+           target="_blank"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Add to Calendar →
+        </a>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CABAsyncInput/NewForm.aspx"
+           target="_blank"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          Submit Async Input →
+        </a>
+      </div>
+    </div>
+
+    <!-- Completed session -->
+    <div class="meeting-bar bg-white border border-rule px-7 py-[26px] reveal
+                hover:shadow-[0_6px_20px_rgba(27,54,93,0.08)] transition-all">
+      <div class="flex items-start justify-between gap-3 mb-3.5">
+        <div>
+          <div class="font-display text-[0.95rem] font-bold text-navy">CAB Session #7 — April Review</div>
+          <div class="font-mono text-[9.5px] text-text-mute mt-0.5">Completed</div>
+        </div>
+        <div class="font-mono text-[9.5px] tracking-[1px] text-text-mute bg-off-white
+                    border border-rule px-2.5 py-1 whitespace-nowrap">
+          Apr 9, 2026
+        </div>
+      </div>
+      <p class="text-[12.5px] text-text-sec leading-[1.65] mb-4">
+        Reviewed internal hiring rubric stress-test. Three recommendations produced — two adopted by HR,
+        one deferred pending legal review. Action items assigned and tracked in Planner.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session7-Notes.aspx"
+           target="_blank"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Meeting Notes →
+        </a>
+        <a href="jedi-cab-tw.html#decisions-log"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          View Decisions →
+        </a>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Sessions-Archive.aspx"
+           target="_blank"
+           class="meeting-link meeting-lnk font-bold text-[11.5px] text-text-mute hover:text-gold-dk">
+          Past Sessions Archive →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 8 — DECISIONS LOG
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]">
+    Recommendations &amp; Decisions
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case italic">
+      Proof CAB is not symbolic
+    </span>
+  </div>
+
+  <div class="bg-white border border-rule mb-14 reveal decisions-panel" id="decisions-log">
+    <!-- Panel header -->
+    <div class="flex items-center justify-between px-7 py-[22px] border-b border-rule-lt">
+      <div>
+        <div class="decisions-panel__title font-display text-[1.05rem] font-bold text-navy">
+          Decision Log
+        </div>
+        <div class="font-mono text-[9px] tracking-[1px] uppercase text-text-mute mt-0.5">
+          What CAB recommended · What was decided · Whether it was adopted
+        </div>
+      </div>
+      <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CABDecisions/AllItems.aspx"
+         target="_blank"
+         class="decisions-panel__btn font-body text-xs font-bold px-[18px] py-2
+                bg-transparent border border-rule text-text-sec
+                hover:border-navy hover:text-navy transition-all">
+        Full Log →
+      </a>
+    </div>
+
+    <!-- Table header -->
+    <div class="grid border-b border-rule-lt bg-off-white"
+         style="grid-template-columns:2fr 1.2fr 100px">
+      <div class="px-5 py-3.5 font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute border-r border-rule-lt">Recommendation</div>
+      <div class="px-5 py-3.5 font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute border-r border-rule-lt">Decision Made</div>
+      <div class="px-5 py-3.5 font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute">Status</div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="grid border-b border-rule-lt" style="grid-template-columns:2fr 1.2fr 100px">
+      <div class="px-5 py-3.5 border-r border-rule-lt">
+        <div class="text-[12.5px] font-semibold text-navy mb-1">
+          Revise hiring rubric evaluation criteria — remove "executive presence" language
+        </div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session7-Notes.aspx" target="_blank" class="font-mono text-[11.5px] text-text-mute hover:text-gold-dk transition-colors hover:underline underline-offset-2">CAB Session #7 · Apr 9, 2026 · Hiring Equity</a>
+      </div>
+      <div class="px-5 py-3.5 text-[12.5px] text-text-sec border-r border-rule-lt">
+        "Executive presence" criterion revised to "communication clarity." Applied to Q2 hiring cycle.
+      </div>
+      <div class="px-5 py-3.5">
+        <span class="inline-flex items-center font-mono text-[9px] tracking-[1px] uppercase
+                     px-2.5 py-1.5 border text-green-dk border-green-dk/25 bg-green/[0.06]">
+          Adopted
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="grid border-b border-rule-lt" style="grid-template-columns:2fr 1.2fr 100px">
+      <div class="px-5 py-3.5 border-r border-rule-lt">
+        <div class="text-[12.5px] font-semibold text-navy mb-1">
+          Add bilingual option to community feedback forms before EJ community rollout
+        </div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session6-Notes.aspx" target="_blank" class="font-mono text-[11.5px] text-text-mute hover:text-gold-dk transition-colors hover:underline underline-offset-2">CAB Session #6 · Mar 12, 2026 · EJ40</a>
+      </div>
+      <div class="px-5 py-3.5 text-[12.5px] text-text-sec border-r border-rule-lt">
+        Spanish translation added. Tagalog and Somali deferred to Phase 2 due to timeline constraints.
+      </div>
+      <div class="px-5 py-3.5">
+        <span class="inline-flex items-center font-mono text-[9px] tracking-[1px] uppercase
+                     px-2.5 py-1.5 border text-gold-dk border-gold-dk/30 bg-gold/10">
+          Partial
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="grid border-b border-rule-lt" style="grid-template-columns:2fr 1.2fr 100px">
+      <div class="px-5 py-3.5 border-r border-rule-lt">
+        <div class="text-[12.5px] font-semibold text-navy mb-1">
+          Require CAB sign-off before any community-facing deliverable is finalized
+        </div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session5-Notes.aspx" target="_blank" class="font-mono text-[11.5px] text-text-mute hover:text-gold-dk transition-colors hover:underline underline-offset-2">CAB Session #5 · Feb 18, 2026 · Governance</a>
+      </div>
+      <div class="px-5 py-3.5 text-[12.5px] text-text-sec border-r border-rule-lt">
+        Governance update submitted to leadership. Jenna confirmation pending before firm-wide rollout.
+      </div>
+      <div class="px-5 py-3.5">
+        <span class="inline-flex items-center font-mono text-[9px] tracking-[1px] uppercase
+                     px-2.5 py-1.5 border text-text-mute border-rule bg-off-white">
+          Pending
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="grid" style="grid-template-columns:2fr 1.2fr 100px">
+      <div class="px-5 py-3.5 border-r border-rule-lt">
+        <div class="text-[12.5px] font-semibold text-navy mb-1">
+          Establish CAB-to-Cohort feedback loop — CAB members lead one Cohort session annually
+        </div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Session4-Notes.aspx" target="_blank" class="font-mono text-[11.5px] text-text-mute hover:text-gold-dk transition-colors hover:underline underline-offset-2">CAB Session #4 · Jan 22, 2026 · Pipeline</a>
+      </div>
+      <div class="px-5 py-3.5 text-[12.5px] text-text-sec border-r border-rule-lt">
+        Diana Reyes and Marcus Thompson confirmed as Cohort 3 guest facilitators for Month 2 Foundations.
+      </div>
+      <div class="px-5 py-3.5">
+        <span class="inline-flex items-center font-mono text-[9px] tracking-[1px] uppercase
+                     px-2.5 py-1.5 border text-green-dk border-green-dk/25 bg-green/[0.06]">
+          Adopted
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 9 — ACTION TRACKER
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]">
+    Action Tracker
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case">
+      Open items from recent sessions
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14"
+       id="action-tracker" data-roles="ceo,pm,cab,cohort,consultant,new">
+
+    <!-- Action card helper macro (repeated 6×) -->
+    <!-- Card 1: Open -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-open h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-gold-dk mb-2.5">Open · EJ40 Engagement</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-ej40-001" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Draft 3 community entry scenarios for CAB feedback before May 7 session
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full bg-navy-mid flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0">PT</div>
+            P. Thomas
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Due May 5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: In Progress -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-progress h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-amber mb-2.5">In Progress · Hiring Review</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-hire-002" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Legal review of deferred Tagalog/Somali translation recommendation
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0"
+                 style="background:#2D5A1E">KM</div>
+            K. Morris
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Due Apr 30</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Open -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-open h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-gold-dk mb-2.5">Open · Governance</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-gov-003" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Schedule meeting with Jenna to confirm CAB sign-off governance policy
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full bg-gold-dk flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0">DR</div>
+            D. Reyes
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Due Apr 28</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: In Progress -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-progress h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-amber mb-2.5">In Progress · Pipeline</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-pipe-004" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Finalize Cohort 3 session facilitation plan with Diana and Marcus
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full bg-navy flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0">SF</div>
+            S. Foster
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Due May 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5: Done -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-done h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green-dk mb-2.5">Done · Hiring Review</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-hire-005" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Update hiring rubric with revised "executive presence" language and circulate to HR
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0"
+                 style="background:#5C2A6B">JP</div>
+            J. Patel
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Completed Apr 14</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6: Open -->
+    <div class="action-card bg-white border border-rule overflow-hidden reveal
+                hover:border-navy-mid hover:shadow-[0_4px_14px_rgba(27,54,93,0.08)] transition-all">
+      <div class="sb-open h-0.5 w-full"></div>
+      <div class="p-[22px]">
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-gold-dk mb-2.5">Open · Federal Procurement</div>
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Planner.aspx#task-fed-006" target="_blank" class="text-[13px] font-semibold text-navy leading-[1.4] mb-2.5 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">
+          Distribute pre-read materials for procurement framing topic to assigned members
+        </a>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-[11.5px] text-text-mute">
+            <div class="w-5 h-5 rounded-full bg-navy-mid flex items-center justify-center
+                        font-mono text-[7px] font-bold text-white flex-shrink-0">MT</div>
+            M. Thompson
+          </div>
+          <div class="font-mono text-[10px] text-text-mute">Due Apr 26</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /action grid -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SECTION 10 — COHORT PROGRAM + DEVELOPMENT TRACKS + SIDEBAR
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+              flex items-center gap-3.5 mb-[22px]" id="cohort-program-label">
+    The Cohort Program
+    <div class="flex-1 h-px bg-rule"></div>
+    <span class="font-body text-[11px] font-normal text-text-mute tracking-normal normal-case">
+      The entry point into JEDI CAB
+    </span>
+  </div>
+
+  <!-- Three cohort cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14"
+       id="cohort-program" data-roles="ceo,pm,cab,cohort,consultant,new">
+
+    <!-- Card 1 -->
+    <div class="card-accent bg-white border border-rule p-[30px] reveal
+                hover:border-gold-dk hover:shadow-[0_8px_24px_rgba(139,105,20,0.1)] hover:-translate-y-1.5
+                transition-all cursor-pointer group">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-text-mute mb-[18px]
+                  group-hover:border-gold group-hover:text-gold group-hover:bg-gold/10 transition-all">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Cohort Model</div>
+      <p class="text-[12.5px] text-text-sec leading-[1.65] mb-4">
+        Small groups of 4–6 consultants selected annually. Each cohort runs 6 months with structured
+        learning, mentorship, and a capstone project that solves a real firm challenge. Not everyone joins
+        — and that's intentional.
+      </p>
+      <a href="jedi-cab-tw.html#cohort-program"
+         class="text-[12px] font-bold text-gold-dk topic-link">Learn More →</a>
+    </div>
+
+    <!-- Card 2 (staggered down) -->
+    <div class="card-accent bg-white border border-rule p-[30px] reveal lg:translate-y-4
+                hover:border-gold-dk hover:shadow-[0_8px_24px_rgba(139,105,20,0.1)]
+                transition-all cursor-pointer group">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-text-mute mb-[18px]
+                  group-hover:border-gold group-hover:text-gold group-hover:bg-gold/10 transition-all">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Mentorship &amp; Pairing</div>
+      <p class="text-[12.5px] text-text-sec leading-[1.65] mb-4">
+        Each participant is paired with a senior leader for bi-weekly 1:1 sessions structured around
+        career goals, equity practice, and real project challenges. Tracked in the Hub for continuity.
+      </p>
+      <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Mentors.aspx"
+         target="_blank"
+         class="text-[12px] font-bold text-gold-dk topic-link">Meet Mentors →</a>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card-accent bg-white border border-rule p-[30px] reveal
+                hover:border-gold-dk hover:shadow-[0_8px_24px_rgba(139,105,20,0.1)] hover:-translate-y-1.5
+                transition-all cursor-pointer group">
+      <div class="w-11 h-11 border-[1.5px] border-rule flex items-center justify-center text-text-mute mb-[18px]
+                  group-hover:border-gold group-hover:text-gold group-hover:bg-gold/10 transition-all">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="font-display text-[1.05rem] font-bold text-navy mb-2">Capstone Projects</div>
+      <p class="text-[12.5px] text-text-sec leading-[1.65] mb-4">
+        Real problems, real impact. Past capstones produced the EJ assessment toolkit, revised onboarding
+        flow, and the consultant satisfaction survey that leadership now tracks quarterly.
+      </p>
+      <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Capstone-Projects.aspx"
+         target="_blank"
+         class="text-[12px] font-bold text-gold-dk topic-link">View Past Projects →</a>
+    </div>
+
+  </div>
+
+  <!-- Dev tracks + sidebar two-col -->
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-7 mb-14"
+       id="development-tracks" data-roles="ceo,pm,cab,cohort,consultant,new">
+
+    <!-- Left: timeline -->
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-text-mute
+                  flex items-center gap-3.5 mb-5">
+        Development Tracks <div class="flex-1 h-px bg-rule"></div>
+      </div>
+
+      <div class="bg-white border border-rule px-9 py-8 mb-5 reveal">
+        <!-- Item 1 -->
+        <div class="flex gap-5 pb-6 relative">
+          <div class="absolute left-[17px] top-9 bottom-0 w-0.5 bg-rule-lt"></div>
+          <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center relative z-10
+                      font-mono text-[10px] font-bold text-white bg-gold-dk
+                      shadow-[0_0_10px_rgba(139,105,20,0.4)]">01</div>
+          <div class="flex-1 pt-1">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-Track-Foundations.aspx" target="_blank" class="font-display text-[0.95rem] font-bold text-navy mb-1 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">Foundations</a>
+            <div class="text-[12px] text-text-sec leading-relaxed">
+              JJR values, equity principles, consulting craft. Cohort builds shared language and
+              practice frameworks together.
+            </div>
+            <div class="font-mono text-[10px] text-text-mute mt-1.5">Month 1 · All participants</div>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div class="flex gap-5 pb-6 relative">
+          <div class="absolute left-[17px] top-9 bottom-0 w-0.5 bg-rule-lt"></div>
+          <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center relative z-10
+                      font-mono text-[10px] font-bold text-white bg-gold-dk">02</div>
+          <div class="flex-1 pt-1">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-Track-ClientLeadership.aspx" target="_blank" class="font-display text-[0.95rem] font-bold text-navy mb-1 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">Client Leadership</a>
+            <div class="text-[12px] text-text-sec leading-relaxed">
+              Stakeholder management, executive presence, client relationship skills in equity-centered contexts.
+            </div>
+            <div class="font-mono text-[10px] text-text-mute mt-1.5">Months 2–3 · With mentor support</div>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div class="flex gap-5 pb-6 relative">
+          <div class="absolute left-[17px] top-9 bottom-0 w-0.5 bg-rule-lt"></div>
+          <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center relative z-10
+                      font-mono text-[10px] font-bold text-white bg-navy-mid">03</div>
+          <div class="flex-1 pt-1">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-Track-BusinessDev.aspx" target="_blank" class="font-display text-[0.95rem] font-bold text-navy mb-1 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">Business Development</a>
+            <div class="text-[12px] text-text-sec leading-relaxed">
+              Proposal writing, pipeline building, and understanding JJR's competitive positioning
+              in the equity consulting space.
+            </div>
+            <div class="font-mono text-[10px] text-text-mute mt-1.5">Months 3–4 · Practicum-based</div>
+          </div>
+        </div>
+        <!-- Item 4 -->
+        <div class="flex gap-5">
+          <div class="w-9 h-9 flex-shrink-0 flex items-center justify-center
+                      font-mono text-[10px] font-bold text-white bg-navy-mid">04</div>
+          <div class="flex-1 pt-1">
+            <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-Track-Capstone.aspx" target="_blank" class="font-display text-[0.95rem] font-bold text-navy mb-1 block hover:text-gold-dk transition-colors hover:underline underline-offset-2">Capstone</a>
+            <div class="text-[12px] text-text-sec leading-relaxed">
+              Define, scope, and deliver a project that addresses a real firm or client challenge.
+              Present to leadership.
+            </div>
+            <div class="font-mono text-[10px] text-text-mute mt-1.5">
+              Months 5–6 · Final presentation to Jenna
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Access note -->
+      <div class="border-l-2 border-l-gold bg-white px-5 py-3.5 text-[12px] text-text-sec mb-0">
+        Applications for Cohort 3 open in Q3 2026. Talk to your service line steward if you're interested.
+        <a href="how-we-work.html" class="text-gold-dk font-bold hover:underline"> See How We Work →</a>
+      </div>
+    </div>
+
+    <!-- Right sidebar -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Cohort status tracker -->
+      <div class="bg-dark-panel border border-white/[0.06] px-7 py-6 reveal
+                  shadow-[0_2px_8px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div class="font-display text-[0.95rem] font-bold text-white mb-0.5">Cohort Status</div>
+        <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/25 mb-5">
+          Current &amp; Alumni
+        </div>
+        <div class="flex flex-col gap-4">
+          <!-- C1 -->
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-2024.aspx" target="_blank" class="text-[12px] text-white/50 hover:text-gold-br transition-colors hover:underline underline-offset-2">Cohort 1 — 2024</a>
+              <span class="font-mono text-[10px] text-green">Complete</span>
+            </div>
+            <div class="h-0.5 bg-white/[0.06]">
+              <div class="h-full w-full bg-green shadow-[0_0_8px_rgba(76,187,23,0.5)]"></div>
+            </div>
+          </div>
+          <!-- C2 -->
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-2025.aspx" target="_blank" class="text-[12px] text-white/50 hover:text-gold-br transition-colors hover:underline underline-offset-2">Cohort 2 — 2025</a>
+              <span class="font-mono text-[10px] text-amber">In Progress</span>
+            </div>
+            <div class="h-0.5 bg-white/[0.06]">
+              <div class="h-full w-[65%] bg-amber shadow-[0_0_8px_rgba(232,168,56,0.5)]"></div>
+            </div>
+          </div>
+          <!-- C3 -->
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/Cohort-2026.aspx" target="_blank" class="text-[12px] text-white/50 hover:text-gold-br transition-colors hover:underline underline-offset-2">Cohort 3 — 2026</a>
+              <span class="font-mono text-[10px] text-white/30">Planned</span>
+            </div>
+            <div class="h-0.5 bg-white/[0.06]">
+              <div class="h-full w-0 bg-navy-mid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAB Resources sidebar -->
+      <div class="bg-white border border-rule reveal">
+        <div class="px-[22px] py-[18px] border-b border-rule-lt">
+          <div class="font-display text-[0.95rem] font-bold text-navy">CAB Resources</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-text-mute mt-0.5">
+            Members + Applicants
+          </div>
+        </div>
+
+        <!-- Sidebar links -->
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/CABRequests/NewForm.aspx"
+           target="_blank"
+           class="sidebar-link flex items-center gap-3 px-[22px] py-[13px] border-b border-rule-lt
+                  text-[13px] font-medium text-navy">
+          <span class="w-[18px] flex justify-center text-text-mute flex-shrink-0">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </span>
+          CAB Request Template
+          <span class="sl-arrow ml-auto text-rule">→</span>
+        </a>
+
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/SitePages/CAB-Governance.aspx"
+           target="_blank"
+           class="sidebar-link flex items-center gap-3 px-[22px] py-[13px] border-b border-rule-lt
+                  text-[13px] font-medium text-navy">
+          <span class="w-[18px] flex justify-center text-text-mute flex-shrink-0">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </span>
+          CAB Governance Model
+          <span class="sl-arrow ml-auto text-rule">→</span>
+        </a>
+
+        <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Shared%20Documents/Capstone-Template.docx"
+           target="_blank"
+           class="sidebar-link flex items-center gap-3 px-[22px] py-[13px] border-b border-rule-lt
+                  text-[13px] font-medium text-navy">
+          <span class="w-[18px] flex justify-center text-text-mute flex-shrink-0">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </span>
+          Capstone Template
+          <span class="sl-arrow ml-auto text-rule">→</span>
+        </a>
+
+        <a href="communities.html"
+           class="sidebar-link flex items-center gap-3 px-[22px] py-[13px] border-b border-rule-lt
+                  text-[13px] font-medium text-navy">
+          <span class="w-[18px] flex justify-center text-text-mute flex-shrink-0">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+            </svg>
+          </span>
+          Alumni Network
+          <span class="sl-arrow ml-auto text-rule">→</span>
+        </a>
+
+        <a href="pmo.html"
+           class="planner-link sidebar-link flex items-center gap-3 px-[22px] py-[13px]
+                  text-[13px] font-medium text-navy">
+          <span class="w-[18px] flex justify-center text-text-mute flex-shrink-0">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+          </span>
+          Action Tracker (Planner)
+          <span class="sl-arrow ml-auto text-rule">→</span>
+        </a>
+      </div>
+
+    </div><!-- /sidebar -->
+  </div><!-- /dev tracks grid -->
+
+</div><!-- /main-page -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION 11 — EQUITY FOOTER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="bg-footer border-t border-white/[0.06] relative z-[2]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04]">
+    <div class="green-shimmer-bar w-0.5 h-[46px] flex-shrink-0"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-1.5">
+        Access &amp; Equity
+      </div>
+      <div class="text-[13px] text-white/40 leading-[1.65] max-w-[640px]">
+        Every access decision in this hub is intentional, documented, and reviewed quarterly.
+        CAB workspace access is restricted by design — community voice requires protected space.
+      </div>
+    </div>
+    <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/AccessConcerns/NewForm.aspx"
+       target="_blank"
+       class="text-[12px] font-bold text-green whitespace-nowrap ml-auto hover:text-green-br transition-colors">
+      Report an access concern →
+    </a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-[18px] flex items-center justify-between">
+    <span class="font-mono text-[11px] text-white/20">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-6">
+      <a href="accessibility.html" class="text-[11px] text-white/30 hover:text-green transition-colors">Accessibility</a>
+      <a href="https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/Issues/NewForm.aspx"
+         target="_blank" class="text-[11px] text-white/30 hover:text-green transition-colors">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/30 hover:text-green transition-colors">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SECTION 12 — ACCESS POPUP
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div id="accessPopupOverlay"
+     class="popup-overlay fixed inset-0 z-[800] flex items-center justify-center"
+     role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-[rgba(5,15,30,0.72)]" onclick="closePopup()"></div>
+
+  <!-- Panel -->
+  <div class="popup-box bg-popup relative w-[min(520px,90vw)]
+              border border-white/[0.08]
+              shadow-[0_32px_80px_rgba(0,0,0,0.6),0_0_0_1px_rgba(196,154,42,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+
+    <!-- Close X -->
+    <button id="popupClose" aria-label="Dismiss"
+            class="absolute top-4 right-4 w-[30px] h-[30px]
+                   border border-white/[0.12] bg-transparent
+                   text-white/40 text-base leading-none flex items-center justify-center
+                   cursor-pointer hover:border-gold hover:text-gold-br transition-all">✕</button>
+
+    <!-- Top strip -->
+    <div class="flex items-start gap-4 px-7 pt-7 pb-5 border-b border-white/[0.06]">
+      <div class="w-11 h-11 flex-shrink-0 bg-gold/[0.12] border border-gold/30
+                  flex items-center justify-center mt-0.5">
+        <svg width="20" height="20" fill="none" stroke="#C49A2A" stroke-width="1.8" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div>
+        <div id="popupKicker"
+             class="font-mono text-[9px] tracking-[2.5px] uppercase text-gold-br mb-1.5">
+          Access Restricted
+        </div>
+        <div id="popupTitle"
+             class="font-display text-[1.15rem] font-bold text-white leading-[1.3]">
+          This section is not available to you yet
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="px-7 py-5">
+      <div id="popupWhy" class="text-[13.5px] text-white/55 leading-[1.7] mb-[18px]">
+        This content requires a higher access level than your current role.
+      </div>
+
+      <!-- 4 info chips -->
+      <div class="grid grid-cols-2 gap-3 mb-[22px]">
+        <div class="bg-white/[0.04] border border-white/[0.07] px-3.5 py-3">
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mb-1.5">Locked Because</div>
+          <div id="popupReason" class="text-[12.5px] font-semibold text-white/75">CAB workspace restricted</div>
+        </div>
+        <div class="bg-white/[0.04] border border-white/[0.07] px-3.5 py-3">
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mb-1.5">Unlocks When</div>
+          <div id="popupUnlocks" class="text-[12.5px] font-semibold text-gold-br">Selected as CAB member</div>
+        </div>
+        <div class="bg-white/[0.04] border border-white/[0.07] px-3.5 py-3">
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mb-1.5">Your Current Role</div>
+          <div id="popupRole" class="text-[12.5px] font-semibold text-white/75">Project Manager</div>
+        </div>
+        <div class="bg-white/[0.04] border border-white/[0.07] px-3.5 py-3">
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-white/30 mb-1.5">Who Has Access</div>
+          <div id="popupWhoHas" class="text-[12.5px] font-semibold text-green-br">CAB Members · Leadership</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button id="popupRequestBtn"
+                class="font-body text-[12px] font-bold px-5 py-2.5 bg-gold text-navy-deep
+                       tracking-[0.04em] border-0 cursor-pointer
+                       hover:bg-gold-br hover:-translate-y-px transition-all"
+                onclick="window.open('https://jjrconsulting.sharepoint.com/sites/JJRHub/Lists/AccessRequests/NewForm.aspx','_blank')">
+          Request Access →
+        </button>
+        <button id="popupDismiss"
+                class="font-body text-[12px] text-white/35 bg-transparent border-0
+                       cursor-pointer px-2.5 py-2.5 hover:text-white/70 transition-colors">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── Spotlight cursor ───────────────────────────────────────────────────────
+(function () {
+  var pref = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!pref && window.matchMedia('(min-width:1081px)').matches) {
+    var s = document.querySelector('.spotlight');
+    if (s) {
+      document.body.classList.add('spotlight-ready');
+      var tx = innerWidth / 2, ty = innerHeight / 2, cx = tx, cy = ty;
+      document.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+      (function t() {
+        cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+        s.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+        requestAnimationFrame(t);
+      })();
+    }
+  }
+
+  // ── Scroll reveal ─────────────────────────────────────────────────────
+  if ('IntersectionObserver' in window && !pref) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  // ── Avatar dropdown ───────────────────────────────────────────────────
+  var btn   = document.getElementById('avatarBtn');
+  var panel = document.getElementById('profilePanel');
+  if (btn && panel) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = panel.classList.contains('is-open');
+      panel.classList.toggle('is-open', !open);
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+    panel.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('click', function () {
+      panel.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { panel.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); }
+    });
+  }
+})();
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════════
+// ROLE-BASED ACCESS CONTROL + POPUP SYSTEM
+// Production: SPFX reads user's Azure AD group and sets ?role= automatically.
+// ════════════════════════════════════════════════════════════════════════════
+
+var LOCK_CONFIGS = {
+  'loop-links': {
+    kicker:  'CAB Workspace Restricted',
+    title:   "This topic's working document is for CAB members only",
+    why:     'The Loop workspace for each active topic contains <strong>community member input, in-progress recommendations, and sensitive equity deliberations</strong>. Restricting it protects the integrity of community voices and ensures CAB discussions remain candid.',
+    reason:  'CAB workspace — content in progress',
+    unlocks: 'When selected as a CAB member',
+    whoHas:  'CAB Members · CEO / Leadership'
+  },
+  'agenda-link': {
+    kicker:  'Session Materials Restricted',
+    title:   'CAB session agendas are for members only',
+    why:     'Session agendas contain <strong>pre-read documents, sensitive client context, and community feedback</strong> that inform CAB deliberations. These are not shared beyond the advisory body to maintain focused, protected discussions.',
+    reason:  'Pre-session materials are access-controlled',
+    unlocks: 'When selected as a CAB member',
+    whoHas:  'CAB Members · CEO / Leadership'
+  },
+  'notes-link': {
+    kicker:  'Meeting Notes Restricted',
+    title:   'Post-session notes require CAB membership',
+    why:     'CAB meeting notes capture <strong>raw community advisory input, dissenting views, and draft recommendations</strong> before they are finalized into the public decisions log. Protecting these notes preserves the psychological safety of the advisory process.',
+    reason:  'Deliberative content — pre-publication',
+    unlocks: 'When selected as a CAB member',
+    whoHas:  'CAB Members · CEO / Leadership'
+  },
+  'async-link': {
+    kicker:  'Async Input Restricted',
+    title:   'Submitting input to CAB sessions is for members only',
+    why:     "The async input mechanism feeds directly into CAB's deliberative process. <strong>Only assigned CAB members</strong> can submit position statements to prevent the advisory process from being diluted by unqualified input.",
+    reason:  'Restricted to assigned CAB members',
+    unlocks: 'When selected as a CAB member',
+    whoHas:  'Active CAB Members only'
+  },
+  'full-log': {
+    kicker:  'Full Log Restricted',
+    title:   'The complete decision archive requires CAB access',
+    why:     'The four decisions shown on this page are a public summary. The <strong>full log contains all deliberative context, dissenting CAB votes, and in-progress governance decisions</strong> that are not yet finalized for firm-wide communication.',
+    reason:  'Full archive — contains in-progress decisions',
+    unlocks: 'When selected as a CAB member',
+    whoHas:  'CAB Members · CEO / Leadership'
+  },
+  'planner-link': {
+    kicker:  'Action Tracker Restricted',
+    title:   'The CAB Planner board is for members and assignees',
+    why:     'The Microsoft Planner board contains <strong>task assignments, owner names, and action items tied to sensitive client engagements</strong>. Access is granted per task — only if you are assigned an item will you see it.',
+    reason:  'Task board — member-assigned access only',
+    unlocks: 'When assigned a CAB action item',
+    whoHas:  'CAB Members · Assigned users · Leadership'
+  },
+  'submit-request': {
+    kicker:  'Submission Not Yet Available',
+    title:   'Cohort participants cannot submit CAB requests yet',
+    why:     'CAB requests are submitted by <strong>project delivery leads who have direct client accountability</strong>. As a cohort participant, you are in the learning phase. Once you complete the cohort and join a delivery team, this becomes available.',
+    reason:  'Cohort program — learning phase only',
+    unlocks: 'After completing the cohort program and joining a delivery team',
+    whoHas:  'Project Managers · Senior Consultants · CAB Members · Leadership'
+  }
+};
+
+var ROLES = {
+  new:        { label: 'New Team Member',    locked: ['loop-links','agenda-link','notes-link','async-link','full-log','planner-link'], showSubmit: true,  submitLocked: false, showCohortApply: true,  actionTracker: 'view', hideAccessPanel: false },
+  consultant: { label: 'Consultant',          locked: ['loop-links','agenda-link','notes-link','full-log','planner-link'],              showSubmit: true,  submitLocked: false, showCohortApply: true,  actionTracker: 'view', hideAccessPanel: false },
+  cohort:     { label: 'Cohort Participant',  locked: ['loop-links','agenda-link','notes-link','full-log','planner-link','submit-request'], showSubmit: true, submitLocked: true, showCohortApply: true, actionTracker: 'view', hideAccessPanel: false },
+  pm:         { label: 'Project Manager',    locked: ['loop-links','notes-link','full-log','planner-link'],                           showSubmit: true,  submitLocked: false, showCohortApply: true,  actionTracker: 'view', hideAccessPanel: false },
+  cab:        { label: 'CAB Member',         locked: [],                                                                              showSubmit: true,  submitLocked: false, showCohortApply: false, actionTracker: 'full', hideAccessPanel: true  },
+  ceo:        { label: 'CEO / Leadership',   locked: [],                                                                              showSubmit: true,  submitLocked: false, showCohortApply: false, actionTracker: 'full', hideAccessPanel: true  }
+};
+
+// Detect role from URL param (?role=pm etc.) — in production SPFX sets this from AD group
+var params = new URLSearchParams(window.location.search);
+var currentRole = params.get('role') || 'pm';
+if (!ROLES[currentRole]) currentRole = 'pm';
+var config = ROLES[currentRole];
+
+// ── Popup open / close ────────────────────────────────────────────────────
+function openPopup(lockType) {
+  var d = LOCK_CONFIGS[lockType] || {};
+  document.getElementById('popupKicker').textContent  = d.kicker  || 'Access Restricted';
+  document.getElementById('popupTitle').textContent   = d.title   || 'Not available to you';
+  document.getElementById('popupWhy').innerHTML       = d.why     || 'Higher access required.';
+  document.getElementById('popupReason').textContent  = d.reason  || 'Restricted';
+  document.getElementById('popupUnlocks').textContent = d.unlocks || 'Contact your manager';
+  document.getElementById('popupRole').textContent    = (ROLES[currentRole] || {}).label || currentRole;
+  document.getElementById('popupWhoHas').textContent  = d.whoHas  || 'CAB Members only';
+  var ov = document.getElementById('accessPopupOverlay');
+  ov.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function () { document.getElementById('popupDismiss').focus(); }, 100);
+}
+
+function closePopup() {
+  var ov = document.getElementById('accessPopupOverlay');
+  if (ov) { ov.classList.remove('is-open'); document.body.style.overflow = ''; }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Popup close wiring
+  document.getElementById('popupClose').addEventListener('click', closePopup);
+  document.getElementById('popupDismiss').addEventListener('click', closePopup);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+
+  // ── Role indicator banner ───────────────────────────────────────────────
+  var ind = document.createElement('div');
+  ind.id = 'roleIndicator';
+  ind.className = 'px-12 pt-4 pb-0';
+  ind.innerHTML =
+    '<div class="inline-flex items-center gap-2 font-mono text-[9px] tracking-[1.5px] uppercase ' +
+    'text-gold-br bg-gold/[0.08] border border-gold/25 px-3 py-1 mb-4">' +
+    '<span style="opacity:0.5">Access Level:</span>&nbsp;&nbsp;' + config.label + '</div>';
+  var pg = document.getElementById('main-page');
+  if (pg) pg.insertBefore(ind, pg.firstChild);
+
+  // ── SPFX banner update ──────────────────────────────────────────────────
+  var spfx = document.querySelector('.spfx-note__text');
+  if (spfx) {
+    var msgs = {
+      new:        'Read access only. No write permissions in SharePoint lists.',
+      consultant: 'Can submit CAB requests. Read-only on decisions and meetings.',
+      cohort:     'Read access. Can access Capstone Template. Cannot submit CAB requests yet.',
+      pm:         'Can submit CAB requests and access async input. Read-only on CAB workspace.',
+      cab:        'Full CAB workspace access. Write permissions on all CAB SharePoint lists.',
+      ceo:        'Full governance access. Can approve decisions, manage membership, access all content.'
+    };
+    spfx.innerHTML =
+      '<strong class="text-green font-medium">SharePoint SPFX · ' + config.label + '</strong> — ' +
+      (msgs[currentRole] || '');
+  }
+
+  // ── Lock Loop links ─────────────────────────────────────────────────────
+  document.querySelectorAll('.topic-item__link').forEach(function (el) {
+    if (config.locked.indexOf('loop-links') !== -1) {
+      el.classList.add('locked-trigger');
+      el.removeAttribute('href');
+      el.innerHTML =
+        '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'viewBox="0 0 24 24" style="margin-right:4px">' +
+        '<rect x="3" y="11" width="18" height="11" rx="2"/>' +
+        '<path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Locked';
+      el.addEventListener('click', function (e) { e.preventDefault(); openPopup('loop-links'); });
+    }
+  });
+
+  // ── Lock meeting links ──────────────────────────────────────────────────
+  document.querySelectorAll('.meeting-link').forEach(function (el) {
+    var txt = el.textContent.trim();
+    var lt  = null;
+    if (txt.indexOf('Agenda') !== -1 && config.locked.indexOf('agenda-link') !== -1) lt = 'agenda-link';
+    else if (txt.indexOf('Notes')  !== -1 && config.locked.indexOf('notes-link')  !== -1) lt = 'notes-link';
+    else if (txt.indexOf('Async')  !== -1 && config.locked.indexOf('async-link')  !== -1) lt = 'async-link';
+    if (lt) {
+      el.classList.add('locked-trigger');
+      el.removeAttribute('href');
+      el.addEventListener('click', function (e) { e.preventDefault(); openPopup(lt); });
+    }
+  });
+
+  // ── Lock Full Log button ────────────────────────────────────────────────
+  var flBtn = document.querySelector('.decisions-panel__btn');
+  if (flBtn && config.locked.indexOf('full-log') !== -1) {
+    flBtn.classList.add('locked-trigger');
+    flBtn.removeAttribute('href');
+    flBtn.innerHTML =
+      '<svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" ' +
+      'viewBox="0 0 24 24" style="margin-right:5px">' +
+      '<rect x="3" y="11" width="18" height="11" rx="2"/>' +
+      '<path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Full Log';
+    flBtn.addEventListener('click', function (e) { e.preventDefault(); openPopup('full-log'); });
+  }
+
+  // ── Lock Planner link ───────────────────────────────────────────────────
+  document.querySelectorAll('.planner-link').forEach(function (el) {
+    if (config.locked.indexOf('planner-link') !== -1) {
+      el.classList.add('locked-trigger');
+      el.removeAttribute('href');
+      el.addEventListener('click', function (e) { e.preventDefault(); openPopup('planner-link'); });
+    }
+  });
+
+  // ── Submit button handling ──────────────────────────────────────────────
+  function handleSubmitBtn(el) {
+    if (!config.showSubmit) {
+      el.style.display = 'none';
+    } else if (config.submitLocked) {
+      el.classList.add('locked-trigger');
+      el.removeAttribute('href');
+      el.addEventListener('click', function (e) { e.preventDefault(); openPopup('submit-request'); });
+    }
+  }
+  document.querySelectorAll('.btn-submit, .btn-submit-inline').forEach(handleSubmitBtn);
+
+  // ── Cohort apply button ─────────────────────────────────────────────────
+  var cohortBtn = document.querySelector('.btn-cohort');
+  if (cohortBtn && !config.showCohortApply) cohortBtn.style.display = 'none';
+
+  // ── Action tracker view-only ────────────────────────────────────────────
+  if (config.actionTracker === 'view') {
+    document.querySelectorAll('.action-card').forEach(function (card) {
+      card.style.opacity    = '0.72';
+      card.style.cursor     = 'default';
+      card.style.pointerEvents = 'none';
+    });
+  }
+
+  // ── Highlight own member row (CAB member demo: Rafael Ortega) ──────────
+  if (currentRole === 'cab') {
+    document.querySelectorAll('.member-row').forEach(function (row) {
+      var n = row.querySelector('.member-name');
+      if (n && n.textContent.trim() === 'Rafael Ortega') {
+        row.style.background = 'rgba(196,154,42,0.06)';
+        row.style.borderLeft = '3px solid #C49A2A';
+      }
+    });
+  }
+
+  // ── Hide access panel for full-access roles ────────────────────────────
+  var ap = document.querySelector('.access-panel');
+  if (ap && config.hideAccessPanel) ap.style.display = 'none';
+
+  // ── Scroll to #active-topics if arriving from homepage card ───────────
+  if (window.location.hash === '#active-topics') {
+    setTimeout(function () {
+      var el = document.getElementById('active-topics');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 500);
+  }
+});
+</script>
+</body>
+</html>

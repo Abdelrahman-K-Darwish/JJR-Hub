@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Site Owners</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','green-bright':'#7de852','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  /* ═══ SPOTLIGHT — JS-toggled .spotlight-ready on body ═══ */
+  .spotlight { position: fixed; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(circle, rgba(42,74,120,0.14) 0%, rgba(27,54,93,0.06) 40%, rgba(27,54,93,0) 70%); pointer-events: none; z-index: 1; transform: translate(-50%, -50%); transition: opacity 600ms cubic-bezier(0.16,1,0.3,1); opacity: 0; filter: blur(30px); mix-blend-mode: multiply; }
+  body.spotlight-ready .spotlight { opacity: 1; }
+
+  /* ═══ HERO NOISE GRAIN (pseudo) ═══ */
+  .hero-grain::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); opacity: 0.05; mix-blend-mode: overlay; pointer-events: none; }
+
+  /* ═══ HERO KICKER lead-rule (pseudo) ═══ */
+  .hero-kicker::before { content: ''; width: 24px; height: 1px; background: #4CBB17; box-shadow: 0 0 6px rgba(76,187,23,0.25); }
+
+  /* ═══ OWNER CARD — green top strip that scales L→R on hover (pseudo, 6×) ═══ */
+  .owner-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #4CBB17; box-shadow: 0 0 10px rgba(76,187,23,0.25); transform: scaleX(0); transform-origin: left; transition: transform 0.55s cubic-bezier(0.16,1,0.3,1); }
+  .owner-card:hover::before { transform: scaleX(1); }
+
+  /* ═══ SEARCH FOCUS (focus-within) ═══ */
+  .search-bar:focus-within { border-color: #4CBB17; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ REVEAL — JS-toggled .is-visible ═══ */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 900ms cubic-bezier(0.16,1,0.3,1), transform 900ms cubic-bezier(0.16,1,0.3,1); }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .spotlight, .hero-breath { display: none; }
+    .reveal { opacity: 1; transform: none; }
+  }
+  @media (max-width: 1080px) {
+    .spotlight { display: none; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased min-h-screen overflow-x-hidden relative">
+<div class="spotlight" aria-hidden="true"></div>
+
+<!-- NAV -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 max-md:px-6 flex items-center justify-between h-full">
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite]">JJR</a>
+        <a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-[-0.02em] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852,#b8f5a0,#4CBB17,#3da312,#7de852,#b8f5a0,#4CBB17)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_9s_ease-in-out_infinite] [animation-delay:0.6s]">Hub</a>
+      </div>
+      <div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/25 -mt-px">Your front door</div>
+    </div>
+    <div class="flex items-center h-full gap-0.5 max-lg:hidden">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Projects</a>
+      <a href="templates.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/55 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-white">Communities</a>
+      <span class="text-[11px] text-white/15 mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/65 px-4 h-full flex items-center transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-bar flex items-center gap-2 bg-white/5 border border-white/[0.08] px-3.5 h-[34px] min-w-[240px] transition-all duration-300 max-lg:hidden">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search..." class="bg-transparent border-none outline-none flex-1 text-xs text-white min-w-0 placeholder:text-white/30"/>
+        <span class="font-mono text-[9px] text-white/20">⌘K</span>
+      </div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Notifications"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/40 cursor-pointer transition-colors duration-[250ms] hover:text-white relative" title="Messages"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT -->
+<div class="mt-14 relative z-[2] bg-[linear-gradient(180deg,#152a48,#1B365D,#1e3a63)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-2.5 flex items-center justify-between">
+    <div class="font-mono text-[10px] text-white/50 tracking-[0.5px]"><a href="jjr-hub-tw.html" class="text-white/20 transition-colors duration-200 hover:text-white/50">Home</a><span class="text-white/10 mx-2">/</span>Site Owners</div>
+    <a href="start-here.html" class="font-mono text-[10px] tracking-[0.5px] text-green/60 transition-colors duration-[250ms] hover:text-green">Start Here →</a>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="max-w-[1400px] mx-auto px-12 max-md:px-6 pt-12 pb-[120px] max-md:pt-7 max-md:pb-[60px] relative z-[2]">
+
+  <!-- HERO -->
+  <div class="reveal mb-[72px] relative">
+    <div class="hero-grain relative overflow-hidden min-h-[320px] flex items-center bg-[linear-gradient(135deg,#0F2340_0%,#1B365D_60%,#2A4A78_100%)]">
+      <div class="hero-breath absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10),rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="absolute top-10 right-12 w-[90px] h-[90px] border border-green/20 pointer-events-none"></div>
+      <div class="absolute top-[50px] right-[58px] w-[90px] h-[90px] border border-green/[0.08] pointer-events-none"></div>
+      <div class="relative z-[1] p-[52px_56px] max-md:p-[40px_24px] max-w-[680px]">
+        <div class="hero-kicker font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[18px] inline-flex items-center gap-2.5 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Site Owners</div>
+        <h1 class="font-display text-[clamp(2.15rem,4vw,2.9rem)] font-bold text-white leading-[1.05] tracking-[-0.025em] mb-[22px]">Who runs<br/>the Hub</h1>
+        <p class="text-[14.5px] leading-[1.75] text-white/50 max-w-[560px]">The Hub is a permission-aware, always-current system — and every corner of it has a named owner. If something's broken, missing, or needs a decision, here's who to reach.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMINISTRATORS -->
+  <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-txt-muted mb-[22px] flex items-center gap-3.5">Administrators <span class="flex-1 h-px bg-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted italic">Hub design, content, and operations</span></div>
+
+  <div class="grid grid-cols-2 max-lg:grid-cols-1 gap-5 mb-[72px]">
+    <a href="my-profile.html?viewer=colleague&amp;user=a-darwish" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852)]">AD</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">Abdel Darwish</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">Hub Design &amp; Development</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> Hub architecture, design system, OLED luxury aesthetic, all page templates, accessibility standards, and cross-page links. First point of contact for anything broken visually or structurally.
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">abdel@jjrconsulting.com</span>
+        <a href="under-development.html?from=teams-connect" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Teams
+        </a>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=j-robinson" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#8B1A6A,#E91E8C)]">JR</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">Jenna Robinson</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">CEO &amp; Strategic Content</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> Thought leadership library, Leadership Archive, firm vision &amp; values, Exec &amp; Strategy page, and all CEO-level content decisions. Approves new topic areas and priority shifts.
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">jenna@jjrconsulting.com</span>
+        <a href="under-development.html?from=teams-connect" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Teams
+        </a>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=pmo-lead" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#0F2340,#2A4A78)]">PM</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">PMO Lead</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">Projects, Templates &amp; PMO</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> Active Projects list, Templates library, PMO page, Lessons Learned archive, and delivery governance standards. Owns the project lifecycle across Scope → Plan → Execute → Monitor → Close.
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">pmo@jjrconsulting.com</span>
+        <a href="under-development.html?from=teams-connect" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Teams
+        </a>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=it-admin" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#2A4A78,#1e3a63)]">IT</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">IT Administration</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">SharePoint &amp; Integrations</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> SharePoint permissions, SPFX web parts, Microsoft Form creation, Power Automate flows, Stream video URLs, and every external tool URL (QuickBooks Time, Planner, Teams, Power BI).
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">it@jjrconsulting.com</span>
+        <a href="under-development.html?from=teams-connect" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Teams
+        </a>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=hr" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#8B6914,#E8A838)]">HR</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">HR &amp; People Ops</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">Onboarding &amp; Compliance</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> Start Here onboarding checklist, Consultant Directory, Compliance Hub (certifications, renewals), consultant profile data (W9, resume, expertise), and onboarding buddy assignments.
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">hr@jjrconsulting.com</span>
+        <a href="under-development.html?from=teams-connect" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Teams
+        </a>
+      </div>
+    </a>
+
+    <a href="my-profile.html?viewer=colleague&amp;user=community-stewards" class="owner-card reveal block bg-white border border-rule p-8 max-md:p-6 relative overflow-hidden shadow-[0_1px_2px_rgba(15,35,64,0.04)] transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5">
+      <div class="flex items-start gap-[18px] mb-5">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold text-white shrink-0 shadow-[0_0_0_2px_rgba(76,187,23,0.15),inset_0_1px_0_rgba(255,255,255,0.2)] bg-[linear-gradient(135deg,#1a3a1a,#2D7D00)]">CP</div>
+        <div>
+          <div class="font-display text-[1.2rem] font-bold text-navy tracking-[-0.015em] leading-[1.25] mb-1">Community Stewards</div>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-green-dark font-medium">Communities of Practice</div>
+        </div>
+      </div>
+      <div class="text-[13px] text-txt-sec leading-[1.7] mb-[22px] [&_strong]:text-navy [&_strong]:font-semibold">
+        <strong>Manages:</strong> Each Community of Practice has a named steward (D. Laurent for Innovation &amp; AI, R. Thompson for Equity &amp; Impact, F. Nakamura for Project Craft). Stewards curate resources, moderate discussions, and host events.
+      </div>
+      <div class="flex items-center gap-2.5 pt-5 border-t border-rule-light">
+        <span class="font-mono text-[11px] text-txt-sec tracking-[0.3px]">communities@jjrconsulting.com</span>
+        <a href="communities.html" class="ml-auto font-body text-[11px] font-bold text-green-dark px-3.5 py-1.5 border border-green/30 bg-green/[0.06] transition-all duration-[250ms] inline-flex items-center gap-1.5 hover:bg-green hover:text-white hover:border-green hover:shadow-[0_0_14px_rgba(76,187,23,0.35)]">
+          View CoPs →
+        </a>
+      </div>
+    </a>
+  </div>
+
+  <!-- CONTACT BLOCK -->
+  <div class="reveal bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border border-white/[0.06] p-[40px_48px] max-md:p-7 mb-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20)] grid grid-cols-[1fr_auto] gap-8 items-center max-lg:grid-cols-1 max-lg:text-left">
+    <div>
+      <div class="font-mono text-[10px] tracking-[2px] uppercase text-green mb-2 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Can't Find The Right Person?</div>
+      <div class="font-display text-[1.4rem] font-bold text-white mb-2 tracking-[-0.015em]">General Hub questions</div>
+      <div class="text-[13.5px] text-white/55 leading-[1.7] max-w-[580px]">Not sure who to ask? Submit a general request and it'll be routed to the right owner within one business day. For urgent issues, use the "Report an Issue" form at the footer of any page.</div>
+    </div>
+    <a href="under-development.html?from=general-hub-request" class="font-body text-xs font-bold tracking-[0.04em] whitespace-nowrap bg-green text-white px-6 py-3 inline-flex items-center gap-2 cursor-pointer shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.2)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45)] max-lg:justify-self-start">Submit a Request →</a>
+  </div>
+</div>
+
+<!-- EQUITY FOOTER -->
+<div class="bg-[linear-gradient(180deg,#17304f,#0F2340,#0b1c35)] border-t border-white/[0.06] relative z-[2]">
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[30px] flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap">
+    <div class="w-[2px] h-[46px] bg-[linear-gradient(180deg,#3da312,#7de852,#3da312)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite] shrink-0 shadow-[0_0_10px_rgba(76,187,23,0.25)]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2.5px] uppercase text-green mb-[5px]">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/40 leading-[1.65] max-w-[640px]">Every access decision in this hub is intentional, documented, and reviewed quarterly.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-[250ms] hover:text-green-bright">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 max-md:px-6 py-[18px] flex items-center justify-between max-md:flex-col max-md:gap-2.5 max-md:text-center">
+    <span class="text-[11px] text-white/20 font-mono">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-6">
+      <a href="accessibility.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/30 transition-colors duration-[250ms] hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var r=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!r&&window.matchMedia('(min-width:1081px)').matches){var s=document.querySelector('.spotlight');if(s){document.body.classList.add('spotlight-ready');var tx=innerWidth/2,ty=innerHeight/2,cx=tx,cy=ty;document.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY},{passive:true});(function t(){cx+=(tx-cx)*0.08;cy+=(ty-cy)*0.08;s.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(t)})()}}
+  if('IntersectionObserver' in window && !r){var io=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('is-visible');io.unobserve(en.target)}})},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})}else{document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-visible')})}
+})();
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JJR Hub — Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{'navy':'#1B365D','navy-deep':'#0F2340','navy-mid':'#2A4A78','green':'#4CBB17','green-dark':'#3da312','pink':'#E91E8C','pink-soft':'#ff6eb8','amber':'#E8A838','off-white':'#F8F7F4','warm-gray':'#F0EEEA','stone-brand':'#E5E2DC','rule':'#D0CCC4','rule-light':'#E8E5DF','txt':'#1B365D','txt-sec':'#5A6B80','txt-muted':'#8A95A5'},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['"IBM Plex Sans"','-apple-system','sans-serif'],'mono':['"IBM Plex Mono"','"SF Mono"','monospace']}}}}
+</script>
+<style>
+  /* ═══ KEYFRAMES ═══ */
+  @keyframes shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ═══ NAV ACTIVE UNDERLINE (pseudo) ═══ */
+  .nav-active::after { content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 1px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.6); }
+
+  /* ═══ FILTER BUTTONS — JS-toggled .active (gradient + multi-shadow) ═══ */
+  .filter-btn.active { background: linear-gradient(180deg, #1a3554 0%, #0F2340 55%, #081425 100%); color: #fff !important; border-color: #0F2340; box-shadow: 0 0 14px rgba(76,187,23,0.22), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -2px 0 #4CBB17, inset 0 -3px 10px rgba(76,187,23,0.2); }
+
+  /* ═══ TEMPLATE ROW — green left-accent that scales on hover (pseudo, used 12×) ═══ */
+  .tpl-row::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: #4CBB17; box-shadow: 0 0 8px rgba(76,187,23,0.45); transform: scaleY(0); transform-origin: top; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .tpl-row:hover::before { transform: scaleY(1); }
+
+  /* ═══ SEARCH FOCUS GLOW (focus-within) ═══ */
+  .search-glow:focus-within { border-color: #4CBB17 !important; box-shadow: 0 0 12px rgba(76,187,23,0.15); }
+
+  /* ═══ DROPDOWN PANEL — JS-toggled .is-open + arrow tip pseudo ═══ */
+  .dropdown-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .dropdown-panel::before { content: ''; position: absolute; top: -6px; right: 14px; width: 12px; height: 12px; background: #fff; border-top: 1px solid #D0CCC4; border-left: 1px solid #D0CCC4; transform: rotate(45deg); }
+
+  /* ═══ HERO NOISE GRAIN — SVG data URI not safe in Tailwind arbitrary value ═══ */
+  .hero-grain { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  /* ═══ DOC PREVIEW MODAL — JS-toggled .is-open + transitions ═══ */
+  .dmodal { position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .dmodal.is-open { opacity: 1; pointer-events: auto; }
+  .dmodal__panel { transform: scale(0.92); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .dmodal.is-open .dmodal__panel { transform: scale(1); }
+
+  /* ═══ REDUCED MOTION ═══ */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .dmodal, .dmodal__panel { transition: none; }
+  }
+</style>
+</head>
+<body class="bg-off-white text-txt text-[15px] leading-relaxed font-body antialiased">
+
+<!-- ═══ NAV ═══ -->
+<div class="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
+  <div class="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
+    <div class="flex items-center"><div class="flex flex-col"><div class="flex items-baseline gap-1"><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite]">JJR</a><a href="jjr-hub-tw.html" class="font-display text-xl font-extrabold tracking-tight bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_20%,#7de852_35%,#b8f5a0_42%,#4CBB17_50%,#3da312_65%,#5cd42a_80%,#a4f08a_88%,#4CBB17_100%)] bg-[length:200%_100%] bg-clip-text text-transparent animate-[shimmer_6s_ease-in-out_infinite] [animation-delay:0.4s]">Hub</a></div><div class="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-white/20 -mt-px">Your front door</div></div></div>
+    <div class="flex items-center h-full gap-0.5">
+      <a href="jjr-hub-tw.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Home</a>
+      <a href="active-projects.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Projects</a>
+      <a href="templates.html" class="nav-active font-body text-[13px] font-semibold text-white px-4 h-full flex items-center relative transition-colors duration-200">Knowledge</a>
+      <a href="communities.html" class="font-body text-[13px] font-medium text-white/50 px-4 h-full flex items-center relative transition-colors duration-200 hover:text-white/90">Communities</a>
+      <span class="text-[11px] text-white/[0.12] mx-2 select-none">/</span>
+      <a href="tool-guides.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Help</a>
+      <a href="start-here.html" class="font-body text-[13px] font-medium text-white/70 px-4 h-full flex items-center transition-colors duration-200 hover:text-green">Training</a>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="search-glow flex items-center gap-2 bg-white/5 border border-white/[0.07] px-3.5 h-[34px] min-w-[260px] transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.14] focus-within:bg-white/[0.08]"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.6" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search templates..." class="bg-transparent border-none outline-none flex-1 font-body text-xs text-white min-w-0 placeholder:text-white/[0.22]"/><span class="font-mono text-[9px] text-white/[0.12] tracking-wide shrink-0">⌘K</span></div>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep"></div></button>
+      <button class="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+      <div class="relative ml-2.5">
+        <button class="w-8 h-8 bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] border-[1.5px] border-white/15 rounded-full flex items-center justify-center font-body text-[11px] font-bold text-white cursor-pointer p-0 shadow-[0_0_0_2px_rgba(76,187,23,0.2),0_2px_6px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.25)] transition-[box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] tracking-[0.3px] hover:scale-[1.06] hover:shadow-[0_0_0_3px_rgba(76,187,23,0.35),0_0_18px_rgba(76,187,23,0.45),0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] relative" id="avatarBtn" aria-haspopup="true" aria-expanded="false">SF<span class="absolute top-[-1px] right-[-1px] w-2 h-2 rounded-full bg-white border-[1.5px] border-navy-deep shadow-[0_0_4px_rgba(255,255,255,0.6)] pointer-events-none"></span></button>
+        <div class="dropdown-panel absolute top-[calc(100%+12px)] right-0 w-60 bg-white border border-rule shadow-[0_1px_2px_rgba(15,35,64,0.06),0_16px_40px_rgba(15,35,64,0.18),0_4px_12px_rgba(15,35,64,0.10)] z-[300] opacity-0 -translate-y-2 scale-[0.98] pointer-events-none transition-[opacity,transform] duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)]" id="profilePanel" role="menu" aria-label="Profile menu">
+          <div class="p-[18px] border-b border-rule-light flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-[linear-gradient(135deg,#3da312_0%,#4CBB17_50%,#7de852_100%)] flex items-center justify-center font-body text-sm font-bold text-white shadow-[0_0_0_2px_rgba(76,187,23,0.2),inset_0_1px_0_rgba(255,255,255,0.3)] shrink-0">SF</div>
+            <div>
+              <div class="font-display text-[15px] font-bold text-navy tracking-[-0.01em]">Sarah Foster</div>
+              <div class="font-mono text-[9.5px] font-medium text-txt-muted tracking-[1.2px] uppercase mt-[3px]">Consultant</div>
+            </div>
+          </div>
+          <div class="py-1.5">
+            <a href="my-profile.html" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>My Account</a>
+            <a href="under-development.html?from=preferences" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-navy cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-off-white hover:text-green-dark hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-txt-muted group-hover:text-green-dark transition-colors duration-200 shrink-0"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Preferences</a>
+            <div class="h-px bg-rule-light my-1"></div>
+            <a href="under-development.html?from=sign-out" class="group flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium text-pink cursor-pointer transition-[background,color,padding-left] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-pink/[0.05] hover:pl-[22px]"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="text-pink/70 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAR ═══ -->
+<div class="mt-14 bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] border-b border-black/[0.12] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-2.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="jjr-hub-tw.html" class="font-mono text-[10px] text-white/20 tracking-wide hover:text-white/40 transition-colors">Home</a>
+      <span class="text-white/10 text-[10px]">/</span>
+      <span class="font-mono text-[10px] text-white/50 tracking-wide">Templates</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <div class="w-1.5 h-1.5 rounded-full bg-green animate-[pulse_2s_ease_infinite] shadow-[0_0_6px_rgba(76,187,23,0.6)]"></div>
+        <span class="font-mono text-[9px] text-white/30 tracking-wide"><span id="tplCount">12</span> templates</span>
+      </div>
+      <span class="text-white/10 text-[10px]">/</span>
+      <a href="start-here.html" class="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">Start Here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="max-w-[1400px] mx-auto px-12 pt-10 pb-24 max-md:px-6 max-md:pt-6 max-md:pb-16">
+
+  <!-- HERO -->
+  <div class="mb-12 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.1s_both]">
+    <div class="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div class="absolute w-[1600px] h-[400px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 animate-[breathe_12s_ease-in-out_infinite] blur-[30px]"></div>
+      <div class="hero-grain absolute inset-0 opacity-[0.05] mix-blend-overlay pointer-events-none"></div>
+      <div class="absolute top-6 right-8 w-16 h-16 border-r border-t border-white/[0.06] pointer-events-none"></div>
+      <div class="absolute top-8 right-10 w-16 h-16 border-r border-t border-white/[0.04] pointer-events-none"></div>
+      <div class="relative z-10 pl-11 pr-10 pt-9 pb-10 max-md:p-7">
+        <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-3 [text-shadow:0_0_8px_rgba(76,187,23,0.3)]">Templates</div>
+        <h1 class="font-display text-[2.65rem] max-md:text-[1.7rem] font-bold text-white leading-[1.02] tracking-[-0.022em] mb-5">One Source of Truth.</h1>
+        <p class="text-[14px] leading-[1.7] text-white/[0.42] max-w-[520px] mb-7">Every branded template, methodology kit, and deliverable format in one place. Version-controlled, tagged by service line, always current. If it's not here, it doesn't exist yet — and you can request it.</p>
+        <div class="flex items-center gap-4">
+          <a href="#library" class="font-body text-xs font-bold bg-green text-white px-5 py-2.5 inline-flex items-center gap-1.5 shadow-[0_0_24px_rgba(76,187,23,0.25),0_2px_8px_rgba(0,0,0,0.12)] transition-[box-shadow,background,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-dark hover:-translate-y-px hover:shadow-[0_0_32px_rgba(76,187,23,0.45),0_2px_12px_rgba(0,0,0,0.2)]">Browse Library →</a>
+          <a href="under-development.html?from=request-a-template" class="font-body text-xs font-semibold border border-white/[0.15] text-white/50 px-5 py-2.5 inline-flex items-center transition-all duration-200 hover:border-green hover:text-green">Request a Template</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED TEMPLATES -->
+  <div class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Featured Templates <span class="flex-1 h-px bg-rule"></span> <span class="font-body text-[11px] font-normal tracking-normal normal-case whitespace-nowrap text-txt-muted">Most used &amp; recently updated</span></div>
+
+  <div class="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mb-14 animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.15s_both]">
+    <!-- Featured 1 -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer relative group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5" data-doc-trigger data-doc-title="Project Kickoff Deck" data-doc-desc="Standard deck for all new client onboardings. Brand guidelines applied, pre-built slides for scope, team, and timeline." data-doc-cat="Proposal" data-doc-version="v3.2" data-doc-updated="Mar 12">
+      <div class="h-[100px] flex items-center justify-center relative bg-[linear-gradient(135deg,#2D7D00,#4CBB17)]">
+        <svg class="opacity-40" width="32" height="32" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <div class="absolute top-2.5 right-2.5 font-mono text-[8px] font-bold tracking-wider uppercase px-2 py-0.5 bg-pink text-white shadow-[0_0_10px_rgba(233,30,140,0.45)]">Most Used</div>
+        <div class="absolute bottom-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span class="font-mono text-[9px] font-bold text-white bg-white/20 px-2.5 py-1 hover:bg-white/30 transition-colors cursor-pointer">Preview</span>
+          <a href="under-development.html?from=template-download" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[9px] font-bold text-white bg-green px-2.5 py-1 hover:bg-green-dark transition-all shadow-[0_0_10px_rgba(76,187,23,0.4)]">Download</a>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-mono text-[9px] font-medium tracking-[1.2px] uppercase text-green">Proposal</span>
+          <span class="text-rule">·</span>
+          <span class="font-mono text-[9px] text-txt-muted">v3.2</span>
+        </div>
+        <div class="font-display text-[0.95rem] font-bold text-navy leading-snug mb-1.5">Project Kickoff Deck</div>
+        <div class="text-[12px] text-txt-sec leading-relaxed mb-3">Standard deck for all new client onboardings. Brand guidelines applied, pre-built slides for scope, team, and timeline.</div>
+        <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+          <span class="text-[10px] text-txt-muted">Updated Mar 12</span>
+          <span class="text-[10px] text-txt-muted">142 downloads</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured 2 -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer relative group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5" data-doc-trigger data-doc-title="Capability Statement" data-doc-desc="One-page firm capability overview for RFP responses and new client introductions. Fully branded." data-doc-cat="Report" data-doc-version="v2.1" data-doc-updated="Mar 18">
+      <div class="h-[100px] flex items-center justify-center relative bg-[linear-gradient(135deg,#0F2340,#2A4A78)]">
+        <svg class="opacity-40" width="32" height="32" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <div class="absolute top-2.5 right-2.5 font-mono text-[8px] font-bold tracking-wider uppercase px-2 py-0.5 bg-green text-white shadow-[0_0_10px_rgba(76,187,23,0.5)]">Updated</div>
+        <div class="absolute bottom-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span class="font-mono text-[9px] font-bold text-white bg-white/20 px-2.5 py-1 hover:bg-white/30 transition-colors cursor-pointer">Preview</span>
+          <a href="under-development.html?from=template-download" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[9px] font-bold text-white bg-green px-2.5 py-1 hover:bg-green-dark transition-all shadow-[0_0_10px_rgba(76,187,23,0.4)]">Download</a>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-mono text-[9px] font-medium tracking-[1.2px] uppercase text-navy">Report</span>
+          <span class="text-rule">·</span>
+          <span class="font-mono text-[9px] text-txt-muted">v2.1</span>
+        </div>
+        <div class="font-display text-[0.95rem] font-bold text-navy leading-snug mb-1.5">Capability Statement</div>
+        <div class="text-[12px] text-txt-sec leading-relaxed mb-3">One-page firm capability overview for RFP responses and new client introductions. Fully branded.</div>
+        <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+          <span class="text-[10px] text-txt-muted">Updated Mar 18</span>
+          <span class="text-[10px] text-txt-muted">98 downloads</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured 3 -->
+    <div class="bg-white border border-rule overflow-hidden cursor-pointer relative group transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-navy-mid hover:shadow-[0_8px_24px_rgba(27,54,93,0.10)] hover:-translate-y-0.5" data-doc-trigger data-doc-title="EJ Impact Assessment Kit" data-doc-desc="Full toolkit for community-based environmental justice assessments. Includes scorecards, survey templates, and report format." data-doc-cat="Methodology" data-doc-version="v1.0" data-doc-updated="Mar 20">
+      <div class="h-[100px] flex items-center justify-center relative bg-[linear-gradient(135deg,#8B1A6A,#E91E8C)]">
+        <svg class="opacity-40" width="32" height="32" fill="none" stroke="white" stroke-width="1.3" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <div class="absolute top-2.5 right-2.5 font-mono text-[8px] font-bold tracking-wider uppercase px-2 py-0.5 bg-pink text-white shadow-[0_0_10px_rgba(233,30,140,0.5)]">New</div>
+        <div class="absolute bottom-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span class="font-mono text-[9px] font-bold text-white bg-white/20 px-2.5 py-1 hover:bg-white/30 transition-colors cursor-pointer">Preview</span>
+          <a href="under-development.html?from=template-download" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[9px] font-bold text-white bg-green px-2.5 py-1 hover:bg-green-dark transition-all shadow-[0_0_10px_rgba(76,187,23,0.4)]">Download</a>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="font-mono text-[9px] font-medium tracking-[1.2px] uppercase text-pink">Methodology</span>
+          <span class="text-rule">·</span>
+          <span class="font-mono text-[9px] text-txt-muted">v1.0</span>
+        </div>
+        <div class="font-display text-[0.95rem] font-bold text-navy leading-snug mb-1.5">EJ Impact Assessment Kit</div>
+        <div class="text-[12px] text-txt-sec leading-relaxed mb-3">Full toolkit for community-based environmental justice assessments. Includes scorecards, survey templates, and report format.</div>
+        <div class="flex items-center justify-between pt-3 border-t border-rule-light">
+          <span class="text-[10px] text-txt-muted">Added Mar 20</span>
+          <span class="text-[10px] text-txt-muted">34 downloads</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS + LIBRARY -->
+  <div id="library" class="flex items-center gap-3 mb-5 font-mono text-[10px] font-medium tracking-[2px] uppercase text-txt-muted">Full Library <span class="flex-1 h-px bg-rule"></span></div>
+
+  <!-- Filter rows -->
+  <div class="flex items-center gap-3 mb-3 flex-wrap animate-[rise_0.6s_cubic-bezier(0.25,0.46,0.45,0.94)_0.2s_both]">
+    <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mr-1">Category</div>
+    <button class="filter-btn active font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','all')">All</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','proposal')">Proposals</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','report')">Reports</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','onboarding')">Onboarding</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','methodology')">Methodology</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'cat','admin')">Admin &amp; SOPs</button>
+  </div>
+  <div class="flex items-center gap-3 mb-8 flex-wrap">
+    <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted mr-1">Role</div>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'role','consultant')">Consultant</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'role','pm')">Project Manager</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'role','analyst')">Analyst</button>
+    <button class="filter-btn font-mono text-[10px] font-medium tracking-wider uppercase px-3.5 py-1.5 border border-rule bg-white text-txt-sec cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-navy hover:border-navy-mid" onclick="filterTpl(this,'role','leadership')">Leadership</button>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="grid grid-cols-[1fr_300px] gap-8 max-lg:grid-cols-1">
+    <div>
+
+      <!-- Template table/list -->
+      <div class="bg-white border border-rule overflow-hidden mb-6">
+        <!-- Header row -->
+        <div class="grid grid-cols-[1fr_120px_100px_90px_80px] max-md:hidden px-6 py-3 border-b border-rule bg-warm-gray/50">
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium">Template</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium">Category</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium">Updated</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium">Version</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium text-right">Action</div>
+        </div>
+
+        <!-- Row 1 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="proposal" data-role="consultant pm" data-doc-trigger data-doc-title="Project Kickoff Deck" data-doc-desc="Client onboarding starter deck" data-doc-cat="Proposal" data-doc-version="v3.2" data-doc-updated="Mar 12">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-green bg-green/[0.06] border border-green/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Project Kickoff Deck</div><div class="text-[10px] text-txt-muted">Client onboarding starter deck</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Proposal</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 12</div>
+          <div class="font-mono text-[10px] text-txt-muted">v3.2</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="report" data-role="consultant pm leadership" data-doc-trigger data-doc-title="Capability Statement" data-doc-desc="One-page firm overview for RFPs" data-doc-cat="Report" data-doc-version="v2.1" data-doc-updated="Mar 18">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-navy bg-navy/[0.06] border border-navy/10"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Capability Statement</div><div class="text-[10px] text-txt-muted">One-page firm overview for RFPs</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Report</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 18</div>
+          <div class="font-mono text-[10px] text-txt-muted">v2.1</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="proposal" data-role="pm" data-doc-trigger data-doc-title="Scope of Work Template" data-doc-desc="Standard SOW for new engagements" data-doc-cat="Proposal" data-doc-version="v4.0" data-doc-updated="Mar 5">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-green bg-green/[0.06] border border-green/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Scope of Work Template</div><div class="text-[10px] text-txt-muted">Standard SOW for new engagements</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Proposal</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 5</div>
+          <div class="font-mono text-[10px] text-txt-muted">v4.0</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="onboarding" data-role="consultant analyst" data-doc-trigger data-doc-title="New Consultant Welcome Pack" data-doc-desc="First-week setup and orientation" data-doc-cat="Onboarding" data-doc-version="v2.0" data-doc-updated="Feb 28">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-amber bg-amber/[0.08] border border-amber/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div><div class="text-[13px] font-semibold text-txt">New Consultant Welcome Pack</div><div class="text-[10px] text-txt-muted">First-week setup and orientation</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Onboarding</div>
+          <div class="font-mono text-[10px] text-txt-muted">Feb 28</div>
+          <div class="font-mono text-[10px] text-txt-muted">v2.0</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="methodology" data-role="consultant pm analyst" data-doc-trigger data-doc-title="EJ Impact Assessment Kit" data-doc-desc="Community-based EJ toolkit" data-doc-cat="Methodology" data-doc-version="v1.0" data-doc-updated="Mar 20">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-pink bg-pink/[0.06] border border-pink/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div><div class="text-[13px] font-semibold text-txt">EJ Impact Assessment Kit</div><div class="text-[10px] text-txt-muted">Community-based EJ toolkit</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Methodology</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 20</div>
+          <div class="font-mono text-[10px] text-txt-muted">v1.0</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="report" data-role="pm leadership" data-doc-trigger data-doc-title="Monthly Status Report" data-doc-desc="Client-facing project status update" data-doc-cat="Report" data-doc-version="v5.0" data-doc-updated="Mar 1">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-navy bg-navy/[0.06] border border-navy/10"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Monthly Status Report</div><div class="text-[10px] text-txt-muted">Client-facing project status update</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Report</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 1</div>
+          <div class="font-mono text-[10px] text-txt-muted">v5.0</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="admin" data-role="consultant pm analyst" data-doc-trigger data-doc-title="Timesheet Submission Guide" data-doc-desc="QuickBooks Time step-by-step" data-doc-cat="Admin" data-doc-version="v1.3" data-doc-updated="Feb 15">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-txt-muted bg-warm-gray border border-rule-light"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Timesheet Submission Guide</div><div class="text-[10px] text-txt-muted">QuickBooks Time step-by-step</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Admin</div>
+          <div class="font-mono text-[10px] text-txt-muted">Feb 15</div>
+          <div class="font-mono text-[10px] text-txt-muted">v1.3</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="proposal" data-role="consultant pm" data-doc-trigger data-doc-title="Budget &amp; Scope Template" data-doc-desc="Financial planning for engagements" data-doc-cat="Proposal" data-doc-version="v3.1" data-doc-updated="Mar 8">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-green bg-green/[0.06] border border-green/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Budget &amp; Scope Template</div><div class="text-[10px] text-txt-muted">Financial planning for engagements</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Proposal</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 8</div>
+          <div class="font-mono text-[10px] text-txt-muted">v3.1</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="report" data-role="analyst" data-doc-trigger data-doc-title="Research Brief Template" data-doc-desc="Standard format for internal briefs" data-doc-cat="Report" data-doc-version="v2.0" data-doc-updated="Feb 22">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-navy bg-navy/[0.06] border border-navy/10"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Research Brief Template</div><div class="text-[10px] text-txt-muted">Standard format for internal briefs</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Report</div>
+          <div class="font-mono text-[10px] text-txt-muted">Feb 22</div>
+          <div class="font-mono text-[10px] text-txt-muted">v2.0</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="methodology" data-role="pm" data-doc-trigger data-doc-title="Project Closeout Checklist" data-doc-desc="Knowledge transfer and wrap-up steps" data-doc-cat="Methodology" data-doc-version="v2.4" data-doc-updated="Mar 14">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-pink bg-pink/[0.06] border border-pink/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Project Closeout Checklist</div><div class="text-[10px] text-txt-muted">Knowledge transfer and wrap-up steps</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Methodology</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 14</div>
+          <div class="font-mono text-[10px] text-txt-muted">v2.4</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 11 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 border-b border-rule-light hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="admin" data-role="pm leadership" data-doc-trigger data-doc-title="Scope Change Request" data-doc-desc="Formal change order documentation" data-doc-cat="Admin" data-doc-version="v1.5" data-doc-updated="Jan 30">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-txt-muted bg-warm-gray border border-rule-light"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Scope Change Request</div><div class="text-[10px] text-txt-muted">Formal change order documentation</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Admin</div>
+          <div class="font-mono text-[10px] text-txt-muted">Jan 30</div>
+          <div class="font-mono text-[10px] text-txt-muted">v1.5</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+
+        <!-- Row 12 -->
+        <div class="tpl-row relative grid grid-cols-[1fr_120px_100px_90px_80px] max-md:flex max-md:flex-col max-md:gap-2 items-center px-6 py-4 hover:bg-off-white transition-[background,padding-left] duration-[200ms] cursor-pointer" data-cat="onboarding" data-role="pm" data-doc-trigger data-doc-title="Client Onboarding Playbook" data-doc-desc="End-to-end client setup workflow" data-doc-cat="Onboarding" data-doc-version="v1.2" data-doc-updated="Mar 2">
+          <div class="flex items-center gap-3"><div class="w-9 h-9 shrink-0 flex items-center justify-center text-amber bg-amber/[0.08] border border-amber/15"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div><div class="text-[13px] font-semibold text-txt">Client Onboarding Playbook</div><div class="text-[10px] text-txt-muted">End-to-end client setup workflow</div></div></div>
+          <div class="font-mono text-[10px] text-txt-sec">Onboarding</div>
+          <div class="font-mono text-[10px] text-txt-muted">Mar 2</div>
+          <div class="font-mono text-[10px] text-txt-muted">v1.2</div>
+          <div class="text-right"><a href="under-development.html?from=use-template" data-doc-skip onclick="event.stopPropagation()" class="font-mono text-[10px] font-bold text-green hover:underline">Use →</a></div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-rule py-3 px-5 relative overflow-hidden text-xs text-txt-sec leading-[1.6]">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        Can't find what you need? <a href="under-development.html?from=request-a-template" class="text-green font-bold hover:text-green-dark transition-colors">Request a new template</a> — the team reviews requests weekly.
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Recently Updated -->
+      <div class="bg-white border border-rule">
+        <div class="px-5 py-4 border-b border-rule-light">
+          <div class="font-display text-[0.95rem] font-bold text-navy">Recently Updated</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-txt-muted font-medium mt-0.5">Last 14 Days</div>
+        </div>
+        <div class="p-4 flex flex-col gap-1">
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 px-2 py-2.5 hover:bg-off-white transition-colors">
+            <div class="w-2 h-2 bg-green rounded-full shrink-0 shadow-[0_0_6px_rgba(76,187,23,0.5)]"></div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-txt">EJ Impact Assessment Kit</div><div class="text-[9px] text-txt-muted">Mar 20 · v1.0 · New</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 px-2 py-2.5 hover:bg-off-white transition-colors">
+            <div class="w-2 h-2 bg-green rounded-full shrink-0 shadow-[0_0_6px_rgba(76,187,23,0.5)]"></div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-txt">Capability Statement</div><div class="text-[9px] text-txt-muted">Mar 18 · v2.1 · Updated</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 px-2 py-2.5 hover:bg-off-white transition-colors">
+            <div class="w-2 h-2 bg-amber rounded-full shrink-0 shadow-[0_0_6px_rgba(232,168,56,0.45)]"></div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-txt">Project Closeout Checklist</div><div class="text-[9px] text-txt-muted">Mar 14 · v2.4 · Updated</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 px-2 py-2.5 hover:bg-off-white transition-colors">
+            <div class="w-2 h-2 bg-amber rounded-full shrink-0 shadow-[0_0_6px_rgba(232,168,56,0.45)]"></div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-txt">Project Kickoff Deck</div><div class="text-[9px] text-txt-muted">Mar 12 · v3.2 · Updated</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Most Downloaded -->
+      <div class="relative bg-[linear-gradient(180deg,#17304f_0%,#0F2340_45%,#0b1c35_100%)] border border-white/[0.04] border-t-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_8px_24px_rgba(0,0,0,0.20),0_2px_6px_rgba(0,0,0,0.12)]">
+        <div class="px-5 py-4 border-b border-white/[0.06]">
+          <div class="font-display text-[0.95rem] font-bold text-white tracking-tight">Most Downloaded</div>
+          <div class="font-mono text-[9px] tracking-[1.5px] uppercase text-green/80 font-medium mt-1">All Time</div>
+        </div>
+        <div class="p-4 flex flex-col gap-3.5">
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 group">
+            <div class="font-mono text-[12px] font-bold w-5 text-center shrink-0 text-green [text-shadow:0_0_8px_rgba(76,187,23,0.55)]">1</div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Project Kickoff Deck</div><div class="text-[9px] text-white/40 font-mono mt-0.5">142 downloads</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 group">
+            <div class="font-mono text-[11px] font-bold text-white/50 w-5 text-center shrink-0">2</div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Monthly Status Report</div><div class="text-[9px] text-white/40 font-mono mt-0.5">118 downloads</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 group">
+            <div class="font-mono text-[11px] font-bold text-white/50 w-5 text-center shrink-0">3</div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Capability Statement</div><div class="text-[9px] text-white/40 font-mono mt-0.5">98 downloads</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 group">
+            <div class="font-mono text-[11px] font-bold text-white/50 w-5 text-center shrink-0">4</div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Scope of Work Template</div><div class="text-[9px] text-white/40 font-mono mt-0.5">87 downloads</div></div>
+          </a>
+          <a href="under-development.html?from=template-preview" class="flex items-center gap-3 group">
+            <div class="font-mono text-[11px] font-bold text-white/50 w-5 text-center shrink-0">5</div>
+            <div class="flex-1"><div class="text-[12px] font-semibold text-white group-hover:text-green transition-colors">Budget &amp; Scope Template</div><div class="text-[9px] text-white/40 font-mono mt-0.5">76 downloads</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Brand note -->
+      <div class="bg-white border border-rule px-5 py-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-[2px] bg-green shadow-[0_0_10px_rgba(76,187,23,0.5)]"></div>
+        <div class="font-display text-[0.95rem] font-bold text-navy mb-1 tracking-tight">Brand compliance</div>
+        <div class="text-[11.5px] text-txt-sec leading-[1.65] mb-2.5">All templates are reviewed quarterly for brand compliance. Using anything outside this library? Check with the Brand team first.</div>
+        <a href="under-development.html?from=brand-guidelines" class="text-[12px] font-bold text-green hover:text-green-dark transition-colors">View Brand Guidelines →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ EQUITY + FOOTER ═══ -->
+<div class="bg-[linear-gradient(180deg,#17304f_0%,#0F2340_30%,#0b1c35_100%)] border-t border-t-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_-2px_12px_rgba(0,0,0,0.1)]">
+  <div class="max-w-[1400px] mx-auto px-12 py-7 flex items-center gap-6 border-b border-white/[0.04] max-md:flex-wrap max-md:px-6">
+    <div class="w-[3px] h-9 shrink-0 bg-[linear-gradient(180deg,#4CBB17,#7de852,#4CBB17)] bg-[length:100%_200%] animate-[shimmer_6s_ease-in-out_infinite]"></div>
+    <div>
+      <div class="font-mono text-[10px] font-medium tracking-[2px] uppercase text-green mb-1">Access &amp; Equity</div>
+      <div class="text-[13px] text-white/[0.35] leading-relaxed">Every access decision in this hub is intentional, documented, and reviewed quarterly. If something's blocked that shouldn't be, that's worth raising.</div>
+    </div>
+    <a href="under-development.html?from=report-access-concern" class="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-[#7de852]">Report an access concern →</a>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
+    <span class="text-[11px] text-white/[0.15]">JJR Hub — permission-aware, always current</span>
+    <div class="flex gap-5">
+      <a href="accessibility.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Accessibility</a>
+      <a href="under-development.html?from=report-an-issue" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Report an Issue</a>
+      <a href="site-owners.html" class="text-[11px] text-white/25 transition-colors duration-150 hover:text-green">Site Owners</a>
+    </div>
+  </div>
+</div>
+
+<script>
+let activeCat = 'all';
+let activeRole = null;
+
+function filterTpl(btn, type, value) {
+  const row = btn.parentElement;
+  if (type === 'cat') {
+    row.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-txt-sec'); });
+    btn.classList.add('active'); btn.classList.remove('text-txt-sec');
+    activeCat = value;
+  }
+  if (type === 'role') {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('active'); btn.classList.add('text-txt-sec');
+      activeRole = null;
+    } else {
+      btn.parentElement.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.classList.add('text-txt-sec'); });
+      btn.classList.add('active'); btn.classList.remove('text-txt-sec');
+      activeRole = value;
+    }
+  }
+
+  const rows = document.querySelectorAll('.tpl-row');
+  let count = 0;
+  rows.forEach(r => {
+    const cat = r.dataset.cat;
+    const roles = r.dataset.role.split(' ');
+    let catMatch = activeCat === 'all' || cat === activeCat;
+    let roleMatch = !activeRole || roles.includes(activeRole);
+    const show = catMatch && roleMatch;
+    r.style.display = show ? '' : 'none';
+    if (show) count++;
+  });
+  document.getElementById('tplCount').textContent = count;
+}
+</script>
+<script>
+(function(){
+  var avatarBtn = document.getElementById('avatarBtn');
+  var profilePanel = document.getElementById('profilePanel');
+  if(!avatarBtn || !profilePanel) return;
+  avatarBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var isOpen = profilePanel.classList.contains('is-open');
+    profilePanel.classList.toggle('is-open', !isOpen);
+    avatarBtn.setAttribute('aria-expanded', (!isOpen).toString());
+  });
+  profilePanel.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('click', function(){
+    profilePanel.classList.remove('is-open');
+    avatarBtn.setAttribute('aria-expanded','false');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){
+      profilePanel.classList.remove('is-open');
+      avatarBtn.setAttribute('aria-expanded','false');
+    }
+  });
+})();
+</script>
+
+<!-- ═══ DOC PREVIEW MODAL ═══ -->
+<div class="dmodal" id="docModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dmodalTitle">
+  <div class="absolute inset-0 bg-black/85 backdrop-blur-[2px]" id="dmodalOverlay"></div>
+  <div class="dmodal__panel relative bg-white w-[80vw] max-w-[920px] max-h-[80vh] flex flex-col shadow-[0_30px_80px_rgba(0,0,0,0.4),0_10px_30px_rgba(0,0,0,0.3)]">
+    <button class="absolute top-4 right-4 z-[2] w-8 h-8 flex items-center justify-center bg-off-white border border-rule text-navy cursor-pointer transition-all duration-200 hover:bg-navy hover:text-white hover:border-navy" id="dmodalCloseX" aria-label="Close preview"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="px-8 pt-7 pb-5 border-b border-rule-light">
+      <div class="flex items-center gap-2 mb-3 font-mono text-[9px] font-medium tracking-[1.5px] uppercase">
+        <span id="dmodalCat" class="text-green">Proposal</span>
+        <span class="text-rule">·</span>
+        <span id="dmodalVersion" class="text-txt-muted">v—</span>
+        <span class="text-rule">·</span>
+        <span class="text-txt-muted">Updated <span id="dmodalUpdated">—</span></span>
+      </div>
+      <h2 id="dmodalTitle" class="font-display text-[1.55rem] font-bold text-navy leading-tight tracking-tight mb-2">Template</h2>
+      <p id="dmodalDesc" class="text-[13px] text-txt-sec leading-relaxed"></p>
+    </div>
+    <div class="flex-1 overflow-auto bg-off-white p-8">
+      <div class="bg-white border border-rule min-h-[280px] flex items-center justify-center p-10">
+        <div class="text-center">
+          <svg class="mx-auto mb-4 text-txt-muted opacity-60" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <div class="font-mono text-[10px] tracking-[1.5px] uppercase text-txt-muted mb-1">Preview placeholder</div>
+          <div class="text-[11px] text-txt-muted">SharePoint document viewer will render here</div>
+        </div>
+      </div>
+    </div>
+    <div class="px-8 py-5 border-t border-rule-light flex items-center justify-between gap-4 flex-wrap">
+      <div class="text-[10.5px] text-txt-muted font-mono tracking-[0.5px]">Owner · PMO &nbsp;·&nbsp; Brand-compliant</div>
+      <div class="flex items-center gap-2.5">
+        <button id="dmodalCloseBtn" class="font-body text-xs font-semibold border border-rule text-txt-sec px-4 py-2 hover:border-navy-mid hover:text-navy transition-all">Close</button>
+        <a id="dmodalDownload" href="under-development.html?from=template-download" class="font-body text-xs font-bold bg-green text-white px-4 py-2 inline-flex items-center gap-1.5 hover:bg-green-dark transition-all shadow-[0_0_18px_rgba(76,187,23,0.3)]"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var modal=document.getElementById('docModal');
+  if(!modal) return;
+  var overlay=document.getElementById('dmodalOverlay');
+  var closeX=document.getElementById('dmodalCloseX');
+  var closeBtn=document.getElementById('dmodalCloseBtn');
+  var T=document.getElementById('dmodalTitle');
+  var D=document.getElementById('dmodalDesc');
+  var C=document.getElementById('dmodalCat');
+  var V=document.getElementById('dmodalVersion');
+  var U=document.getElementById('dmodalUpdated');
+
+  function open(d){
+    T.textContent=d.docTitle||'Template';
+    D.textContent=d.docDesc||'';
+    C.textContent=d.docCat||'';
+    V.textContent=d.docVersion||'';
+    U.textContent=d.docUpdated||'';
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function close(){
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  window.openDocModal=open;
+  window.closeDocModal=close;
+
+  document.addEventListener('click', function(e){
+    if(e.target.closest('[data-doc-skip]')) return;
+    var t=e.target.closest('[data-doc-trigger]');
+    if(t){
+      e.preventDefault();
+      open(t.dataset);
+    }
+  });
+  overlay.addEventListener('click',close);
+  closeX.addEventListener('click',close);
+  closeBtn.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && modal.classList.contains('is-open')) close(); });
+})();
+</script>
+
+</body>
+</html>

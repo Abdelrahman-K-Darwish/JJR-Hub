@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { DropdownPanel, NavActive, SearchBar, ShimmerText } from './ui'
+import { BellIcon, DropdownPanel, MailIcon, NavActive, SearchBar, ShimmerText } from './ui'
 
 export interface NavLink {
   label: string
@@ -107,10 +107,7 @@ export function AppShell({
               className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80 relative"
               aria-label="Notifications"
             >
-              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
+              <BellIcon size={15} strokeWidth={1.6} />
               <span className="absolute top-[5px] right-[5px] w-[5px] h-[5px] bg-green rounded-full border border-navy-deep" aria-hidden="true" />
             </button>
 
@@ -119,9 +116,7 @@ export function AppShell({
               className="w-8 h-8 border-none bg-transparent flex items-center justify-center text-white/[0.35] cursor-pointer transition-colors duration-200 hover:text-white/80"
               aria-label="Messages"
             >
-              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
+              <MailIcon size={15} strokeWidth={1.6} />
             </button>
 
             <DropdownPanel

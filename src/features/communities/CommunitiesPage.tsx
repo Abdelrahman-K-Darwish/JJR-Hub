@@ -16,14 +16,8 @@ import {
   RevealOnScroll,
 } from '../../components/ui'
 import { CURRENT_USER, PROFILE_MENU_ITEMS } from '../../mocks/currentUser'
-import {
-  COMMUNITIES,
-  TOTAL_MEMBER_COUNT,
-  UPCOMING_EVENTS,
-  YOUR_COMMUNITIES,
-  type CommunityIconKey,
-  type ResourceIconKey,
-} from '../../mocks/communities'
+import type { CommunityIconKey, CommunityResourceIconKey } from './communities.types'
+import { useCommunities } from './useCommunities'
 
 const COMMUNITY_ICONS: Record<CommunityIconKey, ReactNode> = {
   info: <InfoIcon size={24} strokeWidth={1.5} />,
@@ -31,14 +25,15 @@ const COMMUNITY_ICONS: Record<CommunityIconKey, ReactNode> = {
   'bar-chart': <BarChartIcon size={24} strokeWidth={1.5} />,
 }
 
-const RESOURCE_ICONS: Record<ResourceIconKey, ReactNode> = {
+const RESOURCE_ICONS: Record<CommunityResourceIconKey, ReactNode> = {
   file: <FileIcon size={11} strokeWidth={1.8} />,
   play: <PlayIcon size={11} strokeWidth={1.8} fill="currentColor" />,
   'book-open': <BookOpenIcon size={11} strokeWidth={1.8} />,
 }
 
 export function CommunitiesPage() {
-  const activeCount = COMMUNITIES.length
+  const { isLoading, error, communities, totalMemberCount, upcomingEvents, yourCommunities } = useCommunities()
+  const activeCount = communities.length
 
   return (
     <AppShell
@@ -103,7 +98,7 @@ export function CommunitiesPage() {
                   <div className="w-7 h-7 bg-navy-mid text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep">LR</div>
                   <div className="w-7 h-7 bg-pink text-[9px] font-bold text-white flex items-center justify-center border-2 border-navy-deep">JP</div>
                 </div>
-                <span className="text-[11px] text-text-inverse-muted">{TOTAL_MEMBER_COUNT} members across all communities</span>
+                <span className="text-[11px] text-text-inverse-muted">{totalMemberCount} members across all communities</span>
               </div>
             </div>
           </div>
@@ -112,29 +107,35 @@ export function CommunitiesPage() {
 
       <div id="communities" className="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
         <div>
-          {COMMUNITIES.map((community) => (
-            <CommunityCard
-              key={community.slug}
-              href={`/communities/${community.slug}`}
-              icon={COMMUNITY_ICONS[community.icon]}
-              name={community.name}
-              description={community.description}
-              memberCountLabel={`${community.memberCount} members`}
-              postsLabel={`${community.postsThisWeek} posts this week`}
-              resourcesLabel={`${community.resourceCount} resources`}
-              steward={community.steward}
-              joinHref="/under-development?from=join-community"
-              topResources={community.topResources.map((r) => ({ label: r.label, href: r.href, icon: RESOURCE_ICONS[r.icon] }))}
-              recentDiscussions={community.isMember ? community.recentDiscussions : undefined}
-              keyExperts={community.keyExperts}
-              className="mb-6"
-            />
-          ))}
+          {isLoading ? (
+            <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">Loading communities…</p>
+          ) : error ? (
+            <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">{error}</p>
+          ) : (
+            communities.map((community) => (
+              <CommunityCard
+                key={community.slug}
+                href={`/communities/${community.slug}`}
+                icon={COMMUNITY_ICONS[community.icon]}
+                name={community.name}
+                description={community.description}
+                memberCountLabel={`${community.memberCount} members`}
+                postsLabel={`${community.postsThisWeek} posts this week`}
+                resourcesLabel={`${community.resourceCount} resources`}
+                steward={community.steward}
+                joinHref="/under-development?from=join-community"
+                topResources={community.topResources.map((r) => ({ label: r.label, href: r.href, icon: RESOURCE_ICONS[r.icon] }))}
+                recentDiscussions={community.isMember ? community.recentDiscussions : undefined}
+                keyExperts={community.keyExperts}
+                className="mb-6"
+              />
+            ))
+          )}
         </div>
 
         <div className="flex flex-col gap-6">
           <ListPanel title="Upcoming Events" eyebrow="Webinars & Sessions">
-            {UPCOMING_EVENTS.map((event) => (
+            {upcomingEvents.map((event) => (
               <a key={event.title} href={event.href} className="group">
                 <div className="flex items-start gap-3">
                   <DateTile day={event.day} month={event.month} className="group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_8px_rgba(15,35,64,0.2),0_0_12px_rgba(76,187,23,0.15)] transition-shadow duration-300" />
@@ -148,7 +149,7 @@ export function CommunitiesPage() {
           </ListPanel>
 
           <ListPanel title="Your Communities" eyebrow="Membership" tone="dark">
-            {YOUR_COMMUNITIES.map((row) => (
+            {yourCommunities.map((row) => (
               <div key={row.slug} className="flex items-center gap-3">
                 <span
                   className={`w-2 h-2 rounded-full shrink-0 ${row.joined ? 'bg-green shadow-[0_0_8px_rgba(76,187,23,0.6)]' : 'bg-white/15'}`}

@@ -183,8 +183,11 @@ Source: `docs/architecture/JJR-Hub-Communities-Architecture.docx` (single versio
 
 **Overall:** `docs/PROJECT-STATUS.md` marks this KEEP with the D-014-relevant note that
 `CommunityCard` already models the class-C-shaped omission of `recentDiscussions` at the data
-level for non-members. Service seam: not present — imports `src/mocks/communities.ts` directly
-into the page component (cross-cutting gap, same as all pages except P-04).
+level for non-members. **Service seam — CONFIRMED, implemented:**
+`CommunitiesPage.tsx` → `useCommunities.ts` → `communitiesService.getDirectory()` →
+`communitiesMockAdapter.ts` → `src/mocks/communities.ts`. (`communitiesMockAdapter.ts` also
+implements `getCommunityDetail()` for P-06, over `src/mocks/communityDetail.ts` — one adapter
+shared across both pages, but this page's own call path reads only `communities.ts`.)
 
 ---
 
@@ -202,7 +205,11 @@ canonical").
 
 **Overall:** KEEP per `docs/PROJECT-STATUS.md` — slug-keyed lookup
 (`COMMUNITY_DETAILS[slug]`) with explicit not-found state; shares `AvatarChip`/`ResourceLink`/
-`DiscussionThread` with P-05.
+`DiscussionThread` with P-05. **Service seam — CONFIRMED, implemented:**
+`CommunityDetailPage.tsx` → `useCommunityDetail(slug)` →
+`communitiesService.getCommunityDetail(slug)` → `communitiesMockAdapter.ts` →
+`src/mocks/communityDetail.ts`. (Same shared adapter as P-05 — this page's own call path reads
+only `communityDetail.ts`.)
 
 ---
 

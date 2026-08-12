@@ -17,9 +17,10 @@ import {
   RevealOnScroll,
 } from '../../components/ui'
 import { CURRENT_USER, PROFILE_MENU_ITEMS } from '../../mocks/currentUser'
-import { COMMUNITY_DETAILS } from '../../mocks/communityDetail'
+import type { CommunityResourceIconKey } from '../communities/communities.types'
+import { useCommunityDetail } from './useCommunityDetail'
 
-const RESOURCE_ICONS: Record<'file' | 'play' | 'book-open', ReactNode> = {
+const RESOURCE_ICONS: Record<CommunityResourceIconKey, ReactNode> = {
   file: <FileIcon size={16} strokeWidth={1.8} />,
   play: <PlayIcon size={16} fill="currentColor" />,
   'book-open': <BookOpenIcon size={16} strokeWidth={1.8} />,
@@ -30,7 +31,23 @@ interface CommunityDetailPageProps {
 }
 
 export function CommunityDetailPage({ slug = 'innovation-ai' }: CommunityDetailPageProps) {
-  const community = COMMUNITY_DETAILS[slug]
+  const { isLoading, error, community } = useCommunityDetail(slug)
+
+  if (isLoading) {
+    return (
+      <AppShell user={CURRENT_USER} profileMenuItems={PROFILE_MENU_ITEMS} breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Communities', href: '/communities' }, { label: 'Loading…' }]}>
+        <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">Loading community…</p>
+      </AppShell>
+    )
+  }
+
+  if (error) {
+    return (
+      <AppShell user={CURRENT_USER} profileMenuItems={PROFILE_MENU_ITEMS} breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Communities', href: '/communities' }, { label: 'Error' }]}>
+        <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">{error}</p>
+      </AppShell>
+    )
+  }
 
   if (!community) {
     return (

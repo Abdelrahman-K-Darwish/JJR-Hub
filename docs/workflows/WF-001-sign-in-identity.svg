@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="568" viewBox="0 0 520 568" role="img" aria-labelledby="title desc">
+<title id="title">WF-001 · Sign-in &amp; Identity Resolution</title><desc id="desc">Authentication establishes identity; authorization is still checked per resource.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1B365D"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter></defs>
+<rect width="100%" height="100%" fill="#F8F7F4"/><text x="40" y="42" font-family="IBM Plex Sans, Arial, sans-serif" font-size="22" font-weight="700" fill="#0F2340">WF-001 · Sign-in &amp; Identity Resolution</text>
+<path d="M 360.0 128 L 360.0 160" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 360.0 218 L 360.0 250" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 360.0 308 L 360.0 340" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 360.0 398 L 360.0 430" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="250" y="70" width="220" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="360.0" y="91.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Employee opens protected</text>
+<text x="360.0" y="108.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">route</text>
+<text x="360.0" y="118" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">Browser</text>
+<rect x="250" y="160" width="220" height="58" rx="14" fill="#eef5fb" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="360.0" y="189.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Authenticate with Entra ID</text>
+<text x="360.0" y="208" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">OIDC</text>
+<rect x="250" y="250" width="220" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="360.0" y="271.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Frontend receives identity</text>
+<text x="360.0" y="288.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">session</text>
+<text x="360.0" y="298" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">Token/session</text>
+<rect x="250" y="340" width="220" height="58" rx="14" fill="#eef5fb" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="360.0" y="361.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Backend resolves user</text>
+<text x="360.0" y="378.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">context</text>
+<text x="360.0" y="388" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">role + scopes + capabilities</text>
+<rect x="250" y="430" width="220" height="58" rx="14" fill="#f1faed" stroke="#4CBB17" stroke-width="2" filter="url(#shadow)"/>
+<text x="360.0" y="451.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Return allowed application</text>
+<text x="360.0" y="468.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">context</text>
+<text x="360.0" y="478" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">least privilege</text>
+<text x="40" y="544" font-family="IBM Plex Sans, Arial, sans-serif" font-size="11" fill="#5A6B80">Authentication establishes identity; authorization is still checked per resource.</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="810" height="658" viewBox="0 0 810 658" role="img" aria-labelledby="title desc">
+<title id="title">WF-006 · Community Join &amp; Participation</title><desc id="desc">Community scope is independent of functional job role.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1B365D"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter></defs>
+<rect width="100%" height="100%" fill="#F8F7F4"/><text x="40" y="42" font-family="IBM Plex Sans, Arial, sans-serif" font-size="22" font-weight="700" fill="#0F2340">WF-006 · Community Join &amp; Participation</text>
+<path d="M 390.0 128 L 390.0 160" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 390.0 218 L 390.0 250" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 390.0 330 L 390.0 360.0 L 150.0 360.0 L 150.0 390" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="278.0" y="355.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">NO</text>
+<path d="M 390.0 330 L 390.0 360.0 L 400.0 360.0 L 400.0 390" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="403.0" y="355.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">YES</text>
+<path d="M 400.0 470 L 400.0 520" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="408.0" y="490.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">YES</text>
+<path d="M 400.0 470 L 400.0 430.0 L 650.0 430.0 L 650.0 390" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="533.0" y="425.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">NO</text>
+<rect x="270" y="70" width="240" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="390.0" y="99.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Browse community directory</text>
+<text x="390.0" y="118" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">all employees</text>
+<rect x="270" y="160" width="240" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="390.0" y="189.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Open community detail</text>
+<text x="390.0" y="208" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">preview content</text>
+<polygon points="390.0,250 510,290.0 390.0,330 270,290.0" fill="#FFFFFF" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="390.0" y="282.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Action requires</text>
+<text x="390.0" y="299.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">membership?</text>
+<text x="390.0" y="320" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">post / reply / deposit</text>
+<rect x="40" y="390" width="220" height="58" rx="14" fill="#f1faed" stroke="#4CBB17" stroke-width="2" filter="url(#shadow)"/>
+<text x="150.0" y="411.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Render public-to-firm</text>
+<text x="150.0" y="428.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">preview</text>
+<text x="150.0" y="438" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">directory/resources preview</text>
+<polygon points="400.0,390 510,430.0 400.0,470 290,430.0" fill="#FFFFFF" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="400.0" y="430.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">User is a member?</text>
+<text x="400.0" y="460" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">backend check</text>
+<rect x="540" y="390" width="220" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="650.0" y="411.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Offer Join / Request</text>
+<text x="650.0" y="428.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">membership</text>
+<text x="650.0" y="438" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">policy dependent</text>
+<rect x="290" y="520" width="220" height="58" rx="14" fill="#f1faed" stroke="#4CBB17" stroke-width="2" filter="url(#shadow)"/>
+<text x="400.0" y="549.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Allow member action</text>
+<text x="400.0" y="568" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">native app discussion</text>
+<text x="40" y="634" font-family="IBM Plex Sans, Arial, sans-serif" font-size="11" fill="#5A6B80">Community scope is independent of functional job role.</text>
+</svg>

@@ -1,0 +1,890 @@
+# How We Will Build the JJR Hub Development SOP
+
+## 1. Collect the Sources
+
+We start with everything that describes the hub:
+
+* [x] Architecture documents you uploaded
+* [x] Roles and responsibilities
+* [x] Backend planned for later
+* [x] Authentication required
+* [x] Role-based access required
+* [x] Responsive desktop/tablet/mobile
+* [x] Professional improvement allowed
+
+
+### Output
+
+A simple **Source Inventory**.
+
+Nothing gets redesigned yet.
+
+---
+
+# 2. Create a Page Inventory
+
+We list every page.
+
+Example:
+
+| Page            | Purpose            | Main Users        | Sensitive? | Backend? | Workflow? |
+| --------------- | ------------------ | ----------------- | ---------- | -------- | --------- |
+| Home            | Hub landing page   | Everyone          | Low        | Yes      | Yes       |
+| Active Projects | Projects portfolio | Scoped roles      | High       | Yes      | Yes       |
+| Start Here      | Onboarding         | New hires / staff | Medium     | Yes      | Yes       |
+| Profile         | User information   | Employees         | Medium     | Yes      | Yes       |
+
+We do this for all ~20 pages.
+
+### Why
+
+Claude needs to know:
+
+> What exists before deciding how to build it.
+
+---
+
+# 3. Build the Role & Access Matrix
+
+We define roles separately from pages.
+
+Current examples include:
+
+* Consultant
+* New Hire
+* Project Lead
+* PMO
+* Leadership
+* Admin / IT
+
+Other roles found during architecture review can be added.
+
+Then create:
+
+| Feature           | Consultant | Project Lead | PMO | Leadership | Admin |
+| ----------------- | ---------: | -----------: | --: | ---------: | ----: |
+| View own projects |          ✓ |            ✓ |   ✓ |          ✓ |     ✓ |
+| View all projects |          — |        Maybe |   ✓ |          ✓ |     ✓ |
+| Edit project      |          — |       Scoped |   ✓ |          ✓ |     ✓ |
+| Admin functions   |          — |            — |   — |          — |     ✓ |
+
+### Important
+
+The SOP will distinguish:
+
+**Visibility**
+
+from
+
+**Permission**
+
+from
+
+**Ownership**
+
+from
+
+**Backend authorization**
+
+These must not be mixed together.
+
+---
+
+# 4. Map the Systems
+
+Before React architecture, we document where information will eventually come from.
+
+Example:
+
+```text
+React Hub
+    │
+    ├── Application Backend
+    │      └── Database
+    │
+    ├── Microsoft Entra ID
+    │
+    ├── SharePoint
+    │
+    ├── Microsoft Graph
+    │
+    ├── Planner
+    │
+    └── Other external systems
+```
+
+For every data type we determine:
+
+* Who owns it?
+* Who can read it?
+* Who can change it?
+* Where is it stored?
+* Is React only displaying it?
+* Does the backend enforce access?
+
+This prevents Claude from putting business logic in random components.
+
+---
+
+# 5. Identify Workflow Candidates
+
+This is where we decide what deserves an SVG.
+
+## We DO NOT create an SVG for every page.
+
+For example:
+
+```text
+User opens About page
+↓
+Page loads
+```
+
+Does not deserve a workflow.
+
+But this does:
+
+```text
+User requests project
+↓
+Check existing access
+↓
+No access
+↓
+Create request
+↓
+Approver reviews
+↓
+Approve / Reject
+↓
+Permission updated
+↓
+User receives access
+```
+
+That deserves a workflow.
+
+---
+
+# 6. My Rule for Deciding Whether a Workflow Needs Documentation
+
+I test each process against **7 questions**.
+
+### 1 — Are multiple roles involved?
+
+Example:
+
+```text
+Consultant → Project Lead → PMO
+```
+
+If yes → workflow candidate.
+
+---
+
+### 2 — Is there a decision?
+
+Example:
+
+```text
+Does user have access?
+       ↓
+     Yes / No
+```
+
+If yes → workflow candidate.
+
+---
+
+### 3 — Does data change?
+
+Examples:
+
+* Create project
+* Update profile
+* Join community
+* Approve access
+* Complete onboarding
+* Submit lesson learned
+
+If yes → workflow candidate.
+
+---
+
+### 4 — Is security involved?
+
+Examples:
+
+* Authentication
+* Authorization
+* Restricted page
+* Project-scoped data
+* Leadership-only area
+
+If yes → usually **must document**.
+
+---
+
+### 5 — Does the process cross systems?
+
+Example:
+
+```text
+React
+  ↓
+Backend
+  ↓
+Microsoft Graph
+  ↓
+SharePoint
+```
+
+If yes → workflow candidate.
+
+---
+
+### 6 — Can the workflow fail?
+
+Example:
+
+```text
+Open Document
+      ↓
+Permission Check
+   ↙        ↘
+Allow      Deny
+```
+
+If meaningful failure paths exist → document them.
+
+---
+
+### 7 — Is the workflow reused?
+
+Example:
+
+```text
+Request Access
+```
+
+might appear on:
+
+* Projects
+* Client Hub
+* Communities
+* Leadership areas
+* Documents
+
+Instead of creating five diagrams:
+
+Create:
+
+**WF-ACCESS-001 — Request Access Workflow**
+
+Then pages reference it.
+
+---
+
+# 7. Workflow Scoring
+
+We can make the decision almost mechanical.
+
+Give the workflow **1 point** for each:
+
+* Multiple actors
+* Permission check
+* Decision branch
+* Data write
+* External integration
+* Failure state
+* Reused by several pages
+
+### Score
+
+**0–1**
+
+No SVG.
+
+---
+
+**2–3**
+
+Document briefly in the page specification.
+
+---
+
+**4+**
+
+Create a dedicated SVG workflow.
+
+---
+
+# 8. Likely Core Workflow Categories
+
+We will confirm these after reviewing all pages.
+
+Likely examples:
+
+### WF-001
+
+Authentication & User Resolution
+
+```text
+Open Hub
+↓
+Authenticate
+↓
+Resolve User
+↓
+Resolve Role
+↓
+Resolve Access
+↓
+Load Hub
+```
+
+---
+
+### WF-002
+
+Authorization / Scoped Data
+
+```text
+Request Resource
+↓
+Check User
+↓
+Check Role
+↓
+Check Resource Scope
+↓
+Allowed?
+↙     ↘
+Yes    No
+↓      ↓
+Load   Locked State
+```
+
+---
+
+### WF-003
+
+Request Access
+
+```text
+User
+↓
+Request Access
+↓
+Create Request
+↓
+Approver
+↓
+Approve / Reject
+↓
+Update Permission
+↓
+Notify User
+```
+
+---
+
+### WF-004
+
+New Hire Onboarding
+
+Possible flow:
+
+```text
+New Hire
+↓
+Start Here
+↓
+Checklist
+↓
+Required Tasks
+↓
+Compliance Complete?
+↙              ↘
+No              Yes
+↓                ↓
+Restricted      Unlock
+```
+
+---
+
+### WF-005
+
+Project Access
+
+Likely includes:
+
+```text
+Open Projects
+↓
+Determine Project Scope
+↓
+Return Allowed Projects
+↓
+Open Project
+↓
+Re-check Permission
+↓
+Load Resources
+```
+
+---
+
+There will probably be others.
+
+But we decide them **after the complete workflow inventory**, not by guessing.
+
+---
+
+# 9. Define the React Architecture
+
+Only after the business rules are understood.
+
+We will decide things such as:
+
+```text
+src/
+├── app/
+├── components/
+├── features/
+├── layouts/
+├── pages/
+├── hooks/
+├── services/
+├── utils/
+├── types/
+└── assets/
+```
+
+And determine:
+
+* React Router
+* JavaScript vs TypeScript
+* Tailwind structure
+* State management
+* API layer
+* Authentication architecture
+* Permission handling
+* Form handling
+* Icons
+* Validation
+* Error handling
+
+You do **not** need to know these now.
+
+We will choose them based on the hub.
+
+---
+
+# 10. Build the Component Inventory
+
+Before rebuilding pages, identify reusable UI.
+
+Example:
+
+```text
+AppShell
+Sidebar
+TopNavigation
+PageHeader
+Breadcrumb
+Button
+Card
+StatusBadge
+DataTable
+FilterBar
+SearchInput
+Modal
+Drawer
+Tabs
+EmptyState
+ErrorState
+LoadingState
+UserAvatar
+ProjectCard
+AccessDenied
+```
+
+Claude should use these instead of recreating the same UI on every page.
+
+---
+
+# 11. Define the Design System
+
+We document:
+
+* Typography
+* Spacing
+* Breakpoints
+* Containers
+* Cards
+* Buttons
+* Inputs
+* Tables
+* Modals
+* Icons
+* Status styles
+* Responsive behavior
+* Accessibility
+
+The existing HTML is the **design reference**, not untouchable code.
+
+Claude may improve:
+
+* Alignment
+* Spacing
+* Hierarchy
+* Mobile UX
+* Tablet UX
+* Component consistency
+* Accessibility
+
+But not randomly redesign the application.
+
+---
+
+# 12. Define the Standard Page Specification
+
+Every page in the SOP gets the same small template.
+
+Example:
+
+## Active Projects
+
+### Purpose
+
+Portfolio of projects available to the current user.
+
+### Users
+
+Consultant / Lead / PMO / Leadership
+
+### Components
+
+* PageHeader
+* ProjectFilters
+* ProjectCard
+* MilestonePanel
+
+### Data
+
+* Projects
+* Membership
+* Milestones
+
+### Permissions
+
+Backend scoped.
+
+### States
+
+* Loading
+* Empty
+* Error
+* Restricted
+* Loaded
+
+### Workflows
+
+* WF-002 Scoped Access
+* WF-003 Request Access
+* WF-005 Project Access
+
+### Responsive
+
+Desktop / Tablet / Mobile
+
+### Acceptance Criteria
+
+Short checklist.
+
+That's enough.
+
+No giant paragraphs.
+
+---
+
+# 13. Define Claude Code Rules
+
+This is one of the most important parts.
+
+Claude will receive explicit rules such as:
+
+### Before coding
+
+* Inspect existing components.
+* Inspect existing routes.
+* Inspect dependencies.
+* Check whether the required component already exists.
+* Read the relevant page specification.
+* Read referenced workflows.
+
+### While coding
+
+* Reuse before creating.
+* Never duplicate shared components.
+* Never put authorization only in UI logic.
+* Keep page components small.
+* Separate data logic from presentation.
+* Keep responsive behavior.
+* Preserve established design tokens.
+
+### After coding
+
+* Run build.
+* Check errors.
+* Test responsive layouts.
+* Check loading state.
+* Check empty state.
+* Check error state.
+* Check restricted state.
+* Check navigation.
+* Check component reuse.
+
+---
+
+# 14. Define the Build Sequence
+
+Your selected approach is correct:
+
+## Phase 1 — Foundation
+
+```text
+Vite
+↓
+React
+↓
+Tailwind
+↓
+Routing
+↓
+Project Structure
+↓
+Design System
+```
+
+---
+
+## Phase 2 — Shared Components
+
+Build:
+
+```text
+Layout
+Navigation
+Buttons
+Cards
+Forms
+Tables
+Modals
+States
+```
+
+---
+
+## Phase 3 — First Reference Page
+
+Choose **one representative page**.
+
+Claude builds it completely.
+
+Then we review:
+
+* Architecture
+* Visual quality
+* Component structure
+* Responsiveness
+* Naming
+* Reusability
+
+This becomes the pattern.
+
+---
+
+## Phase 4 — Remaining Pages
+
+Then convert the remaining ~19 pages using the approved pattern.
+
+---
+
+## Phase 5 — Application Logic
+
+Introduce:
+
+* Authentication abstraction
+* Role system
+* Permission utilities
+* Mock API layer
+* Data models
+
+Even before the real backend exists.
+
+---
+
+## Phase 6 — Backend Integration
+
+Later replace:
+
+```text
+Mock Service
+```
+
+with:
+
+```text
+Real API
+```
+
+without rebuilding the UI.
+
+---
+
+# 15. SVG Standard
+
+Every important workflow SVG will have a consistent visual language.
+
+Example:
+
+```text
+┌─────────────┐
+│ User Action │
+└──────┬──────┘
+       ↓
+┌─────────────┐
+│ Backend     │
+│ Check       │
+└──────┬──────┘
+       ↓
+     ◇─────◇
+   Allowed?
+    /     \
+  Yes      No
+   ↓        ↓
+┌──────┐ ┌────────────┐
+│Load  │ │Locked State│
+└──────┘ └────────────┘
+```
+
+SVG files could follow:
+
+```text
+/docs/workflows/
+
+WF-001-authentication.svg
+WF-002-authorization.svg
+WF-003-request-access.svg
+WF-004-onboarding.svg
+WF-005-project-access.svg
+```
+
+The SOP references them instead of repeating the diagram everywhere.
+
+---
+
+# 16. Final SOP Structure
+
+The finished SOP will roughly be:
+
+```text
+01. Purpose
+02. How Claude Must Use This SOP
+03. Product Overview
+04. Roles
+05. Permissions
+06. System Architecture
+07. Data Ownership
+08. Workflow Catalogue
+09. React Architecture
+10. Project Structure
+11. Design System
+12. Component Standards
+13. Page Standards
+14. Page Specifications
+15. Responsive Standards
+16. Accessibility
+17. API & Backend Preparation
+18. Error / Loading / Empty States
+19. Testing
+20. Definition of Done
+21. Claude Code Rules
+22. Development Sequence
+23. Workflow SVG Index
+24. Open Decisions
+```
+
+Short sections.
+
+Tables.
+
+Bullets.
+
+Diagrams.
+
+Very little essay-style writing.
+
+---
+
+# Our Process
+
+### Step 1
+
+Architecture/source review.
+
+### Step 2
+
+Build page inventory.
+
+### Step 3
+
+Build role/access matrix.
+
+### Step 4
+
+Identify systems and data.
+
+### Step 5
+
+Create workflow inventory.
+
+### Step 6
+
+Score workflows.
+
+### Step 7
+
+Create required SVG workflows.
+
+### Step 8
+
+Design React architecture.
+
+### Step 9
+
+Design component system.
+
+### Step 10
+
+Write page specifications.
+
+### Step 11
+
+Write Claude Code operating rules.
+
+### Step 12
+
+Assemble the final SOP.
+
+### Step 13
+
+Validate the SOP against all ~20 pages.
+
+### Step 14
+
+Start implementation:
+
+**Foundation → Components → One Reference Page → Review → Remaining Pages.**

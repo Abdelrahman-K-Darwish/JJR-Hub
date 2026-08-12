@@ -28,4 +28,13 @@ export { Modal } from './Modal'
 export { ListPanel } from './ListPanel'
 export { Accordion, type AccordionEntry } from './Accordion'
 export { FormField, CONTROL_CLASSES } from './FormField'
+export { AvatarChip, type AvatarChipBadge } from './AvatarChip'
+export { ResourceLink } from './ResourceLink'
+export { DiscussionThread } from './DiscussionThread'
+export {
+  CommunityCard,
+  type CommunityCardResource,
+  type CommunityCardDiscussion,
+  type CommunityCardExpert,
+} from './CommunityCard'
 export * from './icons'

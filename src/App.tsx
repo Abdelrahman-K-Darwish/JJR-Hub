@@ -3,6 +3,8 @@ import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
 import { ActiveProjectsPage } from './features/active-projects/ActiveProjectsPage'
 import { AdminActionsPage } from './features/admin-actions/AdminActionsPage'
 import { AiForGoodPage } from './features/ai-for-good/AiForGoodPage'
+import { CommunitiesPage } from './features/communities/CommunitiesPage'
+import { CommunityDetailPage } from './features/community-detail/CommunityDetailPage'
 import { ConsultantDirectoryPage } from './features/consultant-directory/ConsultantDirectoryPage'
 import { EnvironmentalJusticePage } from './features/environmental-justice/EnvironmentalJusticePage'
 import { HowWeWorkPage } from './features/how-we-work/HowWeWorkPage'
@@ -15,6 +17,8 @@ import { VisionValuesPage } from './features/vision-values/VisionValuesPage'
 
 const PAGES = {
   'active-projects': { label: 'Active Projects', Component: ActiveProjectsPage },
+  communities: { label: 'Communities', Component: CommunitiesPage },
+  'community-detail': { label: 'Community Detail', Component: CommunityDetailPage },
   'consultant-directory': { label: 'Consultant Directory', Component: ConsultantDirectoryPage },
   templates: { label: 'Templates', Component: TemplatesPage },
   'tool-guides': { label: 'Tool Guides', Component: ToolGuidesPage },

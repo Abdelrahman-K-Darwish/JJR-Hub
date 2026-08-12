@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" role="img" aria-labelledby="title desc">
+<title id="title">GOV-001 · Source Authority</title><desc id="desc">Product-source precedence for the JJR Hub.</desc>
+<rect width="100%" height="100%" fill="#F8F7F4"/>
+<text x="40" y="48" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#0F2340">GOV-001 · Source Authority</text>
+<g font-family="Arial,sans-serif">
+<rect x="40" y="82" width="860" height="34" rx="8" fill="#1B365D"/><text x="58" y="104" font-size="14" font-weight="700" fill="#fff">1 · Confirmed decisions</text><text x="570" y="104" font-size="12" fill="#D8E1EC">Highest product authority</text>
+<rect x="40" y="124" width="860" height="34" rx="8" fill="#1B365D"/><text x="58" y="146" font-size="14" font-weight="700" fill="#fff">2 · Access model / permission rules</text><text x="570" y="146" font-size="12" fill="#D8E1EC">Roles, capabilities, scope</text>
+<rect x="40" y="166" width="860" height="34" rx="8" fill="#2A4A78"/><text x="58" y="188" font-size="14" font-weight="700" fill="#fff">3 · Page-specific architecture</text><text x="570" y="188" font-size="12" fill="#D8E1EC">Business behavior and sensitivity</text>
+<rect x="40" y="208" width="860" height="34" rx="8" fill="#2A4A78"/><text x="58" y="230" font-size="14" font-weight="700" fill="#fff">4 · General hub architecture</text><text x="570" y="230" font-size="12" fill="#D8E1EC">Cross-cutting product rules</text>
+<rect x="40" y="250" width="860" height="34" rx="8" fill="#fff" stroke="#D0CCC4"/><text x="58" y="272" font-size="14" font-weight="700" fill="#0F2340">5 · Page specs</text><text x="570" y="272" font-size="12" fill="#5A6B80">Derived implementation working docs</text>
+<rect x="40" y="292" width="860" height="34" rx="8" fill="#fff" stroke="#D0CCC4"/><text x="58" y="314" font-size="14" font-weight="700" fill="#0F2340">6 · Legacy mockups</text><text x="570" y="314" font-size="12" fill="#5A6B80">Visual and interaction authority only</text>
+<rect x="40" y="334" width="860" height="34" rx="8" fill="#fff" stroke="#D0CCC4"/><text x="58" y="356" font-size="14" font-weight="700" fill="#0F2340">7 · Existing code</text><text x="570" y="356" font-size="12" fill="#5A6B80">Current state; not automatic requirement</text>
+</g>
+<text x="40" y="398" font-family="Arial,sans-serif" font-size="12" fill="#5A6B80">CLAUDE.md and the master SOP govern process; they do not silently override approved product requirements.</text>
+</svg>

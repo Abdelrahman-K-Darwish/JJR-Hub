@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="790" height="628" viewBox="0 0 790 628" role="img" aria-labelledby="title desc">
+<title id="title">WF-010 · Leadership Restricted Area</title><desc id="desc">Unauthorized users may know the area exists; confidential content is never returned.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1B365D"/></marker><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/></filter></defs>
+<rect width="100%" height="100%" fill="#F8F7F4"/><text x="40" y="42" font-family="IBM Plex Sans, Arial, sans-serif" font-size="22" font-weight="700" fill="#0F2340">WF-010 · Leadership Restricted Area</text>
+<path d="M 390.0 128 L 390.0 160" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 390.0 240 L 390.0 275.0 L 160.0 275.0 L 160.0 310" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="283.0" y="270.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">YES</text>
+<path d="M 390.0 240 L 390.0 275.0 L 620.0 275.0 L 620.0 310" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="513.0" y="270.0" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6B80">NO</text>
+<path d="M 160.0 368 L 160.0 400" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 160.0 458 L 160.0 490" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 620.0 368 L 620.0 400" fill="none" stroke="#1B365D" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="270" y="70" width="240" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="390.0" y="99.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Open Exec &amp; Strategy</text>
+<text x="390.0" y="118" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">employee</text>
+<polygon points="390.0,160 510,200.0 390.0,240 270,200.0" fill="#FFFFFF" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="390.0" y="192.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Leadership or explicit</text>
+<text x="390.0" y="209.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">grant?</text>
+<text x="390.0" y="230" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">backend</text>
+<rect x="500" y="310" width="240" height="58" rx="14" fill="#fff6fa" stroke="#E91E8C" stroke-width="2" filter="url(#shadow)"/>
+<text x="620.0" y="331.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Return restricted shell</text>
+<text x="620.0" y="348.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">only</text>
+<text x="620.0" y="358" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">no KPI/document payload</text>
+<rect x="40" y="310" width="240" height="58" rx="14" fill="#f1faed" stroke="#4CBB17" stroke-width="2" filter="url(#shadow)"/>
+<text x="160.0" y="339.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Return leadership payload</text>
+<text x="160.0" y="358" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">KPIs + roadmap + links</text>
+<rect x="40" y="400" width="240" height="58" rx="14" fill="#eef5fb" stroke="#1B365D" stroke-width="2" filter="url(#shadow)"/>
+<text x="160.0" y="429.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Fetch restricted documents</text>
+<text x="160.0" y="448" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">SharePoint security-trimmed</text>
+<rect x="40" y="490" width="240" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="160.0" y="511.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Render leadership</text>
+<text x="160.0" y="528.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">experience</text>
+<text x="160.0" y="538" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">read/write per capability</text>
+<rect x="500" y="400" width="240" height="58" rx="14" fill="#FFFFFF" stroke="#D0CCC4" stroke-width="1.5" filter="url(#shadow)"/>
+<text x="620.0" y="429.0" text-anchor="middle" font-family="IBM Plex Sans, Arial, sans-serif" font-size="13" font-weight="600" fill="#0F2340">Offer Request Access</text>
+<text x="620.0" y="448" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5A6B80">WF-003</text>
+<text x="40" y="604" font-family="IBM Plex Sans, Arial, sans-serif" font-size="11" fill="#5A6B80">Unauthorized users may know the area exists; confidential content is never returned.</text>
+</svg>

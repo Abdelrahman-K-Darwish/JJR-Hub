@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react'
+import { Link } from 'react-router'
 import { AppShell } from '../../components/AppShell'
 import {
   ActivityIcon,
@@ -56,9 +57,9 @@ export function ToolGuidesPage() {
           <span className="text-text-inverse-muted text-[10px]" aria-hidden="true">
             /
           </span>
-          <a href="/start-here" className="font-mono text-[10px] text-green/60 hover:text-green transition-colors">
+          <Link to="/start-here" className="font-mono text-[10px] text-green/60 hover:text-green transition-colors">
             Start Here →
-          </a>
+          </Link>
         </>
       }
     >

@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { Link } from 'react-router'
 import { AppShell } from '../../components/AppShell'
 import {
-  type AvatarColor,
   DateTile,
   FilterBar,
   HealthBar,
@@ -13,7 +12,8 @@ import {
   type FilterOption,
 } from '../../components/ui'
 import { CURRENT_USER, PROFILE_MENU_ITEMS } from '../../mocks/currentUser'
-import { PORTFOLIO_HEALTH, PROJECTS, PROJECT_COUNTS, UPCOMING_MILESTONES } from '../../mocks/activeProjects'
+import type { TeamColor } from './activeProjects.types'
+import { useActiveProjects, type ProjectFilterKey } from './useActiveProjects'
 
 const FILTER_OPTIONS: FilterOption[] = [
   { key: 'all', label: 'All' },
@@ -24,7 +24,7 @@ const FILTER_OPTIONS: FilterOption[] = [
 ]
 
 // Literal Tailwind class strings so the JIT scanner can find them (no template interpolation).
-const LEAD_COLOR_CLASSES: Record<AvatarColor, string> = {
+const LEAD_COLOR_CLASSES: Record<TeamColor, string> = {
   green: 'bg-green',
   navy: 'bg-navy',
   'navy-mid': 'bg-navy-mid',
@@ -33,13 +33,7 @@ const LEAD_COLOR_CLASSES: Record<AvatarColor, string> = {
 }
 
 export function ActiveProjectsPage() {
-  const [filter, setFilter] = useState('all')
-
-  const visibleProjects = PROJECTS.filter((project) => {
-    if (filter === 'all') return true
-    if (filter === 'mine') return project.mine
-    return project.status === filter
-  })
+  const { isLoading, error, counts, health, milestones, filter, setFilter, visibleProjects } = useActiveProjects()
 
   return (
     <AppShell
@@ -55,9 +49,9 @@ export function ActiveProjectsPage() {
           <span className="text-text-inverse-muted text-[10px]" aria-hidden="true">
             /
           </span>
-          <a href="/start-here" className="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">
+          <Link to="/start-here" className="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">
             Start Here →
-          </a>
+          </Link>
         </>
       }
     >
@@ -84,17 +78,23 @@ export function ActiveProjectsPage() {
               </p>
             </div>
             <div className="flex gap-5 shrink-0">
-              <StatBlock value={PROJECT_COUNTS.active} label="Active" tone="green" />
+              <StatBlock value={counts?.active ?? 0} label="Active" tone="green" />
               <div className="w-px h-14 bg-white/[0.08] self-center" aria-hidden="true" />
-              <StatBlock value={PROJECT_COUNTS.inReview} label="In Review" tone="amber" />
+              <StatBlock value={counts?.inReview ?? 0} label="In Review" tone="amber" />
               <div className="w-px h-14 bg-white/[0.08] self-center" aria-hidden="true" />
-              <StatBlock value={PROJECT_COUNTS.wrapping} label="Wrapping" tone="muted" />
+              <StatBlock value={counts?.wrapping ?? 0} label="Wrapping" tone="muted" />
             </div>
           </div>
         </div>
       </div>
 
-      <FilterBar label="Filter" options={FILTER_OPTIONS} activeKey={filter} onChange={setFilter} className="mb-10" />
+      <FilterBar
+        label="Filter"
+        options={FILTER_OPTIONS}
+        activeKey={filter}
+        onChange={(key) => setFilter(key as ProjectFilterKey)}
+        className="mb-10"
+      />
 
       <div className="grid grid-cols-[1fr_340px] gap-8 max-lg:grid-cols-1">
         <div>
@@ -103,7 +103,11 @@ export function ActiveProjectsPage() {
             <span className="flex-1 h-px bg-rule" aria-hidden="true" />
           </h2>
 
-          {visibleProjects.length === 0 ? (
+          {isLoading ? (
+            <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">Loading projects…</p>
+          ) : error ? (
+            <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">{error}</p>
+          ) : visibleProjects.length === 0 ? (
             <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">
               No projects match this filter.
             </p>
@@ -137,11 +141,11 @@ export function ActiveProjectsPage() {
               <SectionKicker className="mt-0.5">Next 30 Days</SectionKicker>
             </div>
             <div className="px-5 py-2 flex flex-col">
-              {UPCOMING_MILESTONES.map((milestone, i) => (
+              {milestones.map((milestone, i) => (
                 <a
                   key={milestone.id}
                   href={milestone.projectHref}
-                  className={`flex items-start gap-3 py-3.5 group ${i < UPCOMING_MILESTONES.length - 1 ? 'border-b border-rule-light' : ''}`}
+                  className={`flex items-start gap-3 py-3.5 group ${i < milestones.length - 1 ? 'border-b border-rule-light' : ''}`}
                 >
                   <DateTile day={milestone.day} month={milestone.month} />
                   <div className="flex-1 min-w-0">
@@ -164,7 +168,7 @@ export function ActiveProjectsPage() {
             </div>
           </section>
 
-          <HealthBar buckets={PORTFOLIO_HEALTH.buckets} avgCompletion={PORTFOLIO_HEALTH.avgCompletion} />
+          <HealthBar buckets={health?.buckets ?? []} avgCompletion={health?.avgCompletion ?? 0} />
 
           <RequestAccessPanel
             description="If you've been assigned to a project but can't see it here, request access and we'll sort it within one business day."

@@ -1,29 +1,14 @@
-import type { AvatarColor, AvatarStackMember, HealthBucket, ProjectCardLink, ProjectStatus } from '../components/ui'
+import type { PortfolioHealth, Project, UpcomingMilestone } from '../features/active-projects/activeProjects.types'
 
 /**
  * Stand-in for `GET /api/projects` (spec §5/§12) — already scoped, already computed. A real
  * response only ever contains the caller's in-scope projects; this mock represents what one
  * signed-in consultant's response would look like, not the firm's full portfolio.
+ *
+ * This file's job is the literal dataset only. Domain types live in
+ * `src/features/active-projects/activeProjects.types.ts`; `activeProjectsMockAdapter.ts`
+ * reads the exports below and packages them into the `ActiveProjectsService` contract shape.
  */
-export interface Project {
-  id: string
-  href: string
-  clientLine: string
-  name: string
-  description: string
-  status: ProjectStatus
-  /** Milestone-derived, computed server-side (AP2–AP5). Null with zero milestones. */
-  progress: number | null
-  /** Derived from overdue milestone count (AP6) — independent of `status` (AP7). */
-  health: 'on_track' | 'needs_attention' | 'at_risk'
-  dueLabel: string
-  team: AvatarStackMember[]
-  teamOverflow: number
-  links: ProjectCardLink[]
-  /** Whether the current user is a member (vs. reaching it via practice/firm-wide scope). */
-  mine: boolean
-}
-
 export const PROJECTS: Project[] = [
   {
     id: 'digital-transformation',
@@ -172,18 +157,6 @@ export const PROJECT_COUNTS = {
   wrapping: PROJECTS.filter((p) => p.status === 'wrap').length,
 }
 
-export interface UpcomingMilestone {
-  id: string
-  projectHref: string
-  day: string
-  month: string
-  title: string
-  note: string
-  leadInitials: string
-  leadName: string
-  leadColor: AvatarColor
-}
-
 /** Stand-in for `GET /api/milestones?window=30d` — scoped to the same visible project set. */
 export const UPCOMING_MILESTONES: UpcomingMilestone[] = [
   {
@@ -247,7 +220,7 @@ export const UPCOMING_MILESTONES: UpcomingMilestone[] = [
  * Portfolio health roll-up (AP6/AP7) — bucketed by overdue-milestone count over the visible
  * set, and avgCompletion (AP10) — mean progress across the scoped set, excluding null.
  */
-export const PORTFOLIO_HEALTH: { buckets: HealthBucket[]; avgCompletion: number } = {
+export const PORTFOLIO_HEALTH: PortfolioHealth = {
   buckets: [
     { label: 'On Track', count: PROJECTS.filter((p) => p.health === 'on_track').length, tone: 'green' },
     { label: 'Needs Attention', count: PROJECTS.filter((p) => p.health === 'needs_attention').length, tone: 'amber' },

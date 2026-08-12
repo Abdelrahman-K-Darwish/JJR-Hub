@@ -22,8 +22,10 @@ Before meaningful work:
 6. workflow SVGs referenced by the page being changed
 7. `docs/DELIVERY-CLASSES.md`
 8. `docs/decisions/OPEN-DECISIONS.md`
-9. relevant page architecture/spec files already in `docs/architecture/` and `docs/specs/`
-10. the matching file in `legacy/` for visual reference only
+9a. `docs/DATA-AND-BEHAVIOR-MAP.md`
+9b. `docs/DATA-SOURCE-CATALOG.md`
+10. relevant page architecture/spec files already in `docs/architecture/` and `docs/specs/`
+11. the matching file in `legacy/` for visual reference only
 
 ## 3. Source rule
 

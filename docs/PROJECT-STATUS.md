@@ -4,10 +4,15 @@ This file is intentionally separate from the SOP because build status changes fr
 
 ## Current status
 
-Repository adoption audit completed (Phase A). 15 of 20 pages have working React implementations
+Repository adoption audit completed (Phase A). 16 of 20 pages have working React implementations
 under `src/features/`, sharing a single `AppShell`/`BareLayout` shell and a 36-component
-`src/components/ui/` primitive library. `npm run typecheck` and `npm run build` both pass clean
-against current `main`. No lint or test tooling is installed yet — see Technical debt.
+`src/components/ui/` primitive library. React Router (`react-router@^7.18.2`) is fully wired —
+`src/main.tsx` wraps `<App/>` in `<BrowserRouter>` and `src/App.tsx` defines a full `<Routes>`
+table for all 20 pages, including alias redirects, with routing behavior covered by
+`src/App.test.tsx`. `npm run typecheck` and `npm run build` both pass clean against current
+`main`. Vitest + `@testing-library/react` are installed and working (`vitest`, `jsdom`,
+`@testing-library/react` in `package.json` devDependencies; `npm run test` runs `vitest run`).
+No lint tooling is installed yet — see Technical debt.
 
 This supersedes the "previous working SOP reported multiple pages converted" caveat: the code
 has now been inspected directly, not taken on faith.
@@ -28,7 +33,8 @@ has now been inspected directly, not taken on faith.
 | Home | NOT STARTED | Heaviest legacy page (141.7 KB JS). No blocking decision; can start once prioritized. WF-001/002/003. |
 | Start Here | NOT STARTED | Scenario selection is buildable now (personalization, not permission). Verified-status/advanced-access gating sub-section depends on D-013 (manager/team scope, OPEN) — model that state explicitly rather than guess. |
 | My Profile | NOT STARTED | Public/self/relationship-scoped tiers are buildable now (WF-009). Past Deliverables section depends on D-014 (OPEN) — do not guess consultant-vs-leads-and-up visibility. |
-| Active Projects | KEEP | Reference pattern, reviewed per SOP Phase C. `ProjectCard`/`FilterBar`/`HealthBar`/`StatBlock` reuse; client-side My/All filter over an already-"scoped" mock set matches WF-002 shape; has `docs/specs/active-projects.md`. Approved — do not rebuild. |
+| Active Projects | KEEP | Reference pattern, reviewed per SOP Phase C. `ProjectCard`/`FilterBar`/`HealthBar`/`StatBlock` reuse; client-side My/All filter over an already-"scoped" mock set matches WF-002 shape; has `docs/specs/active-projects.md`. Has a full typed service seam — see Cross-cutting technical debt below. Approved — do not rebuild. |
+| Consultant Directory | KEEP | `ConsultantDirectoryPage`, routed at `/consultant-directory`. Filter/search over `src/mocks/consultantDirectory.ts`. No dedicated architecture doc; DERIVED from the Home doc's directory-tile description — see `docs/DATA-AND-BEHAVIOR-MAP.md` P-13 entry. |
 | Communities | KEEP | `CommunityCard` (shared with Community Detail) correctly models D14: `recentDiscussions` is `undefined` for communities the mock user hasn't joined, and the card renders a join prompt instead of the discussion list — the class C omission is modeled at the data-shape level, not just visually hidden. |
 | Community Detail | KEEP | Slug-keyed lookup (`COMMUNITY_DETAILS[slug]`) with an explicit not-found state — reasonable shape for real routing later. Shares `AvatarChip`/`ResourceLink`/`DiscussionThread` with Communities. |
 | Templates | KEEP | `FilterBar` (category + role), `Modal` for doc preview, `ListPanel` reuse. |
@@ -47,21 +53,37 @@ has now been inspected directly, not taken on faith.
 
 ## Cross-cutting technical debt (not a per-page issue)
 
-- **No typed service seam.** SOP §13 specifies `Page → Feature hook/controller → Typed service
-  contract → Mock adapter now`. All 15 converted pages instead import mock constants directly
-  from `src/mocks/*.ts` into the page component. Types are decent (each mock file exports
-  interfaces), but there is no adapter boundary — swapping mock data for a real API will mean
-  editing every page's data-fetching, not swapping one adapter. Worth closing before Phase E.
+- **Typed service seam exists on one page, not yet replicated to the rest.** SOP §13 specifies
+  `Page → Feature hook/controller → Typed service contract → Mock adapter now`. Active Projects
+  has this seam fully built end-to-end:
+  `src/features/active-projects/ActiveProjectsPage.tsx` → `useActiveProjects.ts` →
+  `activeProjectsService.ts` (typed service contract) → `activeProjectsMockAdapter.ts` (mock
+  adapter) → `src/mocks/activeProjects.ts`, with test coverage in
+  `activeProjectsMockAdapter.test.ts` and `useActiveProjects.test.ts` (3 cases, including a
+  scoping-isolation test). Every other converted page instead imports mock constants directly
+  from `src/mocks/*.ts` into the page component — no adapter boundary, so swapping mock data for
+  a real API will mean editing each page's data-fetching individually rather than swapping one
+  adapter. Worth closing (replicating Active Projects' pattern to the remaining pages) before
+  Phase E.
 - **No lint tooling.** No ESLint config/dependency exists; `npm run lint` isn't a defined script.
   CLAUDE.md §10 says "run lint... when scripts exist" — none does yet, so this isn't a failing
   check, just a gap.
-- **No tests.** No test framework is installed and no `*.test.*`/`*.spec.*` files exist anywhere
-  in `src/`. Same treatment — not a failure, a gap.
+- **Tests exist but coverage is minimal.** Vitest + `@testing-library/react` are installed and
+  working (`npm run test` runs `vitest run`). Three test files exist:
+  `src/features/active-projects/activeProjectsMockAdapter.test.ts`,
+  `src/features/active-projects/useActiveProjects.test.ts`, and `src/App.test.tsx` (routing
+  tests, including alias redirects). No other feature has test coverage yet — a gap to close
+  page-by-page, not a missing framework.
 - **Repo layout diverges from the SOP's suggested tree** (`src/app`, `src/pages`, `src/services`,
   `src/hooks`, `src/types`, `src/utils`, `src/test` don't exist; the repo uses
   `src/components` + `src/features` + `src/mocks` instead). SOP §8 explicitly allows this
   ("do not move working files merely to match this exact tree") — recorded as a fact, not a
   defect.
-- **No router.** `src/App.tsx` is a `useState`-driven dev page switcher, explicitly commented as
-  a placeholder ("there is no router yet"). Every page hard-codes `href="/..."` strings that
-  assume real routes will exist later.
+- **Router is fully implemented.** `react-router@^7.18.2` is installed; `src/main.tsx` wraps
+  `<App/>` in `<BrowserRouter>`; `src/App.tsx` is a route table (`<Routes>`/`<Route>`) covering
+  all 20 pages, including two alias redirects for pre-correction nav hrefs and a catch-all
+  redirect. `src/App.test.tsx` covers routing behavior. Routing existing is a separate fact from
+  a page having real content, though: 5 routes (`/`, `/start-here`, `/my-profile`,
+  `/exec-strategy`, `/jedi-cab`) currently render the `UnderDevelopmentPage` stub rather than a
+  real page component — see the page tracker above (Home, Start Here, My Profile: NOT STARTED;
+  Exec & Strategy, JEDI CAB: BLOCKED). A route existing does not mean the page is implemented.

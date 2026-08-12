@@ -35,6 +35,16 @@ Each migrated page has two primary inputs:
 
 Never copy access logic or data ownership assumptions from the mockup.
 
+## Derived coordination documents
+
+`docs/DATA-AND-BEHAVIOR-MAP.md` and `docs/DATA-SOURCE-CATALOG.md` are derived
+coordination/index documents, not primary authority. They summarize and cross-reference approved
+decisions, page specs, architecture documents, the access model, and delivery-class rules so
+that per-page and per-system data ownership can be checked in one place. If either derived
+document conflicts with a higher-authority source in the precedence list above, the higher
+source wins and the derived map/catalog must be corrected — never the other way around. Neither
+document may be treated as silently overriding an architecture decision.
+
 ## Conflict handling
 
 When sources disagree:

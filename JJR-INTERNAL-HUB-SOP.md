@@ -316,7 +316,9 @@ Before a complex page is created/refactored, capture:
 - open decisions;
 - acceptance criteria.
 
-Use `docs/specs/PAGE-SPEC-TEMPLATE.md`.
+Use `docs/specs/PAGE-SPEC-TEMPLATE.md`. Before writing a new page spec, cross-check it against
+`docs/DATA-AND-BEHAVIOR-MAP.md`; if the page introduces or touches a shared entity, update the
+map's Global entities register (§2) as part of the spec work.
 
 ---
 
@@ -481,6 +483,7 @@ Update the SOP when:
 - authorization policy changes;
 - a system of record changes;
 - a page gains a new role/capability rule;
-- an open decision becomes confirmed and changes implementation.
+- an open decision becomes confirmed and changes implementation;
+- a shared entity's system of record changes.
 
 Do not edit the SOP for trivial cosmetic fixes.

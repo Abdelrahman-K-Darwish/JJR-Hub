@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 import { ChevronLeftIcon, ShieldIcon } from './ui'
 
 export interface BareLayoutUser {
@@ -25,10 +26,10 @@ export function BareLayout({ section, user, backHref = '/', children }: BareLayo
       <header className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] shadow-[0_2px_8px_rgba(0,0,0,0.25)]">
         <div className="w-full max-w-[1280px] mx-auto px-10 flex items-center justify-between h-full">
           <div className="flex items-center gap-6">
-            <a href="/" className="flex items-baseline gap-1">
+            <Link to="/" className="flex items-baseline gap-1">
               <span className="font-display text-[20px] font-black tracking-tight text-white leading-none">JJR</span>
               <span className="font-display text-[20px] font-black tracking-tight text-green leading-none">Admin</span>
-            </a>
+            </Link>
             <div className="w-px h-5 bg-white/10" aria-hidden="true" />
             <div className="flex items-center gap-2 font-mono text-[10px] tracking-[1.5px] uppercase text-text-inverse-secondary">
               <ShieldIcon size={11} strokeWidth={1.8} />
@@ -36,10 +37,10 @@ export function BareLayout({ section, user, backHref = '/', children }: BareLayo
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <a href={backHref} className="font-body text-[12px] text-text-inverse-secondary hover:text-green transition-colors flex items-center gap-1.5">
+            <Link to={backHref} className="font-body text-[12px] text-text-inverse-secondary hover:text-green transition-colors flex items-center gap-1.5">
               <ChevronLeftIcon size={11} strokeWidth={2} />
               Back to Hub
-            </a>
+            </Link>
             <div className="w-px h-5 bg-white/10" aria-hidden="true" />
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-[10.5px] text-white bg-[linear-gradient(135deg,#3da312,#4CBB17,#7de852)]">

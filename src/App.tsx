@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Navigate, Route, Routes, useParams, useSearchParams } from 'react-router'
 import { AccessibilityPage } from './features/accessibility/AccessibilityPage'
 import { ActiveProjectsPage } from './features/active-projects/ActiveProjectsPage'
 import { AdminActionsPage } from './features/admin-actions/AdminActionsPage'
@@ -14,53 +14,73 @@ import { TemplatesPage } from './features/templates/TemplatesPage'
 import { ToolGuidesPage } from './features/tool-guides/ToolGuidesPage'
 import { UnderDevelopmentPage } from './features/under-development/UnderDevelopmentPage'
 import { VisionValuesPage } from './features/vision-values/VisionValuesPage'
-
-const PAGES = {
-  'active-projects': { label: 'Active Projects', Component: ActiveProjectsPage },
-  communities: { label: 'Communities', Component: CommunitiesPage },
-  'community-detail': { label: 'Community Detail', Component: CommunityDetailPage },
-  'consultant-directory': { label: 'Consultant Directory', Component: ConsultantDirectoryPage },
-  templates: { label: 'Templates', Component: TemplatesPage },
-  'tool-guides': { label: 'Tool Guides', Component: ToolGuidesPage },
-  'how-we-work': { label: 'How We Work', Component: HowWeWorkPage },
-  pmo: { label: 'PMO', Component: PmoPage },
-  'admin-actions': { label: 'Admin Actions', Component: AdminActionsPage },
-  'under-development': { label: 'Under Development', Component: UnderDevelopmentPage },
-  accessibility: { label: 'Accessibility', Component: AccessibilityPage },
-  'site-owners': { label: 'Site Owners', Component: SiteOwnersPage },
-  'vision-values': { label: 'Vision & Values', Component: VisionValuesPage },
-  'ai-for-good': { label: 'AI for Good', Component: AiForGoodPage },
-  'environmental-justice': { label: 'Environmental Justice', Component: EnvironmentalJusticePage },
-} as const
-
-type PageKey = keyof typeof PAGES
+import { formatFeatureName } from './mocks/underDevelopment'
 
 /**
- * Dev-only page switcher — there is no router yet (out of scope for this conversion pass).
- * Swap this for real routes once one is introduced.
+ * `/communities/:slug` — thin route adapter. `CommunityDetailPage` already accepts an
+ * optional `slug` prop; this just forwards the URL param so the page component itself
+ * stays router-agnostic.
+ */
+function CommunityDetailRoute() {
+  const { slug } = useParams()
+  return <CommunityDetailPage slug={slug} />
+}
+
+/**
+ * `/under-development?from=...` — thin route adapter. The mockup derived its "This
+ * section" label from the `?from=` query param; `UnderDevelopmentPage` takes the
+ * already-formatted name as a prop instead, so this is the one place that reads the
+ * query string and calls the existing `formatFeatureName` helper.
+ */
+function UnderDevelopmentRoute() {
+  const [params] = useSearchParams()
+  const from = params.get('from')
+  return <UnderDevelopmentPage featureName={from ? formatFeatureName(from) : undefined} />
+}
+
+/**
+ * Route table only — no <BrowserRouter> here. `main.tsx` owns the router so tests can
+ * wrap <App /> in a <MemoryRouter> instead.
+ *
+ * The five pages without a React implementation yet (Home, Start Here, My Profile,
+ * Exec & Strategy, JEDI CAB) render the existing `UnderDevelopmentPage` stub with a
+ * page-specific name — see docs/PROJECT-STATUS.md for why each one isn't built.
+ *
+ * Exec & Strategy (P-15, Class C/D, WF-010, D-004 OPEN) and JEDI CAB (P-19, D-015 OPEN)
+ * are documented as restricted/decision-blocked destinations, not gated by any client-side
+ * check — CLAUDE.md §6: frontend visibility is never authorization. The stub here is UX
+ * behavior only.
  */
 function App() {
-  const [page, setPage] = useState<PageKey>('active-projects')
-  const { Component } = PAGES[page]
-
   return (
-    <div>
-      <div className="fixed bottom-4 right-4 z-[400] flex flex-wrap justify-end gap-1.5 bg-navy-deep p-1.5 shadow-lg max-w-[280px]">
-        {(Object.keys(PAGES) as PageKey[]).map((key) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setPage(key)}
-            className={`font-mono text-[10px] px-2.5 py-1.5 transition-colors ${
-              page === key ? 'bg-green text-white' : 'text-text-inverse-secondary hover:text-white'
-            }`}
-          >
-            {PAGES[key].label}
-          </button>
-        ))}
-      </div>
-      <Component />
-    </div>
+    <Routes>
+      <Route path="/" element={<UnderDevelopmentPage featureName="Home" />} />
+      <Route path="/start-here" element={<UnderDevelopmentPage featureName="Start Here" />} />
+      <Route path="/my-profile" element={<UnderDevelopmentPage featureName="My Profile" />} />
+      <Route path="/active-projects" element={<ActiveProjectsPage />} />
+      <Route path="/communities" element={<CommunitiesPage />} />
+      <Route path="/communities/:slug" element={<CommunityDetailRoute />} />
+      <Route path="/templates" element={<TemplatesPage />} />
+      <Route path="/pmo" element={<PmoPage />} />
+      <Route path="/how-we-work" element={<HowWeWorkPage />} />
+      <Route path="/tool-guides" element={<ToolGuidesPage />} />
+      <Route path="/accessibility" element={<AccessibilityPage />} />
+      <Route path="/ai-for-good" element={<AiForGoodPage />} />
+      <Route path="/consultant-directory" element={<ConsultantDirectoryPage />} />
+      <Route path="/environmental-justice" element={<EnvironmentalJusticePage />} />
+      {/* P-15 — Class C/D restricted, WF-010, D-004 OPEN. Placeholder only; no auth enforced. */}
+      <Route path="/exec-strategy" element={<UnderDevelopmentPage featureName="Exec & Strategy" />} />
+      <Route path="/under-development" element={<UnderDevelopmentRoute />} />
+      <Route path="/vision-values" element={<VisionValuesPage />} />
+      <Route path="/site-owners" element={<SiteOwnersPage />} />
+      {/* P-19 — D-015 OPEN, "requires dedicated analysis before implementation." Placeholder only. */}
+      <Route path="/jedi-cab" element={<UnderDevelopmentPage featureName="JEDI CAB" />} />
+      <Route path="/admin-actions" element={<AdminActionsPage />} />
+      {/* Backward-compatible aliases for the pre-correction nav hrefs (see App.test.tsx / prior report). */}
+      <Route path="/projects" element={<Navigate to="/active-projects" replace />} />
+      <Route path="/knowledge" element={<Navigate to="/templates" replace />} />
+      <Route path="*" element={<Navigate to="/under-development" replace />} />
+    </Routes>
   )
 }
 

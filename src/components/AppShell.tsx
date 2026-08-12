@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 import { BellIcon, DropdownPanel, MailIcon, NavActive, SearchBar, ShimmerText } from './ui'
 
 export interface NavLink {
@@ -27,8 +28,12 @@ export interface BreadcrumbItem {
 
 const PRIMARY_LINKS: NavLink[] = [
   { key: 'home', label: 'Home', href: '/' },
-  { key: 'projects', label: 'Projects', href: '/projects' },
-  { key: 'knowledge', label: 'Knowledge', href: '/knowledge' },
+  // Canonical path is /active-projects (matches the feature folder and PAGE-INVENTORY P-04);
+  // this previously pointed at /projects, which has no route.
+  { key: 'projects', label: 'Projects', href: '/active-projects' },
+  // Templates is the "Knowledge library" page (PAGE-INVENTORY P-07); this previously pointed
+  // at /knowledge, which has no route.
+  { key: 'knowledge', label: 'Knowledge', href: '/templates' },
   { key: 'communities', label: 'Communities', href: '/communities' },
 ]
 
@@ -65,7 +70,7 @@ export function AppShell({
     <div className="min-h-screen flex flex-col bg-off-white">
       <header className="fixed top-0 left-0 right-0 z-[200] h-14 flex items-center bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_2px_8px_rgba(0,0,0,0.25),0_1px_2px_rgba(0,0,0,0.15),inset_0_1px_0_rgba(255,255,255,0.04)]">
         <div className="w-full max-w-[1400px] mx-auto px-12 flex items-center justify-between h-full">
-          <a href="/" className="flex flex-col">
+          <Link to="/" className="flex flex-col">
             <div className="flex items-baseline gap-1">
               <ShimmerText as="span" className="font-display text-xl font-extrabold tracking-tight">
                 JJR
@@ -77,7 +82,7 @@ export function AppShell({
             <div className="font-body text-[9px] font-medium tracking-[1.8px] uppercase text-text-inverse-secondary -mt-px">
               Your front door
             </div>
-          </a>
+          </Link>
 
           <nav aria-label="Primary" className="flex items-center h-full gap-0.5">
             {PRIMARY_LINKS.map((link) => (
@@ -89,13 +94,13 @@ export function AppShell({
               /
             </span>
             {SECONDARY_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.key}
-                href={link.href}
+                to={link.href}
                 className="font-body text-[13px] font-medium text-text-inverse-secondary px-4 h-full flex items-center transition-colors duration-200 hover:text-green"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -148,9 +153,9 @@ export function AppShell({
               </div>
               <div className="py-1.5">
                 {profileMenuItems.map((item) => (
-                  <a
+                  <Link
                     key={item.label}
-                    href={item.href}
+                    to={item.href}
                     role="menuitem"
                     className={`flex items-center gap-[11px] py-2.5 px-[18px] font-body text-[12.5px] font-medium cursor-pointer transition-[background,color,padding-left] duration-200 ease-smooth hover:pl-[22px] ${
                       item.tone === 'danger' ? 'text-pink hover:bg-pink/[0.05]' : 'text-navy hover:bg-off-white hover:text-green-dark'
@@ -158,7 +163,7 @@ export function AppShell({
                   >
                     {item.icon}
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </DropdownPanel>
@@ -178,12 +183,12 @@ export function AppShell({
                     </span>
                   )}
                   {crumb.href ? (
-                    <a
-                      href={crumb.href}
+                    <Link
+                      to={crumb.href}
                       className="font-mono text-[10px] text-text-inverse-secondary tracking-wide hover:text-white transition-colors"
                     >
                       {crumb.label}
-                    </a>
+                    </Link>
                   ) : (
                     <span className="font-mono text-[10px] text-text-inverse-secondary tracking-wide" aria-current="page">
                       {crumb.label}
@@ -214,25 +219,25 @@ export function AppShell({
               something&rsquo;s blocked that shouldn&rsquo;t be, that&rsquo;s worth raising.
             </p>
           </div>
-          <a
-            href="/report-access-concern"
+          <Link
+            to="/report-access-concern"
             className="text-xs font-bold text-green whitespace-nowrap ml-auto transition-colors duration-200 hover:text-green-bright"
           >
             Report an access concern →
-          </a>
+          </Link>
         </div>
         <div className="max-w-[1400px] mx-auto px-12 py-4 flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:text-center max-md:px-6">
           <span className="text-[11px] text-text-inverse-secondary">JJR Hub — permission-aware, always current</span>
           <div className="flex gap-5">
-            <a href="/accessibility" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
+            <Link to="/accessibility" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Accessibility
-            </a>
-            <a href="/report-an-issue" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
+            </Link>
+            <Link to="/report-an-issue" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Report an Issue
-            </a>
-            <a href="/site-owners" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
+            </Link>
+            <Link to="/site-owners" className="text-[11px] text-text-inverse-secondary transition-colors duration-150 hover:text-green">
               Site Owners
-            </a>
+            </Link>
           </div>
         </div>
       </footer>

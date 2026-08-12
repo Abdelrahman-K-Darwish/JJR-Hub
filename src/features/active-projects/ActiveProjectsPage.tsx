@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { AppShell } from '../../components/AppShell'
 import {
   DateTile,
@@ -48,9 +49,9 @@ export function ActiveProjectsPage() {
           <span className="text-text-inverse-muted text-[10px]" aria-hidden="true">
             /
           </span>
-          <a href="/start-here" className="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">
+          <Link to="/start-here" className="font-mono text-[10px] text-green/60 tracking-wide hover:text-green transition-colors">
             Start Here →
-          </a>
+          </Link>
         </>
       }
     >

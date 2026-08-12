@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { AppShell } from '../../components/AppShell'
 import { ChevronLeftIcon, HeroGrain, HeroKicker } from '../../components/ui'
 import { CURRENT_USER, PROFILE_MENU_ITEMS } from '../../mocks/currentUser'
@@ -21,9 +22,9 @@ export function UnderDevelopmentPage({
       profileMenuItems={PROFILE_MENU_ITEMS}
       breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Under Development' }]}
       contextBarRight={
-        <a href="/start-here" className="font-mono text-[10px] tracking-[0.5px] text-green/60 hover:text-green transition-colors">
+        <Link to="/start-here" className="font-mono text-[10px] tracking-[0.5px] text-green/60 hover:text-green transition-colors">
           Start Here →
-        </a>
+        </Link>
       }
     >
       <div className="flex-1 max-w-[840px] mx-auto flex flex-col items-center text-center">

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 
 export interface AvatarChipBadge {
   label: string
@@ -29,7 +30,7 @@ export function AvatarChip({ href, initials, background, name, subtitle, badge, 
   const dimension = size === 'sm' ? 'w-7 h-7 text-[8px]' : 'w-[38px] h-[38px] text-[10.5px]'
 
   return (
-    <a href={href} className={`flex items-center gap-3 group/person ${className}`}>
+    <Link to={href} className={`flex items-center gap-3 group/person ${className}`}>
       <div
         className={`${dimension} ${shape === 'circle' ? 'rounded-full' : ''} flex items-center justify-center font-mono font-bold text-white shrink-0`}
         style={{ background }}
@@ -45,6 +46,6 @@ export function AvatarChip({ href, initials, background, name, subtitle, badge, 
         <span className={`font-mono text-[9px] px-[7px] py-[3px] tracking-[0.8px] uppercase font-medium shrink-0 ${BADGE_CLASSES[badge.tone]}`}>{badge.label}</span>
       )}
       {trailing}
-    </a>
+    </Link>
   )
 }

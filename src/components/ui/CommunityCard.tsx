@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router'
 import { AvatarChip } from './AvatarChip'
 import { DiscussionThread } from './DiscussionThread'
 import { ResourceLink } from './ResourceLink'
@@ -73,9 +74,9 @@ export function CommunityCard({
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1.5">
-              <a href={href} className="font-display text-[1.3rem] font-bold text-navy tracking-tight hover:text-green transition-colors">
+              <Link to={href} className="font-display text-[1.3rem] font-bold text-navy tracking-tight hover:text-green transition-colors">
                 {name}
-              </a>
+              </Link>
               <div className="flex items-center gap-1.5 font-mono text-[9px] text-text-muted tracking-[1px] uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse shadow-[0_0_6px_rgba(76,187,23,0.6)]" aria-hidden="true" />
                 Active

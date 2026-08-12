@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import App from './App'
@@ -67,5 +67,24 @@ describe('App routing', () => {
     renderAt('/projects')
 
     expect(screen.getByRole('heading', { level: 1, name: 'Project Portfolio.' })).toBeTruthy()
+  })
+})
+
+describe('internal Link navigation', () => {
+  it('navigates to a community detail route when the community card link is clicked', () => {
+    renderAt('/communities')
+
+    fireEvent.click(screen.getAllByRole('link', { name: 'Innovation & AI' })[0])
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Innovation & AI' })).toBeTruthy()
+  })
+
+  it('navigates to /start-here when a context-bar Start Here link is clicked', () => {
+    renderAt('/communities')
+
+    fireEvent.click(screen.getByRole('link', { name: 'Start Here →' }))
+
+    const heading = screen.getByRole('heading', { level: 1 })
+    expect(heading.textContent).toContain('Start Here')
   })
 })

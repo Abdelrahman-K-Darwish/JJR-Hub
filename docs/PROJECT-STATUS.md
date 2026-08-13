@@ -35,8 +35,8 @@ has now been inspected directly, not taken on faith.
 | My Profile | NOT STARTED | Public/self/relationship-scoped tiers are buildable now (WF-009). Past Deliverables section depends on D-014 (OPEN) — do not guess consultant-vs-leads-and-up visibility. |
 | Active Projects | KEEP | Reference pattern, reviewed per SOP Phase C. `ProjectCard`/`FilterBar`/`HealthBar`/`StatBlock` reuse; client-side My/All filter over an already-"scoped" mock set matches WF-002 shape; has `docs/specs/active-projects.md`. Has a full typed service seam — see Cross-cutting technical debt below. Approved — do not rebuild. |
 | Consultant Directory | KEEP | `ConsultantDirectoryPage`, routed at `/consultant-directory`. Filter/search over `src/mocks/consultantDirectory.ts`. No dedicated architecture doc; DERIVED from the Home doc's directory-tile description — see `docs/DATA-AND-BEHAVIOR-MAP.md` P-13 entry. |
-| Communities | KEEP | `CommunityCard` (shared with Community Detail) correctly models D14: `recentDiscussions` is `undefined` for communities the mock user hasn't joined, and the card renders a join prompt instead of the discussion list — the class C omission is modeled at the data-shape level, not just visually hidden. |
-| Community Detail | KEEP | Slug-keyed lookup (`COMMUNITY_DETAILS[slug]`) with an explicit not-found state — reasonable shape for real routing later. Shares `AvatarChip`/`ResourceLink`/`DiscussionThread` with Communities. |
+| Communities | KEEP | `CommunityCard` (shared with Community Detail) correctly models D14: `recentDiscussions` is `undefined` for communities the mock user hasn't joined, and the card renders a join prompt instead of the discussion list — the class C omission is modeled at the data-shape level, not just visually hidden. Has a full typed service seam: `CommunitiesPage.tsx` → `useCommunities.ts` → `communitiesService.getDirectory()` → `communitiesMockAdapter.ts` → `src/mocks/communities.ts`. |
+| Community Detail | KEEP | Slug-keyed lookup (`COMMUNITY_DETAILS[slug]`) with an explicit not-found state — reasonable shape for real routing later. Shares `AvatarChip`/`ResourceLink`/`DiscussionThread` with Communities. Has a full typed service seam: `CommunityDetailPage.tsx` → `useCommunityDetail(slug)` → `communitiesService.getCommunityDetail(slug)` → `communitiesMockAdapter.ts` → `src/mocks/communityDetail.ts`. |
 | Templates | KEEP | `FilterBar` (category + role), `Modal` for doc preview, `ListPanel` reuse. |
 | Tool Guides | KEEP | Search/filter over mock guide list, `ListPanel`, shared icon set. |
 | How We Work | KEEP | `Timeline`, `Accordion`, `ListPanel` reuse; FAQ accordion is real component state, not innerHTML toggling. |
@@ -53,18 +53,26 @@ has now been inspected directly, not taken on faith.
 
 ## Cross-cutting technical debt (not a per-page issue)
 
-- **Typed service seam exists on one page, not yet replicated to the rest.** SOP §13 specifies
-  `Page → Feature hook/controller → Typed service contract → Mock adapter now`. Active Projects
-  has this seam fully built end-to-end:
+- **Typed service seam exists on two pages/features, not yet replicated to the rest.** SOP §13
+  specifies `Page → Feature hook/controller → Typed service contract → Mock adapter now`. Active
+  Projects has this seam fully built end-to-end:
   `src/features/active-projects/ActiveProjectsPage.tsx` → `useActiveProjects.ts` →
   `activeProjectsService.ts` (typed service contract) → `activeProjectsMockAdapter.ts` (mock
   adapter) → `src/mocks/activeProjects.ts`, with test coverage in
   `activeProjectsMockAdapter.test.ts` and `useActiveProjects.test.ts` (3 cases, including a
-  scoping-isolation test). Every other converted page instead imports mock constants directly
-  from `src/mocks/*.ts` into the page component — no adapter boundary, so swapping mock data for
-  a real API will mean editing each page's data-fetching individually rather than swapping one
-  adapter. Worth closing (replicating Active Projects' pattern to the remaining pages) before
-  Phase E.
+  scoping-isolation test). Communities and Community Detail now share the same pattern over one
+  service contract, `communitiesService.ts`, backed by one shared `communitiesMockAdapter.ts`:
+  `CommunitiesPage.tsx` → `useCommunities.ts` → `communitiesService.getDirectory()` →
+  `communitiesMockAdapter.ts` → `src/mocks/communities.ts`; and `CommunityDetailPage.tsx` →
+  `useCommunityDetail(slug)` → `communitiesService.getCommunityDetail(slug)` →
+  `communitiesMockAdapter.ts` → `src/mocks/communityDetail.ts`. The adapter is shared (it
+  implements both methods), but each page's own call path reads only its own mock file, not both.
+  Test coverage: `communitiesMockAdapter.test.ts`, `useCommunities.test.ts`, and
+  `useCommunityDetail.test.ts`.
+  Every other converted page instead imports mock constants directly from `src/mocks/*.ts` into
+  the page component — no adapter boundary, so swapping mock data for a real API will mean
+  editing each page's data-fetching individually rather than swapping one adapter. Worth closing
+  (replicating this pattern to the remaining pages) before Phase E.
 - **No lint tooling.** No ESLint config/dependency exists; `npm run lint` isn't a defined script.
   CLAUDE.md §10 says "run lint... when scripts exist" — none does yet, so this isn't a failing
   check, just a gap.

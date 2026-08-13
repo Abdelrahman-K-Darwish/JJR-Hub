@@ -1,41 +1,4 @@
-export type CommunityIconKey = 'info' | 'globe' | 'bar-chart'
-export type ResourceIconKey = 'file' | 'play' | 'book-open'
-
-export interface CommunitySummaryResource {
-  label: string
-  href: string
-  icon: ResourceIconKey
-}
-
-export interface CommunitySummaryDiscussion {
-  title: string
-  meta: string
-  href: string
-}
-
-export interface CommunitySummaryExpert {
-  href: string
-  initials: string
-  background: string
-  name: string
-  role: string
-}
-
-export interface CommunitySummary {
-  slug: string
-  name: string
-  icon: CommunityIconKey
-  description: string
-  memberCount: number
-  postsThisWeek: number
-  resourceCount: number
-  steward: string
-  /** Whether the current viewer is a member — drives the class C discussion omission (D14). */
-  isMember: boolean
-  topResources: CommunitySummaryResource[]
-  recentDiscussions: CommunitySummaryDiscussion[]
-  keyExperts: CommunitySummaryExpert[]
-}
+import type { CommunitySummary, UpcomingEvent, YourCommunityRow } from '../features/communities/communities.types'
 
 /**
  * Stand-in for `GET /api/communities` — a real response omits `recentDiscussions` entirely
@@ -121,26 +84,12 @@ export const COMMUNITIES: CommunitySummary[] = [
   },
 ]
 
-export interface UpcomingEvent {
-  day: string
-  month: string
-  title: string
-  meta: string
-  href: string
-}
-
 export const UPCOMING_EVENTS: UpcomingEvent[] = [
   { day: '28', month: 'Mar', title: 'AI in Procurement — Live Demo', meta: 'Innovation & AI · 11:00 · Zoom', href: '/under-development?from=community-event' },
   { day: '02', month: 'Apr', title: 'EJ Screening Tools Workshop', meta: 'Equity & Impact · 14:00 · Room 3A', href: '/under-development?from=community-event' },
   { day: '09', month: 'Apr', title: 'PM Retrospective — Q1 Projects', meta: 'Project Craft · 10:00 · Teams', href: '/under-development?from=community-event' },
   { day: '15', month: 'Apr', title: 'Inclusive Design for Federal RFPs', meta: 'Equity & Impact · 13:00 · Zoom', href: '/under-development?from=community-event' },
 ]
-
-export interface YourCommunityRow {
-  slug: string
-  name: string
-  joined: boolean
-}
 
 export const YOUR_COMMUNITIES: YourCommunityRow[] = [
   { slug: 'innovation-ai', name: 'Innovation & AI', joined: true },

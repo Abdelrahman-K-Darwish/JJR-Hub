@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import App from './App'
@@ -43,10 +43,10 @@ describe('App routing', () => {
     expect(heading.textContent).toContain('is being built')
   })
 
-  it('passes the dynamic segment through to the community detail route', () => {
+  it('passes the dynamic segment through to the community detail route', async () => {
     renderAt('/communities/innovation-ai')
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Innovation & AI' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { level: 1, name: 'Innovation & AI' })).toBeTruthy()
   })
 
   it('formats the ?from= query param on /under-development into the placeholder heading', () => {
@@ -71,12 +71,17 @@ describe('App routing', () => {
 })
 
 describe('internal Link navigation', () => {
-  it('navigates to a community detail route when the community card link is clicked', () => {
+  it('navigates to a community detail route when the community card link is clicked', async () => {
     renderAt('/communities')
 
-    fireEvent.click(screen.getAllByRole('link', { name: 'Innovation & AI' })[0])
+    const links = await waitFor(() => {
+      const found = screen.getAllByRole('link', { name: 'Innovation & AI' })
+      expect(found.length).toBeGreaterThan(0)
+      return found
+    })
+    fireEvent.click(links[0])
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Innovation & AI' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { level: 1, name: 'Innovation & AI' })).toBeTruthy()
   })
 
   it('navigates to /start-here when a context-bar Start Here link is clicked', () => {

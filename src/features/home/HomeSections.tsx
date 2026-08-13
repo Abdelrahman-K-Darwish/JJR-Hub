@@ -44,7 +44,7 @@ export function QuadrantCard({ index, icon, title, description, links, className
       <div className="flex flex-col">
         {links.map((link) =>
           link.statusCopy ? (
-            <div key={link.label} className="q-link !cursor-default">
+            <div key={link.label} className="q-link q-link--inert !cursor-default">
               <span className="w-[16px] flex justify-center text-text-muted shrink-0" aria-hidden="true">
                 {link.icon}
               </span>

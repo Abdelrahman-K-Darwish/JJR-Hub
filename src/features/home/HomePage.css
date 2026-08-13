@@ -64,6 +64,12 @@
 .home-page .q-link:hover { color: var(--green); padding-left: 6px; }
 .home-page .q-link:hover .q-arrow { color: var(--green); transform: translateX(4px); }
 .home-page .q-arrow { margin-left: auto; color: var(--rule); transition: color 0.25s, transform 0.3s var(--ease); }
+/* Inert status rows (e.g. Client Hub STUB) share q-link's layout but must not borrow its
+   affordance — no color shift, no indent-on-hover, and a softer resting color than a real
+   navigable link, so "not yet available" reads as such at a glance instead of matching the
+   weight of the working rows around it. */
+.home-page .q-link--inert,
+.home-page .q-link--inert:hover { color: var(--text-secondary); padding-left: 0; }
 
 /* ═══ LEADERSHIP ═══ */
 .home-page .leadership { margin-bottom: 72px; position: relative; }

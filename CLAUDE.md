@@ -24,6 +24,9 @@ Before meaningful work:
 8. `docs/decisions/OPEN-DECISIONS.md`
 9a. `docs/DATA-AND-BEHAVIOR-MAP.md`
 9b. `docs/DATA-SOURCE-CATALOG.md`
+9c. `docs/REMAINING-PAGE-CLASSIFICATION.md` — when planning work on a page other than
+    Active Projects/Communities/Community Detail, check this for the page's minimum-appropriate
+    architecture class before defaulting to a full service seam
 10. relevant page architecture/spec files already in `docs/architecture/` and `docs/specs/`
 11. the matching file in `legacy/` for visual reference only
 

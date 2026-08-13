@@ -17,6 +17,11 @@ No lint tooling is installed yet — see Technical debt.
 This supersedes the "previous working SOP reported multiple pages converted" caveat: the code
 has now been inspected directly, not taken on faith.
 
+For which architecture class (A/B/C/D/E) and implementation readiness (READY/SPEC FIRST/BLOCKED)
+each remaining page warrants, see `docs/REMAINING-PAGE-CLASSIFICATION.md` — the current
+implementation-planning guide for page work beyond Active Projects/Communities/Community Detail.
+Page statuses below are not changed by that classification alone.
+
 ## Status values
 
 - `NOT STARTED`

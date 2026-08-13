@@ -5,6 +5,7 @@
 > **Repository:** `Abdelrahman-K-Darwish/JJR-Hub`
 >
 > **Last documented checkpoint:** 13 August 2026, branch `feat/home-page`, latest pushed commit `df2f081`.
+> **SOP** https://github.com/Abdelrahman-K-Darwish/JJR-Hub/blob/main/docs/JJR-Hub-Comprehensive-SOP-and-Architecture-Handbook.docx
 
 ## 1. What this project is
 

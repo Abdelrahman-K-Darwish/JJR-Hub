@@ -315,4 +315,17 @@
   .home-page .section-slider__track:has(.project:hover) .project,
   .home-page .section-slider__track:has(.k-card:hover) .k-card,
   .home-page .section-slider__track:has(.comm:hover) .comm { transform: none; }
+  .home-page .section-slider__track { scroll-behavior: auto; }
+}
+
+/* Arrows are only rendered by SectionSlider when actual overflow is detected — see
+   HomeSections.tsx `hasOverflow` state. When absent the legacy grid appearance (no controls) is
+   preserved automatically since the buttons simply aren't in the DOM. */
+.home-page .section-slider__counter {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  min-width: 42px;
+  text-align: center;
 }

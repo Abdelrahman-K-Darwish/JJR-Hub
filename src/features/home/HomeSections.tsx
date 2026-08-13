@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { RevealOnScroll } from '../../components/ui'
 import type { HomeSpotlightCard, HomeTopicLink } from './homeContent'
@@ -85,12 +85,24 @@ function QuadrantLink({ label, to, href, icon }: QuadrantLinkItem) {
 
 export type { QuadrantLinkItem }
 
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+}
+
 /**
  * Real horizontal slider mechanics matching `legacy/jjr-hub-tw.html`'s `.section-slider` —
- * a native `overflow-x:auto scroll-behavior:smooth` track (`section-slider__track`) plus two
- * arrow buttons that scroll the track by one card-width and disable at each edge
- * (`.section-slider__arrow:disabled`). Reused by Priority Topics, Active Projects, and
- * Communities of Practice so all three rows share one real implementation.
+ * a native `overflow-x:auto` track (`section-slider__track`) plus two arrow buttons that scroll
+ * the track by one card-width and disable at each edge (`.section-slider__arrow:disabled`).
+ * Reused by Priority Topics, Active Projects, Knowledge Spotlight, and Communities of Practice
+ * so all four rows share one real implementation, sized to however many items they're given —
+ * nothing here assumes a fixed item count.
+ *
+ * Extensibility: arrow controls only render when the track's content actually overflows its
+ * visible width (`hasOverflow`, driven by a `ResizeObserver` on the track plus a same-render
+ * recheck so added/removed items are picked up without a page reload). When everything fits —
+ * today's 3-4 items, or fewer — no arrows render at all and the row reads as the legacy static
+ * grid. Add a 5th/6th/Nth item later and the row becomes scrollable/navigable automatically,
+ * no layout change required.
  */
 export function SectionSlider({
   children,
@@ -104,59 +116,83 @@ export function SectionSlider({
   const trackRef = useRef<HTMLUListElement>(null)
   const [atStart, setAtStart] = useState(true)
   const [atEnd, setAtEnd] = useState(true)
+  const [hasOverflow, setHasOverflow] = useState(false)
 
   const updateEdges = () => {
     const el = trackRef.current
     if (!el) return
     setAtStart(el.scrollLeft <= 4)
     setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4)
+    setHasOverflow(el.scrollWidth > el.clientWidth + 4)
   }
 
+  // Recompute on every render (cheap: a few layout reads) so a change in the number of children
+  // — e.g. a 5th topic added to homeContent.ts — is picked up without any extra wiring, plus a
+  // ResizeObserver for viewport/container resizes that don't themselves trigger a re-render.
   useEffect(() => {
     updateEdges()
+  })
+
+  useEffect(() => {
     const el = trackRef.current
-    if (!el) return
-    const onResize = () => updateEdges()
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => updateEdges())
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [])
 
   const scrollByAmount = (direction: 1 | -1) => {
     const el = trackRef.current
     if (!el) return
     const cardWidth = el.querySelector('[data-slide]')?.clientWidth ?? el.clientWidth * 0.8
-    el.scrollBy({ left: direction * (cardWidth + 20), behavior: 'smooth' })
+    el.scrollBy({ left: direction * (cardWidth + 20), behavior: prefersReducedMotion() ? 'auto' : 'smooth' })
+  }
+
+  const onTrackKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      scrollByAmount(1)
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      scrollByAmount(-1)
+    }
   }
 
   return (
     <div className={`section-slider ${className}`}>
-      <button
-        type="button"
-        onClick={() => scrollByAmount(-1)}
-        disabled={atStart}
-        aria-label={`Scroll ${ariaLabel} left`}
-        className="section-slider__arrow section-slider__arrow--left max-md:hidden"
-      >
-        ‹
-      </button>
+      {hasOverflow && (
+        <button
+          type="button"
+          onClick={() => scrollByAmount(-1)}
+          disabled={atStart}
+          aria-label={`Scroll ${ariaLabel} left`}
+          className="section-slider__arrow section-slider__arrow--left max-md:hidden"
+        >
+          ‹
+        </button>
+      )}
       <ul
         ref={trackRef}
         onScroll={updateEdges}
+        onKeyDown={onTrackKeyDown}
+        tabIndex={hasOverflow ? 0 : -1}
         role="list"
         aria-label={ariaLabel}
-        className="section-slider__track flex gap-5 snap-x snap-mandatory pb-2 max-md:flex-col max-md:overflow-visible max-md:snap-none"
+        className="section-slider__track flex gap-5 snap-x snap-mandatory pb-2 max-md:flex-col max-md:overflow-visible max-md:snap-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2"
       >
         {children}
       </ul>
-      <button
-        type="button"
-        onClick={() => scrollByAmount(1)}
-        disabled={atEnd}
-        aria-label={`Scroll ${ariaLabel} right`}
-        className="section-slider__arrow section-slider__arrow--right max-md:hidden"
-      >
-        ›
-      </button>
+      {hasOverflow && (
+        <button
+          type="button"
+          onClick={() => scrollByAmount(1)}
+          disabled={atEnd}
+          aria-label={`Scroll ${ariaLabel} right`}
+          className="section-slider__arrow section-slider__arrow--right max-md:hidden"
+        >
+          ›
+        </button>
+      )}
     </div>
   )
 }

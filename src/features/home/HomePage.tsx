@@ -29,6 +29,10 @@ function greetingForHour(hour: number): string {
 
 const TODAY_LABEL = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
 
+/** Past this many Thought Leadership articles, switch from a dot-per-article row to a counter —
+ * dots don't scale to an arbitrary article collection, a counter does. */
+const LEADERSHIP_DOT_LIMIT = 6
+
 const UserIcon = (
   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -257,19 +261,28 @@ export function HomePage() {
                   </a>
                 </div>
                 <div className="leadership__bottom-row">
-                  <div className="leadership__dots" role="tablist" aria-label="More thought-leadership stories">
-                    {THOUGHT_LEADERSHIP.map((story, i) => (
-                      <button
-                        key={story.title}
-                        type="button"
-                        role="tab"
-                        aria-selected={i === leadershipIndex}
-                        aria-label={story.title}
-                        onClick={() => goToStory(i)}
-                        className={`leadership__dot ${i === leadershipIndex ? 'leadership__dot--active' : ''}`}
-                      />
-                    ))}
-                  </div>
+                  {/* Adaptive nav: dots read fine for a handful of stories, but don't scale — past
+                      LEADERSHIP_DOT_LIMIT a counter avoids rendering dozens of dots for a large
+                      article collection. Swap point only, no cap on how many articles can exist. */}
+                  {storyCount <= LEADERSHIP_DOT_LIMIT ? (
+                    <div className="leadership__dots" role="tablist" aria-label="More thought-leadership stories">
+                      {THOUGHT_LEADERSHIP.map((story, i) => (
+                        <button
+                          key={story.title}
+                          type="button"
+                          role="tab"
+                          aria-selected={i === leadershipIndex}
+                          aria-label={story.title}
+                          onClick={() => goToStory(i)}
+                          className={`leadership__dot ${i === leadershipIndex ? 'leadership__dot--active' : ''}`}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="section-slider__counter" aria-live="polite">
+                      {leadershipIndex + 1} / {storyCount}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

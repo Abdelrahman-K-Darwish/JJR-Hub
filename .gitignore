@@ -2,9 +2,19 @@
 dist/
 .env
 .env.local
+
+# Claude Code local-only state
 .claude/settings.local.json
 .claude/*.lock
-.DS_Store
 
+.DS_Store
 *.tsbuildinfo
+
+# gstack local state
 .gstack/
+
+# Duplicate agent-skills installation
+.agents/
+
+# Temporary UI/design review captures
+.tmp-*.png

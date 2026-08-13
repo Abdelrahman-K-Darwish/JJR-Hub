@@ -327,7 +327,7 @@ export function HomePage() {
         ) : (
           <SectionSlider ariaLabel="your projects">
             {projects.map((project) => (
-              <li key={project.id} data-slide className="list-none shrink-0 snap-start w-[320px] max-md:w-full">
+              <li key={project.id} data-slide className="list-none flex-1 min-w-[280px] max-w-[380px] max-md:max-w-none snap-start max-md:w-full">
                 <RevealOnScroll>
                   <HomeProjectTile project={project} />
                 </RevealOnScroll>
@@ -385,7 +385,7 @@ export function HomePage() {
         ) : (
           <SectionSlider ariaLabel="communities of practice">
             {communities.map((community) => (
-              <li key={community.slug} data-slide className="list-none shrink-0 snap-start w-[320px] max-md:w-full">
+              <li key={community.slug} data-slide className="list-none flex-1 min-w-[280px] max-w-[380px] max-md:max-w-none snap-start max-md:w-full">
                 <RevealOnScroll>
                   <HomeCommunityTile community={community} />
                 </RevealOnScroll>

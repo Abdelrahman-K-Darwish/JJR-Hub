@@ -171,7 +171,7 @@ const TOPIC_VISUALS: Record<string, string> = {
 export function TopicCard({ label, tag, description, href }: HomeTopicLink) {
   const gradient = TOPIC_VISUALS[href] ?? 'linear-gradient(135deg,#0F2340,#2A4A78)'
   return (
-    <RevealOnScroll as="li" data-slide className="list-none shrink-0 w-[260px] max-md:w-full snap-start">
+    <RevealOnScroll as="li" data-slide className="list-none flex-1 min-w-[240px] max-w-[300px] max-md:max-w-none max-md:w-full snap-start">
       <Link to={href} className="topic focus-visible:outline focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2">
         <div className="topic__visual" style={{ background: gradient }} aria-hidden="true">
           <span className="topic__tag">{tag}</span>
@@ -216,7 +216,7 @@ const CATEGORY_ICON: Record<string, ReactNode> = {
 export function KnowledgeCard({ item, accentIndex = 0 }: { item: HomeSpotlightCard; accentIndex?: number }) {
   const accent = CARD_ACCENTS[accentIndex % CARD_ACCENTS.length]
   return (
-    <RevealOnScroll as="li" data-slide className="list-none shrink-0 w-[280px] max-md:w-full snap-start">
+    <RevealOnScroll as="li" data-slide className="list-none flex-1 min-w-[260px] max-w-[320px] max-md:max-w-none max-md:w-full snap-start">
       <a
         href={item.href}
         className="k-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2"

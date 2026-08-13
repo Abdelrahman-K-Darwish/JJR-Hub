@@ -21,9 +21,16 @@ export function RevealOnScroll<T extends ElementType = 'div'>({
 }: RevealOnScrollProps<T>) {
   const Tag = (as ?? 'div') as ElementType
   const ref = useRef<HTMLElement>(null)
-  const [visible, setVisible] = useState(false)
+  // Reduced-motion users get fully-visible content immediately — no scroll-triggered hidden
+  // state, no transition. Read the media query once per mount; this component's usages are all
+  // static pages, not dynamic-preference toggles mid-session, so a one-time read is sufficient.
+  const [reducedMotion] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true,
+  )
+  const [visible, setVisible] = useState(reducedMotion)
 
   useEffect(() => {
+    if (reducedMotion) return
     const el = ref.current
     if (!el) return
 
@@ -38,12 +45,16 @@ export function RevealOnScroll<T extends ElementType = 'div'>({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [threshold])
+  }, [threshold, reducedMotion])
 
   return (
     <Tag
       ref={ref}
-      className={`transition-all duration-700 ease-smooth ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'} ${className}`}
+      className={
+        reducedMotion
+          ? `opacity-100 translate-y-0 ${className}`
+          : `transition-all duration-700 ease-smooth ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'} ${className}`
+      }
       {...rest}
     >
       {children}

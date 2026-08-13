@@ -35,12 +35,11 @@ describe('App routing', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Project Portfolio.' })).toBeTruthy()
   })
 
-  it('renders the Home placeholder at /', () => {
+  it('renders the real Home page at /', async () => {
     renderAt('/')
 
-    const heading = screen.getByRole('heading', { level: 1 })
-    expect(heading.textContent).toContain('Home')
-    expect(heading.textContent).toContain('is being built')
+    const heading = await screen.findByRole('heading', { level: 1 })
+    expect(heading.textContent).toMatch(/Good (morning|afternoon|evening)/)
   })
 
   it('passes the dynamic segment through to the community detail route', async () => {

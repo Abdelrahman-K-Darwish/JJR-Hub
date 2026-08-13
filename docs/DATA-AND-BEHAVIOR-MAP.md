@@ -85,9 +85,18 @@ Source: `docs/architecture/JJR-Hub-Phase1-Architecture-v0_3.docx` (current autho
 | Communities (summary) | Community | App DB | App DB | attachments only | none | — | R | Own scope | B | WF-006 | NOT PRESENT | none | MISSING | D-007 | CONFIRMED |
 | JJR Material / Knowledge / Spotlight | — | SharePoint | SharePoint | "Entirely SharePoint" per doc, no library named | none | — | R | All | A | — | NOT PRESENT | none | MISSING | none | CONFIRMED |
 
-**Overall:** P-01 has no real React implementation; `src/App.tsx` routes `/` to
-`UnderDevelopmentPage`. `docs/PROJECT-STATUS.md` correctly lists it NOT STARTED. Service seam:
-N/A — nothing to seam yet.
+**Overall:** `docs/PROJECT-STATUS.md` now marks this KEEP. `src/App.tsx` routes `/` to
+`HomePage`. **Service seam — CONFIRMED, implemented, composition-only:**
+`HomePage.tsx` → `useHomeProjects.ts` → `activeProjectsService.getPortfolio()` /
+`.getMilestones()` → `activeProjectsMockAdapter.ts` → `src/mocks/activeProjects.ts`, and
+`HomePage.tsx` → `useHomeCommunities.ts` → `communitiesService.getDirectory()` →
+`communitiesMockAdapter.ts` → `src/mocks/communities.ts`. No `HomeService` exists and none was
+added — Home reuses the P-04/P-05-owned services directly and does not own the Project/Community
+entities (see table rows above). The Planner-vs-milestone progress conflict noted in the
+"Projects (slider)" row remains unresolved by this implementation; `HomeProjectTile` never
+receives or renders a progress value. Client Hub, Compliance Hub, Past Deliverables, and My
+Stuff — Reporting remain MISSING/OPEN as tabulated above and are rendered accordingly (Client
+Hub as a visible STUB; the other three not rendered at all).
 
 ---
 

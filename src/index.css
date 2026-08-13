@@ -12,3 +12,28 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+/* Home sliders (Priority Topics / Active Projects / Communities): neighbor de-emphasis on
+   hover, mirroring legacy's `.projects__grid:has(.project:hover) .project` rule. Scoped to
+   `.home-slide` children of `.home-slider-track` only. */
+.home-slider-track:has(.home-slide:hover) .home-slide {
+  transform: scale(0.94);
+  opacity: 0.72;
+}
+.home-slider-track:has(.home-slide:hover) .home-slide:hover {
+  transform: translateY(-4px) scale(1);
+  opacity: 1;
+}
+.home-slide {
+  transition: transform 0.35s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), opacity 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-slider-track:has(.home-slide:hover) .home-slide,
+  .home-slider-track:has(.home-slide:hover) .home-slide:hover {
+    transform: none;
+  }
+  .home-slide {
+    transition: none;
+  }
+}

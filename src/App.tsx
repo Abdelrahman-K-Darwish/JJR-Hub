@@ -7,6 +7,7 @@ import { CommunitiesPage } from './features/communities/CommunitiesPage'
 import { CommunityDetailPage } from './features/community-detail/CommunityDetailPage'
 import { ConsultantDirectoryPage } from './features/consultant-directory/ConsultantDirectoryPage'
 import { EnvironmentalJusticePage } from './features/environmental-justice/EnvironmentalJusticePage'
+import { HomePage } from './features/home/HomePage'
 import { HowWeWorkPage } from './features/how-we-work/HowWeWorkPage'
 import { PmoPage } from './features/pmo/PmoPage'
 import { SiteOwnersPage } from './features/site-owners/SiteOwnersPage'
@@ -42,9 +43,10 @@ function UnderDevelopmentRoute() {
  * Route table only — no <BrowserRouter> here. `main.tsx` owns the router so tests can
  * wrap <App /> in a <MemoryRouter> instead.
  *
- * The five pages without a React implementation yet (Home, Start Here, My Profile,
- * Exec & Strategy, JEDI CAB) render the existing `UnderDevelopmentPage` stub with a
- * page-specific name — see docs/PROJECT-STATUS.md for why each one isn't built.
+ * The pages without a React implementation yet (Start Here, My Profile, Exec & Strategy,
+ * JEDI CAB) render the existing `UnderDevelopmentPage` stub with a page-specific name — see
+ * docs/PROJECT-STATUS.md for why each one isn't built. Home (`/`) is implemented — see
+ * `features/home/HomePage.tsx`.
  *
  * Exec & Strategy (P-15, Class C/D, WF-010, D-004 OPEN) and JEDI CAB (P-19, D-015 OPEN)
  * are documented as restricted/decision-blocked destinations, not gated by any client-side
@@ -54,7 +56,7 @@ function UnderDevelopmentRoute() {
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<UnderDevelopmentPage featureName="Home" />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/start-here" element={<UnderDevelopmentPage featureName="Start Here" />} />
       <Route path="/my-profile" element={<UnderDevelopmentPage featureName="My Profile" />} />
       <Route path="/active-projects" element={<ActiveProjectsPage />} />

@@ -35,7 +35,7 @@ Page statuses below are not changed by that classification alone.
 
 | Page | Status | Notes |
 |---|---|---|
-| Home | NOT STARTED | Heaviest legacy page (141.7 KB JS). No blocking decision; can start once prioritized. WF-001/002/003. |
+| Home | KEEP | Composition-only page per `docs/specs/home.md`: `HomePage.tsx` → `useHomeProjects.ts`/`useHomeCommunities.ts` → `activeProjectsService`/`communitiesService` (existing, reused, not duplicated) → existing mock adapters. No `HomeService`, no direct `src/mocks/*` reads from Home's own hooks. Progress display remains OPEN (Home doc vs. AP2 conflict) and is not rendered. Compliance Hub, Past Deliverables, and My Stuff — Reporting remain DEFER/OPEN and are not rendered. WF-001/002/003. |
 | Start Here | NOT STARTED | Scenario selection is buildable now (personalization, not permission). Verified-status/advanced-access gating sub-section depends on D-013 (manager/team scope, OPEN) — model that state explicitly rather than guess. |
 | My Profile | NOT STARTED | Public/self/relationship-scoped tiers are buildable now (WF-009). Past Deliverables section depends on D-014 (OPEN) — do not guess consultant-vs-leads-and-up visibility. |
 | Active Projects | KEEP | Reference pattern, reviewed per SOP Phase C. `ProjectCard`/`FilterBar`/`HealthBar`/`StatBlock` reuse; client-side My/All filter over an already-"scoped" mock set matches WF-002 shape; has `docs/specs/active-projects.md`. Has a full typed service seam — see Cross-cutting technical debt below. Approved — do not rebuild. |

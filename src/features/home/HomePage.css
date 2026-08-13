@@ -227,12 +227,15 @@
 .home-page .topic:hover::before { transform: scaleX(1); }
 .home-page .topic:hover::after { transform: scaleY(1); transition-delay: 0.1s; }
 .home-page .topic__visual { height: 120px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.home-page .topic__visual svg { opacity: 0.55; transition: opacity 0.4s var(--ease), transform 0.6s var(--ease); position: relative; z-index: 1; }
+.home-page .topic:hover .topic__visual svg { opacity: 0.95; transform: scale(1.06); }
 .home-page .topic__body { padding: 24px 24px 20px; flex: 1; display: flex; flex-direction: column; }
-.home-page .topic__tag { font-family: var(--font-mono); font-size: 9.5px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 10px; color: rgba(255, 255, 255, 0.7); }
+.home-page .topic__tag { font-family: var(--font-mono); font-size: 9.5px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; margin-bottom: 10px; }
 .home-page .topic__name { font-family: var(--font-display); font-size: 1.08rem; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 10px; letter-spacing: -0.01em; }
 .home-page .topic__desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.65; flex: 1; }
 .home-page .topic__foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule-light); display: flex; align-items: center; justify-content: space-between; }
 .home-page .topic__cta { font-size: 12px; font-weight: 700; color: var(--green); display: inline-flex; align-items: center; gap: 6px; transition: gap 0.3s var(--ease); }
+.home-page .topic__spfx { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); }
 .home-page .topic:hover .topic__cta { gap: 10px; }
 
 /* ═══ PROJECTS ═══ */
@@ -261,6 +264,8 @@
 }
 .home-page .k-card:hover { border-color: var(--navy-mid); transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 24px rgba(27, 54, 93, 0.1); }
 .home-page .k-card__thumb { height: 108px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.home-page .k-card__thumb svg { opacity: 0.75; transition: all 0.4s var(--ease); position: relative; z-index: 1; }
+.home-page .k-card:hover .k-card__thumb svg { opacity: 1; transform: scale(1.05); }
 .home-page .k-card__badge { position: absolute; top: 12px; right: 12px; z-index: 2; font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 9px; background: var(--pink); color: #fff; box-shadow: 0 0 14px rgba(233, 30, 140, 0.5); }
 .home-page .k-card__badge--green { background: var(--green); box-shadow: 0 0 14px var(--green-glow); }
 .home-page .k-card__body { padding: 22px; }
@@ -291,6 +296,22 @@
 .home-page .comm__cta { font-size: 11px; font-weight: 700; color: var(--green); opacity: 0; transition: opacity 0.3s var(--ease); letter-spacing: 0.04em; }
 .home-page .comm:hover .comm__cta { opacity: 1; }
 
+/* ═══ PREVIEW CHIP ═══ — legacy's small hover-revealed overlay on .topic/.k-card/.project
+   (top-left corner, dark blurred pill). Ported here as a decorative, non-interactive element
+   (see PreviewChip in HomeSections.tsx for why) — same position/motion, values match
+   legacy/jjr-hub-tw.html's `.preview-chip` rule exactly. */
+.home-page .preview-chip {
+  position: absolute; top: 12px; left: 12px; z-index: 3;
+  height: 26px; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(15, 35, 64, 0.85); backdrop-filter: blur(8px);
+  color: #fff; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 6px;
+  font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+  opacity: 0; transform: translateY(-4px); transition: all 220ms var(--ease); pointer-events: none;
+}
+.home-page .k-card:hover .preview-chip,
+.home-page .topic:hover .preview-chip,
+.home-page .project:hover .preview-chip { opacity: 1; transform: translateY(0); }
+
 /* ═══ SCROLL REVEAL ═══ */
 .home-page .reveal { opacity: 0; transform: translateY(30px); transition: opacity 900ms var(--ease), transform 900ms var(--ease); }
 .home-page .reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -320,7 +341,10 @@
   .home-page .section-slider__track:has(.topic:hover) .topic,
   .home-page .section-slider__track:has(.project:hover) .project,
   .home-page .section-slider__track:has(.k-card:hover) .k-card,
-  .home-page .section-slider__track:has(.comm:hover) .comm { transform: none; }
+  .home-page .section-slider__track:has(.comm:hover) .comm,
+  .home-page .topic:hover .topic__visual svg,
+  .home-page .k-card:hover .k-card__thumb svg,
+  .home-page .preview-chip { transform: none; }
   .home-page .section-slider__track { scroll-behavior: auto; }
 }
 

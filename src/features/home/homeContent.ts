@@ -81,6 +81,11 @@ export const KNOWLEDGE_SPOTLIGHT: HomeSpotlightCard[] = [
 
 export interface HomeThoughtLeadershipEntry extends HomeContentCard {
   kicker: string
+  /** Featured background photo — legacy `jjr-hub-tw.html` only embeds a real photo for one
+   * post ("Advancing the Work of JJR", extracted from the mockup's own embedded data URI at
+   * public/images/home/leadership-advancing-the-work.jpg); the rest use a plain gradient there
+   * too, so most entries intentionally have no `image` and fall back to the gradient treatment. */
+  image?: string
 }
 
 export const THOUGHT_LEADERSHIP: HomeThoughtLeadershipEntry[] = [
@@ -101,6 +106,7 @@ export const THOUGHT_LEADERSHIP: HomeThoughtLeadershipEntry[] = [
     title: 'Advancing the Work of JJR',
     description: 'Strategic direction, firm-wide updates, and thought leadership — straight from Jenna.',
     href: '/under-development?from=thought-leadership-advancing-the-work',
+    image: '/images/home/leadership-advancing-the-work.jpg',
   },
   {
     kicker: 'From JJR Leadership',
@@ -108,12 +114,6 @@ export const THOUGHT_LEADERSHIP: HomeThoughtLeadershipEntry[] = [
     description: "Jenna's comprehensive look at where government consulting is heading and how JJR is positioning for leadership.",
     href: '/under-development?from=thought-leadership-government-consulting-reframed',
   },
-]
-
-export const KNOWLEDGE_LINKS: HomeContentCard[] = [
-  { title: 'Templates Library', description: 'Proposal, SOW, and deliverable templates.', href: '/templates' },
-  { title: 'How We Work', description: 'Firm-wide tools, SOPs, and working norms.', href: '/how-we-work' },
-  { title: 'Tool Guides', description: 'Walkthroughs for QuickBooks, Planner, Teams, and more.', href: '/tool-guides' },
 ]
 
 export interface HomeTopicLink {

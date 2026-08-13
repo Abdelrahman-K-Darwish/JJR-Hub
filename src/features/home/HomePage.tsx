@@ -9,7 +9,6 @@ import {
   CLIENT_HUB_STATUS_COPY,
   CONSULTANT_DIRECTORY_LINK,
   JJR_MATERIAL,
-  KNOWLEDGE_LINKS,
   KNOWLEDGE_SPOTLIGHT,
   MY_STUFF_LINKS,
   THOUGHT_LEADERSHIP,
@@ -230,7 +229,11 @@ export function HomePage() {
               <div
                 aria-hidden="true"
                 className="leadership__feature-img"
-                style={{ background: 'linear-gradient(135deg,#0F2340 0%,#1B365D 60%,#2A4A78 100%)' }}
+                style={
+                  activeStory.image
+                    ? { backgroundImage: `url(${activeStory.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+                    : { background: 'linear-gradient(135deg,#0F2340 0%,#1B365D 60%,#2A4A78 100%)' }
+                }
               />
               <div aria-hidden="true" className="ambient-breath" />
               <HeroGrain />
@@ -350,33 +353,19 @@ export function HomePage() {
         )}
       </section>
 
-      {/* KNOWLEDGE SPOTLIGHT — dedicated rich row (distinct from the Your Hub quadrant tile, same
-          underlying KNOWLEDGE_SPOTLIGHT content, richer card treatment) */}
+      {/* KNOWLEDGE SPOTLIGHT — legacy/jjr-hub-tw.html's only "Knowledge" section is this one
+          (.knowledge__grid of .k-card); there is no separate Templates/How We Work/Tool Guides
+          link row in the source markup, so that fabricated block from an earlier pass was
+          removed rather than kept for the sake of not deleting something (see docs/specs/home.md
+          correction note on the "Knowledge" row). */}
       <SectionLabel eyebrow="Knowledge Spotlight" sub="Freshly curated for the team" />
-      <div className="mb-10">
+      <div className="mb-16">
         <SectionSlider ariaLabel="knowledge spotlight">
           {KNOWLEDGE_SPOTLIGHT.map((item, i) => (
             <KnowledgeCard key={item.title} item={item} accentIndex={i} />
           ))}
         </SectionSlider>
       </div>
-
-      {/* KNOWLEDGE — Templates / How We Work / Tool Guides. Compact list row, real routes. */}
-      <section className="bg-white border border-rule mb-16" aria-labelledby="home-knowledge-heading">
-        <div className="px-6 py-4 border-b border-rule-light">
-          <h2 id="home-knowledge-heading" className="font-display text-[0.95rem] font-bold text-navy">
-            Knowledge
-          </h2>
-        </div>
-        <div className="grid grid-cols-3 max-md:grid-cols-1 divide-x divide-rule-light max-md:divide-x-0 max-md:divide-y">
-          {KNOWLEDGE_LINKS.map((item) => (
-            <Link key={item.title} to={item.href} className="group block p-5 hover:bg-off-white transition-colors">
-              <div className="text-[12.5px] font-semibold text-navy group-hover:text-green-dark transition-colors">{item.title}</div>
-              <div className="text-[11px] text-text-secondary mt-1 leading-snug">{item.description}</div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* COMMUNITIES OF PRACTICE */}
       <section className="mb-4" aria-labelledby="home-communities-heading">

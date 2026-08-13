@@ -41,8 +41,16 @@
 | JJR Material | IMPLEMENT (static) |
 | Knowledge Spotlight | IMPLEMENT (static) |
 | Jenna's Thought Leadership | IMPLEMENT (static) |
-| Knowledge | IMPLEMENT (static) |
 | Topics | IMPLEMENT (static curated links) |
+
+> **Correction:** an earlier version of this spec listed a separate "Knowledge" row
+> (Templates Library / How We Work / Tool Guides quick-links, "SharePoint News + App DB
+> counts") as a distinct IMPLEMENT section from Knowledge Spotlight. A full re-read of
+> `legacy/jjr-hub-tw.html` found no such section — legacy's Home page has exactly one
+> Knowledge section, the `.knowledge__grid` of `.k-card` entries (i.e. Knowledge Spotlight
+> itself). The separate row was not backed by the visual source and has been removed from
+> both this table and the implementation. Per `docs/SOURCE-AUTHORITY.md`'s conflict-handling
+> rule, an assumption not backed by its source should not have been labeled CONFIRMED.
 
 ## Users / access
 - Functional roles: all authenticated employees (Home is Class A shell + section-level scoping
@@ -76,8 +84,7 @@
 | Past Deliverables | — | — | — | — | — | OPEN (D-014) | Deferred entirely, not rendered as data-backed |
 | JJR Material | A | SharePoint (generic, unconfirmed library) | Editor | MISSING | R | CONFIRMED (existence) | Static/editorial content, no live call |
 | Knowledge Spotlight | A | Editorial | Editor | — | R | CONFIRMED | Static content |
-| Jenna's Thought Leadership | A | SharePoint News (generic, unconfirmed) | Leadership | MISSING | R | CONFIRMED (existence) | Static content |
-| Knowledge | A | SharePoint News + App DB counts (generic) | — | MISSING | R | CONFIRMED (existence) | Static content; download counts not implemented in v1 |
+| Jenna's Thought Leadership | A | SharePoint News (generic, unconfirmed) | Leadership | MISSING | R | CONFIRMED (existence) | Static content. Featured image: one entry ("Advancing the Work of JJR") uses the actual photo embedded in legacy's own mockup (extracted from its data-URI), the rest use the same gradient treatment legacy uses for its other entries. |
 | Topics | A | Editorial curation | Editor | — | R | PROPOSED | Static curated links; JEDI-CAB destination itself remains BLOCKED (D-015), the link is not |
 
 CRUD short codes: R = read, C = create, U = update, D = delete, A = approve.
@@ -129,7 +136,7 @@ independently, inside Home's own hooks — not by calling those page hooks direc
 
 ### Static/local-content responsibilities
 Sections with no service call (Greeting/date presentation, My Stuff link targets, JJR Material,
-Knowledge Spotlight, Thought Leadership, Knowledge, Topics) are sourced from a local,
+Knowledge Spotlight, Thought Leadership, Topics) are sourced from a local,
 feature-owned constants file (`src/features/home/homeContent.ts`, once created), kept out of the
 page component per CLAUDE.md §5 — the same discipline already applied to every other converted
 page's mock data.

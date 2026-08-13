@@ -1,5 +1,6 @@
 import { AvatarStack } from '../../components/ui'
 import type { HomeProjectTileData } from './home.types'
+import { PreviewChip } from './HomeSections'
 
 const STATUS_META: Record<HomeProjectTileData['status'], { label: string; stripClass: string }> = {
   active: { label: 'Active', stripClass: 'bg-green shadow-[0_0_10px_rgba(76,187,23,0.45)]' },
@@ -22,6 +23,7 @@ export function HomeProjectTile({ project, className = '' }: HomeProjectTileProp
 
   return (
     <article className={`project ${className}`}>
+      <PreviewChip />
       <span aria-hidden="true" className={`project__topbar pointer-events-none ${meta.stripClass}`} />
       <div className="project__client truncate">{project.clientLine}</div>
       <div className="project__name truncate">{project.name}</div>

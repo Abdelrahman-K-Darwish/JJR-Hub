@@ -197,26 +197,97 @@ export function SectionSlider({
   )
 }
 
-const TOPIC_VISUALS: Record<string, string> = {
-  '/jedi-cab': 'linear-gradient(135deg,#3D2B00,#8B6914)',
-  '/environmental-justice': 'linear-gradient(135deg,#1a3a1a,#2D7D00)',
-  '/ai-for-good': 'linear-gradient(135deg,#0F2340,#2A4A78)',
+/** Per-topic gradient, tag accent color, "Custom Page" footer copy, and themed icon — all four
+ * lifted directly from legacy/jjr-hub-tw.html's four `.topic` entries (Jedi Cab, EJ, AI for
+ * Good, Vision/Values), including the icon paths, since legacy's `.topic__visual` always
+ * contains a themed 38x38 icon, not just a bare gradient. */
+const TOPIC_VISUALS: Record<string, { gradient: string; tagColor: string; icon: ReactNode }> = {
+  '/jedi-cab': {
+    gradient: 'linear-gradient(135deg,#3D2B00,#8B6914)',
+    tagColor: '#A06B1A',
+    icon: (
+      <svg width="38" height="38" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.4" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+    ),
+  },
+  '/environmental-justice': {
+    gradient: 'linear-gradient(135deg,#1a3a1a,#2D7D00)',
+    tagColor: '#2D7D00',
+    icon: (
+      <svg width="38" height="38" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.4" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M2 12h20" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+  },
+  '/ai-for-good': {
+    gradient: 'linear-gradient(135deg,#0F2340,#2A4A78)',
+    tagColor: 'var(--navy-mid)',
+    icon: (
+      <svg width="38" height="38" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.4" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <path d="M9 9h6v6H9z" />
+        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+      </svg>
+    ),
+  },
+  '/vision-values': {
+    gradient: 'linear-gradient(135deg,#4a1a3a,#8B1A6A)',
+    tagColor: 'var(--pink)',
+    icon: (
+      <svg width="38" height="38" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.4" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+      </svg>
+    ),
+  },
 }
 
-/** Priority Topics card — rich gradient visual, tag, hover elevation. Internal routes only. */
+/** Matches legacy's `.preview-chip` — a dark, blurred pill in the card's top-left corner that's
+ * invisible until the card is hovered. Rendered as a decorative, non-focusable `aria-hidden`
+ * span (not a button/link) because the whole card is already the single interactive element —
+ * a second nested interactive control here would either be invalid HTML (button-in-anchor) or,
+ * if made genuinely clickable, would need its own real destination/behavior to avoid being a
+ * fake affordance. This keeps legacy's exact visual motion without inventing a second action. */
+export function PreviewChip() {
+  return (
+    <span className="preview-chip" aria-hidden="true">
+      <svg width="9" height="9" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+      Preview
+    </span>
+  )
+}
+
+const DEFAULT_TOPIC_VISUAL = { gradient: 'linear-gradient(135deg,#0F2340,#2A4A78)', tagColor: 'var(--navy-mid)', icon: null as ReactNode }
+
+/** Priority Topics card — themed gradient + icon visual, tag/name/description body, "Custom
+ * Page" footer label, hover elevation. Internal routes only — all four destinations are
+ * real, already-built app routes. */
 export function TopicCard({ label, tag, description, href }: HomeTopicLink) {
-  const gradient = TOPIC_VISUALS[href] ?? 'linear-gradient(135deg,#0F2340,#2A4A78)'
+  const visual = TOPIC_VISUALS[href] ?? DEFAULT_TOPIC_VISUAL
   return (
     <RevealOnScroll as="li" data-slide className="list-none flex-1 min-w-[240px] max-w-[300px] max-md:max-w-none max-md:w-full snap-start">
       <Link to={href} className="topic focus-visible:outline focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2">
-        <div className="topic__visual" style={{ background: gradient }} aria-hidden="true">
-          <span className="topic__tag">{tag}</span>
+        <PreviewChip />
+        <div className="topic__visual" style={{ background: visual.gradient }} aria-hidden="true">
+          {visual.icon}
         </div>
         <div className="topic__body">
+          <div className="topic__tag" style={{ color: visual.tagColor }}>
+            {tag}
+          </div>
           <div className="topic__name">{label}</div>
           <p className="topic__desc">{description}</p>
           <div className="topic__foot">
             <span className="topic__cta">Explore →</span>
+            <span className="topic__spfx">Custom Page</span>
           </div>
         </div>
       </Link>
@@ -257,6 +328,7 @@ export function KnowledgeCard({ item, accentIndex = 0 }: { item: HomeSpotlightCa
         href={item.href}
         className="k-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-green focus-visible:outline-offset-2"
       >
+        <PreviewChip />
         <div
           className="k-card__thumb"
           style={{ background: `linear-gradient(135deg, ${accent}, var(--navy-deep))` }}

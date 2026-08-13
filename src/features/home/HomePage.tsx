@@ -20,13 +20,22 @@ import { HomeProjectTile } from './HomeProjectTile'
 import { useHomeCommunities } from './useHomeCommunities'
 import { useHomeProjects } from './useHomeProjects'
 
-function greetingForHour(hour: number): string {
-  if (hour < 12) return 'Good morning'
-  if (hour < 18) return 'Good afternoon'
-  return 'Good evening'
+/** ISO-8601 week number — matches legacy's "Tuesday · March 24 · Wk 13" context-bar format. */
+function isoWeekNumber(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const dayNum = d.getUTCDay() || 7
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
 }
 
-const TODAY_LABEL = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })
+function contextBarDateLabel(date: Date): string {
+  const weekday = date.toLocaleDateString(undefined, { weekday: 'long' })
+  const monthDay = date.toLocaleDateString(undefined, { month: 'long', day: 'numeric' })
+  return `${weekday} · ${monthDay} · Wk ${isoWeekNumber(date)}`
+}
+
+const TODAY_LABEL = contextBarDateLabel(new Date())
 
 /** Past this many Thought Leadership articles, switch from a dot-per-article row to a counter —
  * dots don't scale to an arbitrary article collection, a counter does. */
@@ -106,7 +115,6 @@ export function HomePage() {
   const [leadershipIndex, setLeadershipIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
 
-  const greeting = greetingForHour(new Date().getHours())
   const firstName = CURRENT_USER.name.split(' ')[0]
   const activeStory = THOUGHT_LEADERSHIP[leadershipIndex]
   const storyCount = THOUGHT_LEADERSHIP.length
@@ -129,17 +137,28 @@ export function HomePage() {
           <HeroGrain />
           <div className="relative z-10 px-8 py-4 max-md:px-5 max-md:py-4 flex items-center justify-between gap-6 max-md:flex-col max-md:items-start max-md:gap-3">
             <div className="flex items-center gap-4 min-w-0 max-md:flex-col max-md:items-start max-md:gap-1.5">
-              <h1 className="font-display text-[1.05rem] font-bold text-white leading-tight tracking-tight truncate">
-                {greeting}, {firstName}.
+              <h1 className="font-display text-[13.5px] text-white/65 font-normal italic leading-tight truncate">
+                Welcome back, <strong className="text-white font-bold not-italic">{firstName}</strong>
               </h1>
               <span className="w-px h-3.5 bg-white/10 max-md:hidden" aria-hidden="true" />
-              <span className="font-mono text-[10px] text-white/40 tracking-[0.8px] uppercase">{TODAY_LABEL}</span>
+              <span className="font-mono text-[10px] text-white/35 tracking-[0.8px] uppercase">{TODAY_LABEL}</span>
             </div>
-            <div className="flex items-center gap-4 shrink-0">
-              <div className="flex items-center gap-2 font-mono text-[10px] text-white/45 tracking-[0.8px]">
+            <div className="flex items-center gap-5 shrink-0">
+              <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-white/35 tracking-[0.8px]">
                 <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse" aria-hidden="true" />
                 <span>{milestonesThisWeekCount} milestones this week</span>
               </div>
+              <span className="w-px h-3.5 bg-white/10 max-md:hidden" aria-hidden="true" />
+              <Link
+                to="/under-development?from=tour"
+                className="font-mono text-[10px] tracking-[1px] uppercase text-white/45 hover:text-green transition-colors flex items-center gap-1.5"
+              >
+                <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4M12 8h.01" />
+                </svg>
+                Take the tour
+              </Link>
             </div>
           </div>
         </div>

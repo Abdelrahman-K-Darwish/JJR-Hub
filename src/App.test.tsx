@@ -39,7 +39,7 @@ describe('App routing', () => {
     renderAt('/')
 
     const heading = await screen.findByRole('heading', { level: 1 })
-    expect(heading.textContent).toMatch(/Good (morning|afternoon|evening)/)
+    expect(heading.textContent).toMatch(/Welcome back, Sarah/)
   })
 
   it('passes the dynamic segment through to the community detail route', async () => {

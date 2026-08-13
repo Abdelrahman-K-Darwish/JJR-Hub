@@ -29,11 +29,11 @@ function renderHomePage() {
 }
 
 describe('HomePage', () => {
-  it('renders a smoke-test heading with the current-time-based greeting', async () => {
+  it('renders a smoke-test heading with the context-bar greeting', async () => {
     renderHomePage()
 
     const heading = await screen.findByRole('heading', { level: 1 })
-    expect(heading.textContent).toMatch(/Good (morning|afternoon|evening)/)
+    expect(heading.textContent).toMatch(/Welcome back, Sarah/)
   })
 
   it('keeps the Communities section and static sections rendering when Projects fails', async () => {

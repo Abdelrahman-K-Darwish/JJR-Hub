@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { AppShell } from '../../components/AppShell'
-import { HeroGrain, RevealOnScroll, ShimmerText, Spotlight } from '../../components/ui'
+import { HeroGrain, RevealOnScroll, SectionHeading, ShimmerText, Spotlight } from '../../components/ui'
 import './HomePage.css'
 import { CURRENT_USER, PROFILE_MENU_ITEMS } from '../../mocks/currentUser'
 import {
@@ -127,31 +127,31 @@ export function HomePage() {
   return (
     <AppShell user={CURRENT_USER} profileMenuItems={PROFILE_MENU_ITEMS} activeNav="home">
      <div className="home-page">
-      {/* Compact context bar — greeting, date, milestone pulse. Deliberately not an oversized hero. */}
-      <div className="mb-8 -mt-2 animate-rise">
-        <div className="relative overflow-hidden bg-[linear-gradient(180deg,#17304f_0%,#0F2340_40%,#0b1c35_100%)] border-t border-t-white/[0.06] border-b border-b-black/30 shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.04)]">
-          <div
-            aria-hidden="true"
-            className="absolute w-[1200px] h-[260px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(76,187,23,0.10)_0%,rgba(76,187,23,0)_60%)] pointer-events-none z-0 blur-[30px] animate-breathe"
-          />
-          <HeroGrain />
-          <div className="relative z-10 px-8 py-4 max-md:px-5 max-md:py-4 flex items-center justify-between gap-6 max-md:flex-col max-md:items-start max-md:gap-3">
-            <div className="flex items-center gap-4 min-w-0 max-md:flex-col max-md:items-start max-md:gap-1.5">
-              <h1 className="font-display text-[13.5px] text-white/65 font-normal italic leading-tight truncate">
+      {/* Context bar — legacy `.context-bar`: a graduated navy band, distinct from the flat
+          header above it, with the greeting/date on the left and the milestone pulse + tour
+          link on the right. */}
+      <div className="mb-8 -mt-10 animate-rise">
+        <div className="relative bg-[linear-gradient(180deg,#152a48_0%,#1B365D_50%,#1e3a63_100%)] shadow-[inset_0_2px_6px_rgba(0,0,0,0.2),0_1px_0_rgba(255,255,255,0.02)]">
+          <div className="px-10 py-3 max-md:px-5 max-md:py-3.5 flex items-center justify-between gap-6 max-md:flex-col max-md:items-start max-md:gap-2">
+            {/* Cluster A — identity + date */}
+            <div className="flex items-center gap-4 min-w-0 max-md:flex-col max-md:items-start max-md:gap-1">
+              <h1 className="font-display text-[13.5px] text-[rgba(255,255,255,0.65)] font-normal italic leading-tight truncate">
                 Welcome back, <strong className="text-white font-bold not-italic">{firstName}</strong>
               </h1>
-              <span className="w-px h-3.5 bg-white/10 max-md:hidden" aria-hidden="true" />
-              <span className="font-mono text-[10px] text-white/35 tracking-[0.8px] uppercase">{TODAY_LABEL}</span>
+              <span className="w-px h-3.5 bg-[rgba(255,255,255,0.1)] max-md:hidden" aria-hidden="true" />
+              <span className="font-mono text-[10px] text-[rgba(255,255,255,0.35)] tracking-[0.8px] uppercase">{TODAY_LABEL}</span>
             </div>
-            <div className="flex items-center gap-5 shrink-0">
-              <div className="hidden md:flex items-center gap-2 font-mono text-[10px] text-white/35 tracking-[0.8px]">
+
+            {/* Cluster B — milestone pulse + tour, set apart by a rule rather than a card edge */}
+            <div className="flex items-center gap-5 shrink-0 max-md:w-full max-md:justify-between max-md:pt-2 max-md:border-t max-md:border-t-[rgba(255,255,255,0.06)]">
+              <div className="flex items-center gap-2 font-mono text-[10px] text-[rgba(255,255,255,0.35)] tracking-[0.8px]">
                 <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse" aria-hidden="true" />
                 <span>{milestonesThisWeekCount} milestones this week</span>
               </div>
-              <span className="w-px h-3.5 bg-white/10 max-md:hidden" aria-hidden="true" />
+              <span className="w-px h-3.5 bg-[rgba(255,255,255,0.1)] hidden md:block" aria-hidden="true" />
               <Link
                 to="/under-development?from=tour"
-                className="font-mono text-[10px] tracking-[1px] uppercase text-white/45 hover:text-green transition-colors flex items-center gap-1.5"
+                className="font-mono text-[10px] tracking-[1px] uppercase text-[rgba(255,255,255,0.45)] hover:text-green transition-colors flex items-center gap-1.5"
               >
                 <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <circle cx="12" cy="12" r="10" />
@@ -165,7 +165,7 @@ export function HomePage() {
       </div>
 
       {/* YOUR HUB — 2x2 quadrant grid */}
-      <SectionLabel eyebrow="Your Hub" sub="Everything you need — organised by purpose" />
+      <SectionHeading eyebrow="Your Hub" sub="Everything you need — organised by purpose" />
       <Spotlight
         color="rgba(76,187,23,0.06)"
         className="grid grid-cols-2 border border-rule divide-x divide-y divide-rule bg-white mb-12 max-md:grid-cols-1 max-md:divide-x-0"
@@ -211,7 +211,7 @@ export function HomePage() {
           rail (right), matching legacy's `.leadership__grid` (`.leadership__feature` +
           `.leadership__sidebar`). Prev/next arrows, dot nav, and rail-click all update the same
           local `leadershipIndex` state; content stays static from `THOUGHT_LEADERSHIP`. */}
-      <SectionLabel eyebrow="Jenna's Thought Leadership" sub="From the top of the house" />
+      <SectionHeading eyebrow="Jenna's Thought Leadership" sub="From the top of the house" />
       <RevealOnScroll
         as="section"
         aria-labelledby="leadership-heading"
@@ -273,7 +273,7 @@ export function HomePage() {
                 <button
                   type="button"
                   onClick={() => setDescriptionExpanded((v) => !v)}
-                  className="mb-6 font-mono text-[10px] tracking-[0.6px] uppercase text-white/40 hover:text-green transition-colors relative z-[2]"
+                  className="mb-6 font-mono text-[10px] tracking-[0.6px] uppercase text-[rgba(255,255,255,0.4)] hover:text-green transition-colors relative z-[2]"
                 >
                   {descriptionExpanded ? 'Show less' : 'More'}
                 </button>
@@ -333,7 +333,7 @@ export function HomePage() {
       </RevealOnScroll>
 
       {/* PRIORITY TOPICS */}
-      <SectionLabel eyebrow="Priority Topics" sub="Where the firm is placing its energy" />
+      <SectionHeading eyebrow="Priority Topics" sub="Where the firm is placing its energy" />
       <div className="mb-16">
         <SectionSlider ariaLabel="priority topics">
           {TOPICS.map((topic) => (
@@ -344,14 +344,17 @@ export function HomePage() {
 
       {/* ACTIVE PROJECTS */}
       <section className="mb-16" aria-labelledby="home-projects-heading">
-        <div className="flex items-center justify-between mb-5">
-          <h2 id="home-projects-heading" className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-text-muted">
-            Your Projects
-          </h2>
-          <Link to="/active-projects" className="font-mono text-[10px] text-green hover:text-green-dark tracking-wide transition-colors">
-            View all projects →
-          </Link>
-        </div>
+        <h2 id="home-projects-heading" className="sr-only">
+          Your Projects
+        </h2>
+        <SectionHeading
+          eyebrow="Your Projects"
+          action={
+            <Link to="/active-projects" className="text-green hover:text-green-dark transition-colors">
+              View all projects →
+            </Link>
+          }
+        />
 
         {projectsLoading ? (
           <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">Loading projects…</p>
@@ -377,7 +380,7 @@ export function HomePage() {
           link row in the source markup, so that fabricated block from an earlier pass was
           removed rather than kept for the sake of not deleting something (see docs/specs/home.md
           correction note on the "Knowledge" row). */}
-      <SectionLabel eyebrow="Knowledge Spotlight" sub="Freshly curated for the team" />
+      <SectionHeading eyebrow="Knowledge Spotlight" sub="Freshly curated for the team" />
       <div className="mb-16">
         <SectionSlider ariaLabel="knowledge spotlight">
           {KNOWLEDGE_SPOTLIGHT.map((item, i) => (
@@ -388,14 +391,17 @@ export function HomePage() {
 
       {/* COMMUNITIES OF PRACTICE */}
       <section className="mb-4" aria-labelledby="home-communities-heading">
-        <div className="flex items-center justify-between mb-5">
-          <h2 id="home-communities-heading" className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-text-muted">
-            Communities
-          </h2>
-          <Link to="/communities" className="font-mono text-[10px] text-green hover:text-green-dark tracking-wide transition-colors">
-            View all communities →
-          </Link>
-        </div>
+        <h2 id="home-communities-heading" className="sr-only">
+          Communities
+        </h2>
+        <SectionHeading
+          eyebrow="Communities"
+          action={
+            <Link to="/communities" className="text-green hover:text-green-dark transition-colors">
+              View all communities →
+            </Link>
+          }
+        />
 
         {communitiesLoading ? (
           <p className="text-[13px] text-text-secondary bg-white border border-rule p-6">Loading communities…</p>
@@ -417,15 +423,5 @@ export function HomePage() {
       </section>
      </div>
     </AppShell>
-  )
-}
-
-function SectionLabel({ eyebrow, sub }: { eyebrow: string; sub: string }) {
-  return (
-    <div className="flex items-baseline gap-3 mb-5 mt-2">
-      <span className="font-mono text-[10px] font-medium tracking-[2px] uppercase text-navy">{eyebrow}</span>
-      <span className="flex-1 h-px bg-rule" aria-hidden="true" />
-      <span className="font-mono text-[9.5px] tracking-[0.6px] text-text-muted max-md:hidden">{sub}</span>
-    </div>
   )
 }
